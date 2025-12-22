@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template Catalog - Sales Teams</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      /* Developer Dark Mode - Main Background */
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+      background-color: #0a0a0a; /* neutral-950 */
+      color: #f5f5f5; /* neutral-100 */
+      min-height: 100vh;
+      padding: clamp(16px, 4vw, 24px);
+      font-size: 0.875rem; /* text-sm */
+      line-height: 1.5;
+    }
+
+    /* Header Section */
+    .header {
+      margin-bottom: clamp(20px, 4vw, 32px);
+      padding-bottom: 12px;
+      border-bottom: 1px solid #262626; /* neutral-800 */
+    }
+
+    .header-title {
+      font-size: 0.75rem; /* text-xs */
+      color: #a3a3a3; /* neutral-400 */
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .header-subtitle {
+      font-size: 1rem; /* text-base */
+      color: #f5f5f5; /* neutral-100 */
+      font-weight: 500;
+    }
+
+    /* Tab Container */
+    .tab-container {
+      display: flex;
+      gap: 4px;
+      margin-bottom: clamp(16px, 3vw, 24px);
+      flex-wrap: wrap;
+      overflow-x: auto;
+    }
+
+    .tab {
+      /* Quiet UI - Compact Button Style */
+      padding: 6px 12px;
+      min-height: 32px;
+      background-color: #171717; /* neutral-900 */
+      border: 1px solid #262626; /* neutral-800 */
+      border-radius: 4px;
+      color: #737373; /* neutral-500 */
+      cursor: pointer;
+      font-size: 0.75rem; /* text-xs */
+      font-family: inherit;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: #262626; /* neutral-800 */
+      color: #d4d4d4; /* neutral-300 */
+    }
+
+    .tab.active {
+      background-color: rgba(251, 191, 36, 0.1); /* amber-500/10 */
+      border-color: #fbbf24; /* amber-400 */
+      color: #fbbf24; /* amber-400 */
+    }
+
+    .tab.active::before {
+      content: '→';
+      margin-right: 6px;
+      font-weight: bold;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+      gap: 8px;
+      margin-top: clamp(12px, 2vw, 16px);
+    }
+
+    .card {
+      /* High Density Card */
+      background-color: #171717; /* neutral-900 */
+      border: 1px solid #262626; /* neutral-800 */
+      border-radius: 4px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 0.875rem; /* text-sm */
+      color: #d4d4d4; /* neutral-300 */
+    }
+
+    .card:hover {
+      background-color: #262626; /* neutral-800 */
+      border-color: #404040; /* neutral-700 */
+      color: #f5f5f5; /* neutral-100 */
+      transform: translateY(-1px);
+    }
+
+    .card:active {
+      transform: translateY(0);
+    }
+
+    /* Empty State */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 48px 24px;
+      color: #525252; /* neutral-600 */
+      font-size: 0.875rem; /* text-sm */
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      max-width: calc(100vw - 32px);
+      background-color: rgba(16, 185, 129, 0.95); /* emerald-500 */
+      color: #0a0a0a; /* neutral-950 */
+      padding: 10px 16px;
+      border-radius: 4px;
+      font-size: 0.75rem; /* text-xs */
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.15s ease-in;
+      border: 1px solid #10b981; /* emerald-500 */
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .toast.error {
+      background-color: rgba(239, 68, 68, 0.95); /* red-500 */
+      border-color: #ef4444;
+    }
+
+    .toast::before {
+      content: '✓';
+      margin-right: 8px;
+      font-weight: bold;
+    }
+
+    .toast.error::before {
+      content: '✕';
+    }
+
+    /* Stats Bar (Optional Enhancement) */
+    .stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 12px;
+      font-size: 0.75rem; /* text-xs */
+      color: #737373; /* neutral-500 */
+    }
+
+    .stats-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stats-value {
+      color: #fbbf24; /* amber-400 */
+      font-weight: 600;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      body {
+        padding: 12px;
+      }
+
+      .tab {
+        font-size: 0.7rem;
+        padding: 5px 10px;
+      }
+
+      .card {
+        font-size: 0.8125rem;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <div class="header">
+    <div class="header-title">Sales Templates</div>
+    <div class="header-subtitle">Template Catalog</div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="stats" id="stats">
+    <div class="stats-item">
+      <span>Company:</span>
+      <span class="stats-value" id="currentCompany">Consulfarma</span>
+    </div>
+    <div class="stats-item">
+      <span>Templates:</span>
+      <span class="stats-value" id="templateCount">0</span>
+    </div>
+  </div>
+
+  <!-- Tabs Container -->
+  <div class="tab-container" id="tabContainer"></div>
+
+  <!-- Templates Grid -->
+  <div class="grid" id="templateGrid"></div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // T003: Define TEMPLATES data object with all three companies
+    // T032: Inline code comments explaining update pattern:
+    // To update templates:
+    // 1. Add/remove/edit template names in the arrays below
+    // 2. No component logic changes needed - just edit this data object
+    // 3. Save file and refresh browser
+    const TEMPLATES = {
+      consulfarma: [
+        "Welcome Package 2024",
+        "Product Catalog Q1",
+        "Monthly Newsletter Template",
+        "Special Offer Email",
+        "Customer Thank You",
+        "Appointment Confirmation",
+        "Follow-up Sequence Day 1",
+        "Follow-up Sequence Day 3",
+        "Follow-up Sequence Day 7",
+        "Re-engagement Campaign"
+      ],
+      icosmetologia: [
+        "Initial Consultation Form",
+        "Treatment Plan Overview",
+        "Post-Procedure Care Instructions",
+        "Product Recommendation Email",
+        "Seasonal Promotion Template",
+        "Birthday Special Offer",
+        "Referral Program Email",
+        "Testimonial Request"
+      ],
+      hinutrition: [
+        "Nutrition Assessment Form",
+        "Personalized Meal Plan Template",
+        "Supplement Protocol Email",
+        "Progress Check-in Template",
+        "Recipe Collection Email",
+        "Wellness Tips Newsletter",
+        "Goal Setting Worksheet",
+        "Success Story Template"
+      ]
+    };
+
+    // T004: Define COMPANIES configuration array for tab metadata
+    const COMPANIES = [
+      { id: 'consulfarma', label: 'Consulfarma' },
+      { id: 'icosmetologia', label: 'ICosmetologia' },
+      { id: 'hinutrition', label: 'Hi Nutrition' }
+    ];
+
+    // State management
+    let activeTab = 'consulfarma';
+    let toastTimeout = null;
+
+    // DOM elements
+    const tabContainer = document.getElementById('tabContainer');
+    const templateGrid = document.getElementById('templateGrid');
+    const toast = document.getElementById('toast');
+    const currentCompanyEl = document.getElementById('currentCompany');
+    const templateCountEl = document.getElementById('templateCount');
+
+    // T010: Implement copyToClipboard function
+    async function copyToClipboard(templateName) {
+      try {
+        await navigator.clipboard.writeText(templateName);
+        // T011: Show toast notification with auto-dismiss
+        showToast('Copied to clipboard!', 'success');
+      } catch (error) {
+        // T028: Handle clipboard permission denied error
+        showToast('Copy failed. Please try again.', 'error');
+      }
+    }
+
+    // T011: Toast notification system with auto-dismiss
+    function showToast(message, type = 'success') {
+      // T029: Handle rapid successive clicks - clear previous timeout
+      if (toastTimeout) {
+        clearTimeout(toastTimeout);
+      }
+
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+
+      // Auto-dismiss after 2 seconds
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    // T018: Handle tab click
+    function handleTabClick(companyId) {
+      // T020: Implement idempotent tab behavior
+      if (companyId !== activeTab) {
+        activeTab = companyId;
+        updateStats();
+        renderTabs();
+        renderTemplates();
+      }
+    }
+
+    // Update stats bar
+    function updateStats() {
+      const company = COMPANIES.find(c => c.id === activeTab);
+      const templates = TEMPLATES[activeTab] || [];
+
+      currentCompanyEl.textContent = company ? company.label : activeTab;
+      templateCountEl.textContent = templates.length;
+    }
+
+    // T015-T017: Render company tabs
+    function renderTabs() {
+      tabContainer.innerHTML = '';
+
+      COMPANIES.forEach(company => {
+        const button = document.createElement('button');
+        button.className = 'tab';
+        button.textContent = company.label;
+
+        if (activeTab === company.id) {
+          button.classList.add('active');
+          const indicator = document.createElement('div');
+          indicator.className = 'tab-indicator';
+          button.appendChild(indicator);
+        }
+
+        button.addEventListener('click', () => handleTabClick(company.id));
+        tabContainer.appendChild(button);
+      });
+    }
+
+    // T008-T009: Render template cards
+    function renderTemplates() {
+      const currentTemplates = TEMPLATES[activeTab] || [];
+      templateGrid.innerHTML = '';
+
+      // T027: Handle empty template arrays
+      if (currentTemplates.length === 0) {
+        const emptyState = document.createElement('div');
+        emptyState.className = 'empty-state';
+        emptyState.textContent = 'No templates available';
+        templateGrid.appendChild(emptyState);
+        return;
+      }
+
+      currentTemplates.forEach(template => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.textContent = template;
+
+        // T012: Connect onClick handlers
+        card.addEventListener('click', () => copyToClipboard(template));
+
+        templateGrid.appendChild(card);
+      });
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateStats();
+      renderTabs();
+      renderTemplates();
+    });
+  </script>
+</body>
+</html>

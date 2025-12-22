@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pwsh:*)",
+      "Bash(powershell.exe -File \".specify/scripts/powershell/create-new-feature.ps1\" -Json -Number 1 -ShortName \"template-catalog-react\" \"Build template catalog React app\")",
+      "Bash(mkdir:*)",
+      "Bash(git checkout:*)",
+      "Bash(powershell.exe -File \".specify/scripts/powershell/setup-plan.ps1\" -Json)",
+      "Bash(powershell.exe -Command \"Get-Content ''.specify/scripts/powershell/update-agent-context.ps1'' | Select-Object -First 50\")",
+      "Bash(powershell.exe -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json)",
+      "Bash(powershell.exe:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(test:*)"
+    ]
+  }
+}
