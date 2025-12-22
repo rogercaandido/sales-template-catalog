@@ -1,0 +1,96 @@
+{
+  "consulfarma": [
+    {
+      "name": "Welcome Package 2024",
+      "message": "Welcome Package 2024"
+    },
+    {
+      "name": "Product Catalog Q1",
+      "message": "Product Catalog Q1"
+    },
+    {
+      "name": "Monthly Newsletter Template",
+      "message": "Monthly Newsletter Template"
+    },
+    {
+      "name": "Special Offer Email",
+      "message": "Special Offer Email"
+    },
+    {
+      "name": "Customer Thank You",
+      "message": "Customer Thank You"
+    },
+    {
+      "name": "Appointment Confirmation",
+      "message": "Appointment Confirmation"
+    },
+    {
+      "name": "Follow-up Sequence Day 1",
+      "message": "Follow-up Sequence Day 1"
+    },
+    {
+      "name": "Follow-up Sequence Day 3",
+      "message": "Follow-up Sequence Day 3"
+    },
+    {
+      "name": "Follow-up Sequence Day 7",
+      "message": "Follow-up Sequence Day 7"
+    },
+    {
+      "name": "Re-engagement Campaign",
+      "message": "Re-engagement Campaign"
+    }
+  ],
+  "icosmetologia": [
+    {
+      "name": "start_ic_ia_v1",
+      "message": "Oi {{1}}! Sou a Mind, sua assistente virtual do *ICosmetologia* 😃 Posso te *enviar as informações* por aqui?"
+    },
+    {
+      "name": "retomada_ic_v1",
+      "message": "Posso te ajudar com alguma informação sobre o curso?"
+    },
+    {
+      "name": "retomada_ic_v2",
+      "message": "Nossa {{1}}, acabei esquecendo de te avisar sobre um *desconto especial* para profissionais com conselho ativo😍! O seu conselho está ativo?"
+    },
+    {
+      "name": "retomada_ic_v3",
+      "message": "Oi {{1}}! Tudo bem? Notei que nossa última conversa ficou pendente. Ficou alguma dúvida ou tem algo que eu possa esclarecer pra você? 💬"
+    }
+  ],
+  "hinutrition": [
+    {
+      "name": "Nutrition Assessment Form",
+      "message": "Nutrition Assessment Form"
+    },
+    {
+      "name": "Personalized Meal Plan Template",
+      "message": "Personalized Meal Plan Template"
+    },
+    {
+      "name": "Supplement Protocol Email",
+      "message": "Supplement Protocol Email"
+    },
+    {
+      "name": "Progress Check-in Template",
+      "message": "Progress Check-in Template"
+    },
+    {
+      "name": "Recipe Collection Email",
+      "message": "Recipe Collection Email"
+    },
+    {
+      "name": "Wellness Tips Newsletter",
+      "message": "Wellness Tips Newsletter"
+    },
+    {
+      "name": "Goal Setting Worksheet",
+      "message": "Goal Setting Worksheet"
+    },
+    {
+      "name": "Success Story Template",
+      "message": "Success Story Template"
+    }
+  ]
+}
