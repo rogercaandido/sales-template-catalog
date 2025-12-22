@@ -282,16 +282,70 @@
     // 3. Save file and refresh browser
     const TEMPLATES = {
       consulfarma: [
-        { name: "Welcome Package 2024", message: "Welcome Package 2024" },
-        { name: "Product Catalog Q1", message: "Product Catalog Q1" },
-        { name: "Monthly Newsletter Template", message: "Monthly Newsletter Template" },
-        { name: "Special Offer Email", message: "Special Offer Email" },
-        { name: "Customer Thank You", message: "Customer Thank You" },
-        { name: "Appointment Confirmation", message: "Appointment Confirmation" },
-        { name: "Follow-up Sequence Day 1", message: "Follow-up Sequence Day 1" },
-        { name: "Follow-up Sequence Day 3", message: "Follow-up Sequence Day 3" },
-        { name: "Follow-up Sequence Day 7", message: "Follow-up Sequence Day 7" },
-        { name: "Re-engagement Campaign", message: "Re-engagement Campaign" }
+        {
+          name: "start_x_csf_ia_v1",
+          message: "Oi {{1}}! Sou a Mind, sua assistente virtual da *Consulfarma* 😃 Posso te *enviar as informações* por aqui?"
+        },
+        {
+          name: "start_x_geral_csf_v2",
+          message: "Oi, {{1}}! Preparei algumas informações que podem te interessar. Posso compartilhar com você? ✨"
+        },
+        {
+          name: "retomada_x_geral_csf_v2",
+          message: "Oi {{1}}! Notei que nossa última conversa ficou pendente. Ficou alguma dúvida ou tem algo que eu possa esclarecer pra você? 💬"
+        },
+        {
+          name: "apresentacao_x_geral_csf_v2",
+          message: "Olá {{1}}, tudo bem? Estou à disposição para esclarecer suas dúvidas! Podemos conversar? 😄"
+        },
+        {
+          name: "apresentacao_x_cursos_csf_v1",
+          message: "Olá {{1}}, tudo bem? 😄Vi que você tem interesse em nossos cursos. Quer saber mais detalhes? 📚"
+        },
+        {
+          name: "apresentacao_x_seminiario_csf_v1",
+          message: "Olá {{1}}, tudo bem? 😄Vi que você tem interesse no Seminário Consulfarma. Quer saber mais detalhes? 📚"
+        },
+        {
+          name: "apresentacao_x_pos_csf_v1",
+          message: "Olá {{1}}, tudo bem? 😄Vi que você tem interesse em nossas Pós-Graduações. Quer saber mais detalhes? 📚"
+        },
+        {
+          name: "apresentacao_x_clube_csf_v1",
+          message: "Olá {{1}}, tudo bem? 😄Vi que você tem interesse no Clube Consulfarma. Quer saber mais detalhes? 💊"
+        },
+        {
+          name: "apresentacao_x_congresso_csf_v1",
+          message: "Olá {{1}}, tudo bem? 😄Vi que você tem interesse no Congresso Consulfarma. Quer saber mais detalhes? ✈️"
+        },
+        {
+          name: "recuperacao_x_lembrete_csf_v1",
+          message: "Oi {{1}}! Notei que não conseguimos conversar ainda. Ainda tem interesse em saber mais sobre nossas opções? Estou aqui para te ajudar! 💬"
+        },
+        {
+          name: "recuperacao_x_ajuda_csf_v1",
+          message: "Oi {{1}}! 👋 Ficou alguma dúvida que eu possa esclarecer? Às vezes as mensagens se perdem na correria do dia a dia. Posso te ajudar? ☺️"
+        },
+        {
+          name: "recuperacao_x_direta_csf_v1",
+          message: "Oi {{1}}! 👋  Ainda tem interesse ou prefere que eu entre em contato em outro momento? ☺️"
+        },
+        {
+          name: "continuar_x_dia_csf_v1",
+          message: "Olá {{1}}, bom dia! Tudo bem? Podemos continuar o atendimento?"
+        },
+        {
+          name: "continuar_x_tarde_csf_v1",
+          message: "Olá {{1}}, boa tarde! Tudo bem? Podemos continuar o atendimento?"
+        },
+        {
+          name: "contato_x_formal_csf_v1",
+          message: "Olá, {{1}}! Tudo bem? 😄 Sou do time de consultoria da *Consulfarma*. Posso te encaminhar mais informações?"
+        },
+        {
+          name: "lote0_x_congresso_2026_v1",
+          message: "🚀 *Lançamento Oficial | Consulfarma 2026*\n🔥 Lote Zero liberado: condições exclusivas para quem garantir sua vaga.\nO maior Congresso Magistral do Brasil, acontece nos dias 2, 3 e 4 de julho!\n*Antecipe-se e viva a experiência do Consulfarma 2026!*"
+        }
       ],
       icosmetologia: [
         {
@@ -309,17 +363,113 @@
         {
           name: "retomada_ic_v3",
           message: "Oi {{1}}! Tudo bem? Notei que nossa última conversa ficou pendente. Ficou alguma dúvida ou tem algo que eu possa esclarecer pra você? 💬"
+        },
+        {
+          name: "apresentacao_informacoes_ic_v1",
+          message: "Oi {{1}}! Preparei algumas informações que podem te interessar. Posso compartilhar com você? ✨"
+        },
+        {
+          name: "recuperacao_ajuda_ic_v1",
+          message: "Oi {{1}}! 👋 Ficou alguma dúvida que eu possa esclarecer? Às vezes as mensagens se perdem na correria do dia a dia. Posso te ajudar? 😊"
+        },
+        {
+          name: "recuperacao_direta_ic_v1",
+          message: "Oi {{1}}! 👋 Ainda tem interesse ou prefere que eu entre em contato em outro momento? 😊"
+        },
+        {
+          name: "continuar_dia_ic_v1",
+          message: "Olá {{1}}, bom dia! Tudo bem? Podemos continuar o atendimento?"
+        },
+        {
+          name: "continuar_tarde_ic_v1",
+          message: "Olá {{1}}, boa tarde! Tudo bem? Podemos continuar o atendimento?"
+        },
+        {
+          name: "apresentacao_interesse_ic_v2",
+          message: "Olá {{1}}, tudo bem? 😊 Vi que você tem interesse em nossos cursos. Quer saber mais detalhes? 📚"
+        },
+        {
+          name: "apresentacao_consultiva_ic_v2",
+          message: "Olá {{1}}, tudo bem? 😊 Estou à disposição para esclarecer suas dúvidas! Podemos conversar?"
+        },
+        {
+          name: "recuperacao_lembrete_ic_v2",
+          message: "Oi {{1}}! Notei que não conseguimos conversar ainda. Você tem interesse em saber mais sobre nossas opções? Estou aqui para te ajudar! 💬"
+        },
+        {
+          name: "contato_formal_pos_ic_v1",
+          message: "Olá, {{1}}! Tudo bem? 😄 Sou do time de consultoria em pós-graduações do *Instituto de Cosmetologia*. \nVi seu interesse em nossas formações. Posso te encaminhar mais informações?"
+        },
+        {
+          name: "contato_formal_cursos_ic_v1",
+          message: "Olá, {{1}}! Tudo bem? 😄 Sou do time de consultoria em cursos do *Instituto de Cosmetologia*. \nVi seu interesse em nossas formações. Posso te encaminhar mais informações?"
+        },
+        {
+          name: "prospec_reativar_ic_v1",
+          message: "Olá, {{1}}! Tudo bem? Aqui é da equipe do *ICosmetologia* 💙\nHá um tempinho, você demonstrou interesse em um dos nossos cursos. Lembra?\nConseguiu realizar a inscrição ou ainda gostaria de receber informações?"
         }
       ],
       hinutrition: [
-        { name: "Nutrition Assessment Form", message: "Nutrition Assessment Form" },
-        { name: "Personalized Meal Plan Template", message: "Personalized Meal Plan Template" },
-        { name: "Supplement Protocol Email", message: "Supplement Protocol Email" },
-        { name: "Progress Check-in Template", message: "Progress Check-in Template" },
-        { name: "Recipe Collection Email", message: "Recipe Collection Email" },
-        { name: "Wellness Tips Newsletter", message: "Wellness Tips Newsletter" },
-        { name: "Goal Setting Worksheet", message: "Goal Setting Worksheet" },
-        { name: "Success Story Template", message: "Success Story Template" }
+        {
+          name: "start_hi_ia_v1",
+          message: "Oi {{1}}! Sou a Mind, sua assistente virtual da *Hi Nutrition* 😃 Posso te *enviar as informações* por aqui?"
+        },
+        {
+          name: "retomada_hi_v1",
+          message: "Posso te ajudar com alguma informação sobre o curso?"
+        },
+        {
+          name: "retomada_hi_v2",
+          message: "Nossa {{1}}, acabei esquecendo de te avisar sobre um *desconto especial* para profissionais com conselho ativo😍! O seu conselho está ativo?"
+        },
+        {
+          name: "retomada_hi_v3",
+          message: "Oi {{1}}! Tudo bem? Notei que nossa última conversa ficou pendente. Ficou alguma dúvida ou tem algo que eu possa esclarecer pra você? 💬"
+        },
+        {
+          name: "apresentacao_informacoes_hi_v1",
+          message: "Oi {{1}}! Preparei algumas informações que podem te interessar. Posso compartilhar com você? ✨"
+        },
+        {
+          name: "recuperacao_ajuda_hi_v1",
+          message: "Oi {{1}}! 👋 Ficou alguma dúvida que eu possa esclarecer? Às vezes as mensagens se perdem na correria do dia a dia. Posso te ajudar? 😊"
+        },
+        {
+          name: "recuperacao_direta_hi_v1",
+          message: "Oi {{1}}! 👋 Ainda tem interesse ou prefere que eu entre em contato em outro momento? 😊"
+        },
+        {
+          name: "continuar_dia_hi_v1",
+          message: "Olá {{1}}, bom dia! Tudo bem? Podemos continuar o atendimento?"
+        },
+        {
+          name: "continuar_tarde_hi_v1",
+          message: "Olá {{1}}, boa tarde! Tudo bem? Podemos continuar o atendimento?"
+        },
+        {
+          name: "apresentacao_interesse_hi_v2",
+          message: "Olá {{1}}, tudo bem? 😊 Vi que você tem interesse em nossos cursos. Quer saber mais detalhes? 📚"
+        },
+        {
+          name: "apresentacao_consultiva_hi_v2",
+          message: "Olá {{1}}, tudo bem? 😊 Estou à disposição para esclarecer suas dúvidas! Podemos conversar?"
+        },
+        {
+          name: "recuperacao_lembrete_hi_v2",
+          message: "Oi {{1}}! Notei que não conseguimos conversar ainda. Você tem interesse em saber mais sobre nossas opções? Estou aqui para te ajudar! 💬"
+        },
+        {
+          name: "contato_formal_pos_hi_v1",
+          message: "Olá, {{1}}! Tudo bem? 😄 Sou do time de consultoria em pós-graduações do *Hi Nutrition*. \nVi seu interesse em nossas formações. Posso te encaminhar mais informações?"
+        },
+        {
+          name: "contato_formal_cursos_hi_v1",
+          message: "Olá, {{1}}! Tudo bem? 😄 Sou do time de consultoria em cursos do *Hi Nutrition*. \nVi seu interesse em nossas formações. Posso te encaminhar mais informações?"
+        },
+        {
+          name: "prospec_reativar_hi_v1",
+          message: "Olá, {{1}}! Tudo bem? Aqui é da equipe do *Hi Nutrition* 💙\nHá um tempinho, você demonstrou interesse em um dos nossos cursos. Lembra?\nConseguiu realizar a inscrição ou ainda gostaria de receber informações?"
+        }
       ]
     };
 
