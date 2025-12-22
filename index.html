@@ -598,8 +598,8 @@
         card.appendChild(title);
         card.appendChild(message);
 
-        // T012: Connect onClick handlers - copy message to clipboard
-        card.addEventListener('click', () => copyToClipboard(template.message));
+        // T012: Connect onClick handlers - copy template name to clipboard
+        card.addEventListener('click', () => copyToClipboard(template.name));
 
         templateGrid.appendChild(card);
       });
