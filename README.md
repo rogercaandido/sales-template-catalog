@@ -13,9 +13,11 @@ Terminal/IDE-inspired interface with:
 ## ✨ Features
 
 - ✅ **3 Company Tabs**: Consulfarma, ICosmetologia, Hi Nutrition
-- ✅ **One-Click Copy**: Click any template card to copy to clipboard
+- ✅ **Company Theming**: Dynamic color schemes per company (Red, Purple, Amber)
+- ✅ **Message Preview**: See full template content before copying
+- ✅ **One-Click Copy**: Click any template card to copy message to clipboard
 - ✅ **Visual Feedback**: Toast notifications with `✓` and `✕` icons
-- ✅ **Stats Bar**: Shows current company and template count
+- ✅ **Stats Bar**: Shows current company, template count, and usage instructions
 - ✅ **Fully Responsive**: Works from mobile (320px) to ultra-wide (1920px+)
 - ✅ **High Density UI**: Compact, information-rich design
 - ✅ **Zero Dependencies**: Pure HTML/CSS/JavaScript
@@ -78,8 +80,12 @@ vercel deploy
 #a3a3a3  /* neutral-400 - labels */
 #737373  /* neutral-500 - tertiary text */
 
-/* Accents */
-#fbbf24  /* amber-400 - active state */
+/* Company Themes */
+#ef4444  /* red-500 - Consulfarma */
+#a855f7  /* purple-500 - ICosmetologia */
+#fbbf24  /* amber-400 - Hi Nutrition */
+
+/* Feedback */
 #10b981  /* emerald-500 - success */
 #ef4444  /* red-500 - error */
 ```
@@ -88,13 +94,19 @@ vercel deploy
 
 ### Add Templates
 
-Edit the `TEMPLATES` object in `index.html` (around line 110):
+Edit the `TEMPLATES` object in `index.html` (around line 280):
 
 ```javascript
 const TEMPLATES = {
   consulfarma: [
-    "Welcome Package 2024",
-    "Your New Template",  // ← Add here
+    {
+      name: "Welcome Package 2024",
+      message: "Welcome Package 2024"
+    },
+    {
+      name: "Your New Template",  // ← Add here
+      message: "Full message content here"
+    }
     // ...
   ]
 }
