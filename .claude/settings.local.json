@@ -10,7 +10,24 @@
       "Bash(powershell.exe -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json)",
       "Bash(powershell.exe:*)",
       "Bash(git rev-parse:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(git commit:*)",
+      "Bash(start \"\" \"c:\\\\Users\\\\roger\\\\OneDrive\\\\Área de Trabalho\\\\Work\\\\New year shit\\\\templates usuarios\\\\index.html\")",
+      "Bash(git add:*)",
+      "Bash(gh repo:*)",
+      "Bash(echo:*)",
+      "Bash(echo \"git checkout main 2>/dev/null || git checkout -b main\")",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(where:*)",
+      "Bash(netlify deploy:*)",
+      "Bash(netlify login:*)",
+      "Bash(netlify init:*)",
+      "Bash(tee:*)",
+      "Bash(netlify status:*)",
+      "Bash(netlify sites:create:*)",
+      "Bash(start https://sales-template-catalog.netlify.app)",
+      "Bash(powershell -Command \"Get-Content ''COMO-ATUALIZAR.md'' | Select-Object -First 30\")"
     ]
   }
 }
