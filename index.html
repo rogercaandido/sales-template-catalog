@@ -224,6 +224,46 @@
       font-weight: 600;
     }
 
+    /* Footer - Carteiras */
+    .footer {
+      margin-top: clamp(24px, 5vw, 48px);
+      padding-top: 16px;
+      border-top: 1px solid #262626; /* neutral-800 */
+    }
+
+    .footer-title {
+      font-size: 0.625rem; /* text-[10px] */
+      color: #525252; /* neutral-600 */
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .carteiras-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+      gap: 6px;
+      font-size: 0.6875rem; /* text-[11px] */
+      color: #525252; /* neutral-600 */
+      line-height: 1.4;
+    }
+
+    .carteira-item {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .carteira-name {
+      color: #737373; /* neutral-500 */
+    }
+
+    .carteira-number {
+      color: #525252; /* neutral-600 */
+      font-size: 0.625rem; /* text-[10px] */
+    }
+
     /* Responsive adjustments */
     @media (max-width: 640px) {
       body {
@@ -238,6 +278,10 @@
       .card {
         font-size: 0.8125rem;
         padding: 10px;
+      }
+
+      .carteiras-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -269,6 +313,12 @@
 
   <!-- Templates Grid -->
   <div class="grid" id="templateGrid"></div>
+
+  <!-- Footer - Carteiras -->
+  <div class="footer" id="footer">
+    <div class="footer-title">Carteiras</div>
+    <div class="carteiras-grid" id="carteirasGrid"></div>
+  </div>
 
   <!-- Toast Notification -->
   <div class="toast" id="toast"></div>
@@ -480,6 +530,38 @@
       { id: 'hinutrition', label: 'Hi Nutrition' }
     ];
 
+    // Carteiras data for each company
+    const CARTEIRAS = {
+      consulfarma: [
+        { name: 'Wanderleia Rabelo', number: 1 },
+        { name: 'Ana Carolina', number: 2 },
+        { name: 'Cleo Alcantara', number: 3 },
+        { name: 'Lucas Bueno', number: 4 },
+        { name: 'Kimberlly Marini', number: 5 },
+        { name: 'Carolina Gomes', number: 6 },
+        { name: 'Izadora Costa', number: 7 }
+      ],
+      hinutrition: [
+        { name: 'Natália Postali', number: 1 },
+        { name: 'Keila Monteiro', number: 2 },
+        { name: 'Victor Tenorio', number: 3 },
+        { name: 'Clara Helena', number: 4 },
+        { name: 'Tainá Amaral', number: 5 },
+        { name: 'Yan Falcão', number: 9 }
+      ],
+      icosmetologia: [
+        { name: 'Natália Postali', number: 1 },
+        { name: 'Keila Monteiro', number: 2 },
+        { name: 'Victor Tenorio', number: 3 },
+        { name: 'Clara Helena', number: 4 },
+        { name: 'Tainá Amaral', number: 5 },
+        { name: 'Joice Rossi', number: 6 },
+        { name: 'Marilia Conceição', number: 7 },
+        { name: 'Jucimara Coelho', number: 8 },
+        { name: 'Isabela Coelho', number: 10 }
+      ]
+    };
+
     // State management
     let activeTab = 'consulfarma';
     let toastTimeout = null;
@@ -487,6 +569,7 @@
     // DOM elements
     const tabContainer = document.getElementById('tabContainer');
     const templateGrid = document.getElementById('templateGrid');
+    const carteirasGrid = document.getElementById('carteirasGrid');
     const toast = document.getElementById('toast');
     const currentCompanyEl = document.getElementById('currentCompany');
     const templateCountEl = document.getElementById('templateCount');
@@ -528,6 +611,7 @@
         updateStats();
         renderTabs();
         renderTemplates();
+        renderCarteiras();
       }
     }
 
@@ -605,12 +689,36 @@
       });
     }
 
+    // Render carteiras footer
+    function renderCarteiras() {
+      const currentCarteiras = CARTEIRAS[activeTab] || [];
+      carteirasGrid.innerHTML = '';
+
+      currentCarteiras.forEach(carteira => {
+        const item = document.createElement('div');
+        item.className = 'carteira-item';
+
+        const name = document.createElement('span');
+        name.className = 'carteira-name';
+        name.textContent = carteira.name;
+
+        const number = document.createElement('span');
+        number.className = 'carteira-number';
+        number.textContent = `Carteira ${carteira.number}`;
+
+        item.appendChild(name);
+        item.appendChild(number);
+        carteirasGrid.appendChild(item);
+      });
+    }
+
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
       updateTheme();
       updateStats();
       renderTabs();
       renderTemplates();
+      renderCarteiras();
     });
   </script>
 </body>
