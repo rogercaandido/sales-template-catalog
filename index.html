@@ -20,6 +20,26 @@
       padding: clamp(16px, 4vw, 24px);
       font-size: 0.875rem; /* text-sm */
       line-height: 1.5;
+
+      /* Default theme color - Hi Nutrition (amber) */
+      --theme-color: #fbbf24; /* amber-400 */
+      --theme-color-bg: rgba(251, 191, 36, 0.1); /* amber-400/10 */
+    }
+
+    /* Company Color Themes */
+    body.theme-consulfarma {
+      --theme-color: #ef4444; /* red-500 */
+      --theme-color-bg: rgba(239, 68, 68, 0.1); /* red-500/10 */
+    }
+
+    body.theme-icosmetologia {
+      --theme-color: #a855f7; /* purple-500 */
+      --theme-color-bg: rgba(168, 85, 247, 0.1); /* purple-500/10 */
+    }
+
+    body.theme-hinutrition {
+      --theme-color: #fbbf24; /* amber-400 */
+      --theme-color-bg: rgba(251, 191, 36, 0.1); /* amber-400/10 */
     }
 
     /* Header Section */
@@ -74,9 +94,9 @@
     }
 
     .tab.active {
-      background-color: rgba(251, 191, 36, 0.1); /* amber-500/10 */
-      border-color: #fbbf24; /* amber-400 */
-      color: #fbbf24; /* amber-400 */
+      background-color: var(--theme-color-bg);
+      border-color: var(--theme-color);
+      color: var(--theme-color);
     }
 
     .tab.active::before {
@@ -103,12 +123,27 @@
       transition: all 0.15s ease;
       min-height: 44px;
       display: flex;
-      align-items: center;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
       font-size: 0.875rem; /* text-sm */
       color: #d4d4d4; /* neutral-300 */
+    }
+
+    .card-title {
+      color: var(--theme-color);
+      font-size: 0.75rem; /* text-xs */
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .card-message {
+      color: #d4d4d4; /* neutral-300 */
+      font-size: 0.875rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
 
     .card:hover {
@@ -185,7 +220,7 @@
     }
 
     .stats-value {
-      color: #fbbf24; /* amber-400 */
+      color: var(--theme-color);
       font-weight: 600;
     }
 
@@ -224,6 +259,9 @@
       <span>Templates:</span>
       <span class="stats-value" id="templateCount">0</span>
     </div>
+    <div class="stats-item">
+      <span style="color: #a3a3a3;">→ Clique no template e cole o nome na Sellflux</span>
+    </div>
   </div>
 
   <!-- Tabs Container -->
@@ -239,41 +277,49 @@
     // T003: Define TEMPLATES data object with all three companies
     // T032: Inline code comments explaining update pattern:
     // To update templates:
-    // 1. Add/remove/edit template names in the arrays below
+    // 1. Add/remove/edit template objects with name and message in the arrays below
     // 2. No component logic changes needed - just edit this data object
     // 3. Save file and refresh browser
     const TEMPLATES = {
       consulfarma: [
-        "Welcome Package 2024",
-        "Product Catalog Q1",
-        "Monthly Newsletter Template",
-        "Special Offer Email",
-        "Customer Thank You",
-        "Appointment Confirmation",
-        "Follow-up Sequence Day 1",
-        "Follow-up Sequence Day 3",
-        "Follow-up Sequence Day 7",
-        "Re-engagement Campaign"
+        { name: "Welcome Package 2024", message: "Welcome Package 2024" },
+        { name: "Product Catalog Q1", message: "Product Catalog Q1" },
+        { name: "Monthly Newsletter Template", message: "Monthly Newsletter Template" },
+        { name: "Special Offer Email", message: "Special Offer Email" },
+        { name: "Customer Thank You", message: "Customer Thank You" },
+        { name: "Appointment Confirmation", message: "Appointment Confirmation" },
+        { name: "Follow-up Sequence Day 1", message: "Follow-up Sequence Day 1" },
+        { name: "Follow-up Sequence Day 3", message: "Follow-up Sequence Day 3" },
+        { name: "Follow-up Sequence Day 7", message: "Follow-up Sequence Day 7" },
+        { name: "Re-engagement Campaign", message: "Re-engagement Campaign" }
       ],
       icosmetologia: [
-        "Initial Consultation Form",
-        "Treatment Plan Overview",
-        "Post-Procedure Care Instructions",
-        "Product Recommendation Email",
-        "Seasonal Promotion Template",
-        "Birthday Special Offer",
-        "Referral Program Email",
-        "Testimonial Request"
+        {
+          name: "start_ic_ia_v1",
+          message: "Oi {{1}}! Sou a Mind, sua assistente virtual do *ICosmetologia* 😃 Posso te *enviar as informações* por aqui?"
+        },
+        {
+          name: "retomada_ic_v1",
+          message: "Posso te ajudar com alguma informação sobre o curso?"
+        },
+        {
+          name: "retomada_ic_v2",
+          message: "Nossa {{1}}, acabei esquecendo de te avisar sobre um *desconto especial* para profissionais com conselho ativo😍! O seu conselho está ativo?"
+        },
+        {
+          name: "retomada_ic_v3",
+          message: "Oi {{1}}! Tudo bem? Notei que nossa última conversa ficou pendente. Ficou alguma dúvida ou tem algo que eu possa esclarecer pra você? 💬"
+        }
       ],
       hinutrition: [
-        "Nutrition Assessment Form",
-        "Personalized Meal Plan Template",
-        "Supplement Protocol Email",
-        "Progress Check-in Template",
-        "Recipe Collection Email",
-        "Wellness Tips Newsletter",
-        "Goal Setting Worksheet",
-        "Success Story Template"
+        { name: "Nutrition Assessment Form", message: "Nutrition Assessment Form" },
+        { name: "Personalized Meal Plan Template", message: "Personalized Meal Plan Template" },
+        { name: "Supplement Protocol Email", message: "Supplement Protocol Email" },
+        { name: "Progress Check-in Template", message: "Progress Check-in Template" },
+        { name: "Recipe Collection Email", message: "Recipe Collection Email" },
+        { name: "Wellness Tips Newsletter", message: "Wellness Tips Newsletter" },
+        { name: "Goal Setting Worksheet", message: "Goal Setting Worksheet" },
+        { name: "Success Story Template", message: "Success Story Template" }
       ]
     };
 
@@ -328,10 +374,19 @@
       // T020: Implement idempotent tab behavior
       if (companyId !== activeTab) {
         activeTab = companyId;
+        updateTheme();
         updateStats();
         renderTabs();
         renderTemplates();
       }
+    }
+
+    // Update theme color based on active company
+    function updateTheme() {
+      // Remove all theme classes
+      document.body.classList.remove('theme-consulfarma', 'theme-icosmetologia', 'theme-hinutrition');
+      // Add current theme class
+      document.body.classList.add(`theme-${activeTab}`);
     }
 
     // Update stats bar
@@ -381,10 +436,20 @@
       currentTemplates.forEach(template => {
         const card = document.createElement('div');
         card.className = 'card';
-        card.textContent = template;
 
-        // T012: Connect onClick handlers
-        card.addEventListener('click', () => copyToClipboard(template));
+        const title = document.createElement('div');
+        title.className = 'card-title';
+        title.textContent = template.name;
+
+        const message = document.createElement('div');
+        message.className = 'card-message';
+        message.textContent = template.message;
+
+        card.appendChild(title);
+        card.appendChild(message);
+
+        // T012: Connect onClick handlers - copy message to clipboard
+        card.addEventListener('click', () => copyToClipboard(template.message));
 
         templateGrid.appendChild(card);
       });
@@ -392,6 +457,7 @@
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
+      updateTheme();
       updateStats();
       renderTabs();
       renderTemplates();
