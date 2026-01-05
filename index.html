@@ -153,6 +153,30 @@
       flex: 1;
     }
 
+    /* Custom scrollbar styling */
+    .card-message::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .card-message::-webkit-scrollbar-track {
+      background: #171717; /* neutral-900 - same as card background */
+    }
+
+    .card-message::-webkit-scrollbar-thumb {
+      background: #404040; /* neutral-700 */
+      border-radius: 3px;
+    }
+
+    .card-message::-webkit-scrollbar-thumb:hover {
+      background: #525252; /* neutral-600 */
+    }
+
+    /* Firefox scrollbar */
+    .card-message {
+      scrollbar-width: thin;
+      scrollbar-color: #404040 #171717;
+    }
+
     .card:hover {
       background-color: #262626; /* neutral-800 */
       border-color: #404040; /* neutral-700 */
