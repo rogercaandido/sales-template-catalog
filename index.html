@@ -136,6 +136,10 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: help;
     }
 
     .card-message {
@@ -686,6 +690,7 @@
         const title = document.createElement('div');
         title.className = 'card-title';
         title.textContent = template.name;
+        title.title = template.name; // Add tooltip showing full name on hover
 
         const message = document.createElement('div');
         message.className = 'card-message';
