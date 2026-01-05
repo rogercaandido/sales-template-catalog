@@ -121,7 +121,8 @@
       padding: 12px;
       cursor: pointer;
       transition: all 0.15s ease;
-      min-height: 44px;
+      min-height: 128px;
+      max-height: 380px;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -148,6 +149,8 @@
       line-height: 1.5;
       white-space: pre-wrap;
       word-wrap: break-word;
+      overflow-y: auto;
+      flex: 1;
     }
 
     .card:hover {
