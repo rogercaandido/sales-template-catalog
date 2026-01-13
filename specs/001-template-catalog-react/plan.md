@@ -5,7 +5,9 @@
 
 ## Summary
 
-Build a single-file React component for Framer Code that displays template catalogs for three companies (Consulfarma, ICosmetologia, Hi Nutrition). Users can switch between company tabs, view template cards in a responsive grid, and click cards to copy template names to clipboard with visual confirmation. The component is self-contained with hardcoded data, inline styling, and no external dependencies.
+Build a single-file React component for Framer Code that displays template catalogs for four companies (Consulfarma, ICosmetologia, Hi Nutrition, Seminários Consulfarma). Users can switch between company tabs, view template cards in a responsive grid, and click cards to copy template names to clipboard with visual confirmation. The component is self-contained with hardcoded data, inline styling, and no external dependencies.
+
+**Update (2026-01-12)**: Adding fourth company category "Seminários Consulfarma" with 6 event-related templates and cyan color theme.
 
 ## Technical Context
 
@@ -17,7 +19,7 @@ Build a single-file React component for Framer Code that displays template catal
 **Project Type**: Single-file component (Framer Code constraint)
 **Performance Goals**: <500ms clipboard copy response, 60fps animations
 **Constraints**: Single file <500 lines, no external imports, inline styles only, Framer Code compatible
-**Scale/Scope**: 3 companies, ~10-30 templates per company (low scale)
+**Scale/Scope**: 4 companies (Consulfarma, ICosmetologia, Hi Nutrition, Seminários Consulfarma), ~6-20 templates per company (low scale)
 
 ## Constitution Check
 
@@ -63,3 +65,24 @@ This structure optimizes for:
 ## Complexity Tracking
 
 > **No constitution violations** - Constitution not yet defined. If defined later, this simple single-file component should pass all reasonable complexity gates.
+
+## Modification Log
+
+### 2026-01-12: Add Seminários Consulfarma Company
+
+**Context**: User requested addition of fourth company category for event/seminar templates.
+
+**Changes Required**:
+1. Add new color theme (cyan #06b6d4) for Seminários Consulfarma
+2. Add 6 new templates to data structure
+3. Extend COMPANIES array with new tab entry
+4. Add carteiras assignment for new company
+5. Update CSS theme classes to include `theme-seminariosconsulfarma`
+
+**Impact**:
+- Zero logic changes (existing rendering handles 4+ tabs)
+- Pure data additions to existing structure
+- One new CSS class for theme
+- Maintains backward compatibility
+
+**Technical Approach**: See [research.md](./research.md) for detailed color selection rationale and implementation decisions.

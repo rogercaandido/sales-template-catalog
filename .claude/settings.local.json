@@ -27,7 +27,8 @@
       "Bash(netlify status:*)",
       "Bash(netlify sites:create:*)",
       "Bash(start https://sales-template-catalog.netlify.app)",
-      "Bash(powershell -Command \"Get-Content ''COMO-ATUALIZAR.md'' | Select-Object -First 30\")"
+      "Bash(powershell -Command \"Get-Content ''COMO-ATUALIZAR.md'' | Select-Object -First 30\")",
+      "Bash(start \"\" \"C:\\\\Users\\\\roger\\\\OneDrive\\\\Área de Trabalho\\\\Work\\\\New year shit\\\\templates usuarios\\\\index.html\")"
     ]
   }
 }

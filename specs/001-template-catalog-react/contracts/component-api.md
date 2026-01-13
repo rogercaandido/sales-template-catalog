@@ -2,7 +2,7 @@
 
 **Feature**: 001-template-catalog-react
 **Date**: 2025-12-22
-**Version**: 1.0.0
+**Version**: 1.1.0 (Updated 2026-01-12)
 
 ## Overview
 
@@ -28,29 +28,34 @@ function TemplateCatalog(): JSX.Element
 3. **Configuration**: Edit TEMPLATES object at top of file to update data
 
 ```javascript
-// In Framer Code editor:
-import React, { useState } from 'react';
+// In Framer Code editor (or standalone HTML):
+// Note: React import only needed for Framer version, omit for HTML
 
 // Edit this data structure to add/remove templates:
 const TEMPLATES = {
-  consulfarma: ["Template 1", "Template 2"],
-  // ...
+  consulfarma: [
+    { name: "template_name_v1", message: "Template message..." }
+  ],
+  icosmetologia: [...],
+  hinutrition: [...],
+  seminariosconsulfarma: [...]  // Added v1.1.0
 };
 
-export default function TemplateCatalog() {
-  // Component implementation...
-}
+// Component implementation...
 ```
 
 ### Component Behavior Contract
 
 #### 1. Initial Render
 
-**Given**: Component is mounted in Framer
+**Given**: Component is mounted in Framer or opened in browser
 **When**: Page loads
 **Then**:
 - Displays Consulfarma tab as active (default)
 - Renders all templates for Consulfarma in grid layout
+- Shows template cards with name (title) and message (body)
+- Displays carteiras footer with sales representatives
+- Shows stats bar with company name and template count
 - Shows empty grid if no templates exist
 - Displays toast notification area (hidden by default)
 
@@ -63,9 +68,12 @@ export default function TemplateCatalog() {
 **Given**: Component is rendered with any active tab
 **When**: User clicks a different company tab
 **Then**:
-- Active tab indicator moves to clicked tab (visual underline)
+- Active tab indicator (→ arrow prefix) moves to clicked tab
+- Theme color changes to match company (red/purple/amber/cyan)
 - Template grid updates to show templates for selected company
-- Previous tab becomes inactive (no underline)
+- Stats bar updates to show new company name and template count
+- Carteiras footer updates to show sales team for selected company
+- Previous tab becomes inactive (no arrow, neutral color)
 - Grid re-renders with smooth transition (no flicker)
 
 **Performance SLA**: Tab switch completes in <16ms (single frame at 60fps)
@@ -78,13 +86,13 @@ export default function TemplateCatalog() {
 
 #### 3. Template Copy Operation
 
-**Given**: User can see template cards
+**Given**: User can see template cards with name (title) and message (body)
 **When**: User clicks any template card
 **Then**:
-- Template name is copied to system clipboard
-- Success toast appears at bottom center: "Copied to clipboard!"
+- Template NAME (not message) is copied to system clipboard
+- Success toast appears at bottom right: "Copied to clipboard!" with ✓ icon
 - Toast auto-dismisses after 2000ms
-- Card shows visual feedback (hover state)
+- Card shows visual feedback (hover state during interaction)
 
 **Performance SLA**: Clipboard operation completes in <500ms
 
@@ -144,36 +152,45 @@ catch (error) {
 
 ### How to Add/Edit/Remove Templates
 
-**Add Template**:
+**Add Template** (v1.1.0 format):
 ```javascript
 // Edit TEMPLATES object directly:
 const TEMPLATES = {
-  consulfarma: [
-    "Existing Template",
-    "New Template Name" // Add here
-  ],
-  // ...
+  seminariosconsulfarma: [
+    {
+      name: "existing_template_v1",
+      message: "Existing message..."
+    },
+    {
+      name: "new_template_name_v1",  // Add new template here
+      message: "New template message content..."
+    }
+  ]
 };
 ```
 
-**Edit Template**:
+**Edit Template** (v1.1.0 format):
 ```javascript
 const TEMPLATES = {
-  consulfarma: [
-    "Updated Template Name" // Change existing name
-  ],
-  // ...
+  seminariosconsulfarma: [
+    {
+      name: "updated_template_name_v2",  // Change name
+      message: "Updated message content..."  // Change message
+    }
+  ]
 };
 ```
 
 **Remove Template**:
 ```javascript
 const TEMPLATES = {
-  consulfarma: [
-    // Remove line entirely
-    "Template to Keep"
-  ],
-  // ...
+  seminariosconsulfarma: [
+    // Remove entire object block
+    {
+      name: "template_to_keep_v1",
+      message: "Keep this one..."
+    }
+  ]
 };
 ```
 
@@ -189,19 +206,47 @@ const TEMPLATES = {
 
 ### Color Specifications
 
+**Base Theme (Developer Dark Mode)**:
 ```javascript
-const THEME = {
-  background: '#000',        // Pure black
-  cardBackground: '#111',    // Subtle lift
-  text: '#fff',              // Pure white
-  border: '#333',            // Subtle outline
-  borderHover: '#555',       // Brighter on hover
-  glow: 'rgba(255, 255, 255, 0.2)',  // Hover glow
-  accent: '#0ea5e9',         // Active tab indicator
-  toastBackground: '#222',   // Toast container
-  toastText: '#fff'          // Toast text
+const BASE_THEME = {
+  background: '#0a0a0a',     // neutral-950
+  cardBackground: '#171717', // neutral-900
+  text: '#f5f5f5',          // neutral-100
+  textSecondary: '#d4d4d4',  // neutral-300
+  textTertiary: '#737373',   // neutral-500
+  border: '#262626',         // neutral-800
+  borderHover: '#404040',    // neutral-700
+  toastSuccess: '#10b981',   // emerald-500
+  toastError: '#ef4444'      // red-500
 };
 ```
+
+**Company Theme Colors** (v1.1.0 - Updated):
+```javascript
+const COMPANY_COLORS = {
+  consulfarma: {
+    primary: '#ef4444',      // red-500
+    background: 'rgba(239, 68, 68, 0.1)'
+  },
+  icosmetologia: {
+    primary: '#a855f7',      // purple-500
+    background: 'rgba(168, 85, 247, 0.1)'
+  },
+  hinutrition: {
+    primary: '#fbbf24',      // amber-400
+    background: 'rgba(251, 191, 36, 0.1)'
+  },
+  seminariosconsulfarma: {  // NEW in v1.1.0
+    primary: '#06b6d4',      // cyan-500
+    background: 'rgba(6, 182, 212, 0.1)'
+  }
+};
+```
+
+**Color Usage**:
+- Company primary: Active tab border/background, card title, stats values
+- Company background: Active tab background (10% opacity)
+- Base colors: All non-accent UI elements
 
 ### Typography Contract
 
@@ -355,21 +400,38 @@ const SPACING = {
 
 ## Integration Checklist
 
-Before deploying to Framer:
+Before deploying to Framer or production:
 
-- [ ] TEMPLATES object contains data for all 3 companies
+- [ ] TEMPLATES object contains data for all 4 companies (v1.1.0)
+- [ ] Each template has both `name` and `message` properties
 - [ ] Each company has at least 1 template (or intentionally empty)
 - [ ] Template names are non-empty strings
-- [ ] Component code is <500 lines
-- [ ] No external imports beyond React
-- [ ] All styles are inline JavaScript objects
-- [ ] Tested in Framer preview at multiple viewport sizes
-- [ ] Clipboard copy works in target browsers
-- [ ] Toast notifications display correctly
+- [ ] CARTEIRAS object contains data for all 4 companies (v1.1.0)
+- [ ] CSS includes all 4 theme classes including `theme-seminariosconsulfarma` (v1.1.0)
+- [ ] Component code is <800 lines (increased for additional features)
+- [ ] No external imports beyond React (Framer) or pure vanilla JS (HTML)
+- [ ] All styles are inline CSS or JavaScript objects
+- [ ] Tested in browser/Framer preview at multiple viewport sizes (320px-1920px)
+- [ ] Clipboard copy works and copies template NAME not message
+- [ ] Toast notifications display correctly with ✓/✕ icons
+- [ ] Theme color changes when switching tabs
+- [ ] Stats bar updates correctly
+- [ ] Carteiras footer displays for all companies
 
 ---
 
 ## Version History
+
+**v1.1.0** (2026-01-12)
+- Added 4th company: Seminários Consulfarma
+- Added cyan (#06b6d4) theme color for new company
+- Added 6 new event/seminar templates
+- Template structure changed from `string[]` to `Template[]` objects with `name` and `message`
+- Added carteiras (sales representatives) footer
+- Added stats bar showing company name and template count
+- Card displays both template name (title) and message (body)
+- Clipboard copies template name only
+- Support for Portuguese characters and emojis in all text
 
 **v1.0.0** (2025-12-22)
 - Initial component specification
@@ -377,4 +439,4 @@ Before deploying to Framer:
 - Clipboard copy functionality
 - Responsive grid layout
 - Toast notifications
-- Dark theme with hover effects
+- Developer Dark Mode theme with hover effects

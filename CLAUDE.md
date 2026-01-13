@@ -211,7 +211,7 @@ Updated via `update-agent-context.ps1` during planning phase.
 
 ### Feature: 001-template-catalog-react
 
-**Status**: ✅ Implementation Complete (33/33 tasks)
+**Status**: ✅ Implementation Complete (33/33 tasks) | 🔄 Planning Phase: Add Seminários Consulfarma (2026-01-12)
 **Branch**: `001-template-catalog-react`
 **Type**: Standalone HTML application + React component for Framer Code
 
@@ -221,6 +221,7 @@ Updated via `update-agent-context.ps1` during planning phase.
 - Styling: Embedded CSS (Developer Dark Mode theme)
 - Data: Hardcoded JavaScript object (no database/API)
 - Platform: Any web browser / Framer Code embed
+- Companies: 4 (Consulfarma, ICosmetologia, Hi Nutrition, Seminários Consulfarma)
 
 **Visual Design: Developer Dark Mode**
 - Style: Terminal/IDE-inspired interface
@@ -230,10 +231,12 @@ Updated via `update-agent-context.ps1` during planning phase.
 - Philosophy: Quiet UI, high density, minimal distractions
 
 **Key Features**:
-- ✅ 3 company tabs with → indicator on active
-- ✅ One-click clipboard copy functionality
+- ✅ 4 company tabs with → indicator on active (Updated 2026-01-12)
+- ✅ One-click clipboard copy functionality (copies template name)
 - ✅ Stats bar showing company + template count
 - ✅ Toast notifications with ✓ (success) / ✕ (error) icons
+- ✅ Carteiras (sales team) footer for each company
+- ✅ Template cards display name + message content
 - ✅ Fully responsive (320px mobile → 1920px+ desktop)
 - ✅ Zero dependencies, works offline
 
@@ -292,10 +295,24 @@ vercel deploy
 #d4d4d4  /* neutral-300 - secondary */
 #737373  /* neutral-500 - tertiary */
 
-/* Accents */
-#fbbf24  /* amber-400 - active */
+/* Company Theme Colors */
+#ef4444  /* red-500 - Consulfarma */
+#a855f7  /* purple-500 - ICosmetologia */
+#fbbf24  /* amber-400 - Hi Nutrition */
+#06b6d4  /* cyan-500 - Seminários Consulfarma (NEW 2026-01-12) */
+
+/* UI Feedback */
 #10b981  /* emerald-500 - success */
 #ef4444  /* red-500 - error */
 ```
 
-**Last Updated**: 2025-12-22
+**Planning Update (2026-01-12)**: Added Seminários Consulfarma company with cyan theme color
+
+**Pending Changes**:
+- Add `seminariosconsulfarma` key to TEMPLATES with 6 new templates
+- Add `seminariosconsulfarma` to COMPANIES array with label "Seminários Consulfarma"
+- Add `seminariosconsulfarma` to CARTEIRAS with sales team data
+- Add CSS theme class `.theme-seminariosconsulfarma` with cyan color variables
+- Update tab ordering: Consulfarma → ICosmetologia → Hi Nutrition → Seminários Consulfarma
+
+**Last Updated**: 2026-01-12

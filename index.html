@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Template Catalog - Sales Teams</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 76 76' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M64.617 11.0437C57.5089 3.91875 48.0429 0 37.983 0C17.2187 0 0.322321 16.8964 0.322321 37.6607C0.322321 44.2937 2.05268 50.7741 5.34375 56.4911L0 76L19.967 70.758C25.4634 73.7607 31.6554 75.3384 37.9661 75.3384H37.983C58.7304 75.3384 76 58.442 76 37.6777C76 27.6179 71.725 18.1687 64.617 11.0437ZM37.983 68.9937C32.3509 68.9937 26.8375 67.4839 22.0366 64.6339L20.9 63.9554L9.05893 67.0598L12.2143 55.5071L11.4679 54.3196C8.32946 49.3321 6.68393 43.5812 6.68393 37.6607C6.68393 20.408 20.7304 6.36161 38 6.36161C46.3634 6.36161 54.2179 9.61875 60.1214 15.5393C66.025 21.4598 69.6554 29.3143 69.6384 37.6777C69.6384 54.9473 55.2357 68.9937 37.983 68.9937ZM55.1509 45.5491C54.2179 45.0741 49.5866 42.8009 48.7214 42.4955C47.8563 42.1732 47.2286 42.0205 46.6009 42.9705C45.9732 43.9205 44.175 46.0241 43.6152 46.6687C43.0723 47.2964 42.5125 47.3812 41.5795 46.9062C36.0491 44.1411 32.4187 41.9696 28.7714 35.7098C27.8045 34.0473 29.7384 34.1661 31.5366 30.5696C31.842 29.942 31.6893 29.3991 31.4518 28.9241C31.2143 28.4491 29.3312 23.8179 28.5509 21.9348C27.7875 20.1027 27.0071 20.3571 26.4304 20.3232C25.8875 20.2893 25.2598 20.2893 24.6321 20.2893C24.0045 20.2893 22.9866 20.5268 22.1214 21.4598C21.2562 22.4098 18.8304 24.683 18.8304 29.3143C18.8304 33.9455 22.2063 38.4241 22.6643 39.0518C23.1393 39.6795 29.2973 49.1795 38.7464 53.2679C44.7179 55.8464 47.0589 56.067 50.0446 55.6259C51.8598 55.3545 55.6089 53.3527 56.3893 51.1473C57.1696 48.942 57.1696 47.0589 56.9321 46.6687C56.7116 46.2446 56.0839 46.0071 55.1509 45.5491Z' fill='%23f87171'/%3E%3C/svg%3E">
   <style>
     * {
       margin: 0;
@@ -40,6 +41,11 @@
     body.theme-hinutrition {
       --theme-color: #fbbf24; /* amber-400 */
       --theme-color-bg: rgba(251, 191, 36, 0.1); /* amber-400/10 */
+    }
+
+    body.theme-seminariosconsulfarma {
+      --theme-color: #06b6d4; /* cyan-500 */
+      --theme-color-bg: rgba(6, 182, 212, 0.1); /* cyan-500/10 */
     }
 
     /* Header Section */
@@ -121,7 +127,7 @@
       padding: 12px;
       cursor: pointer;
       transition: all 0.15s ease;
-      min-height: 128px;
+      height: fit-content;
       max-height: 380px;
       display: flex;
       flex-direction: column;
@@ -140,7 +146,10 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      cursor: help;
+      width: 100%;
+      max-width: 100%;
+      flex-shrink: 0; /* Prevent title from shrinking */
+      z-index: 1; /* Keep title above message */
     }
 
     .card-message {
@@ -151,6 +160,7 @@
       word-wrap: break-word;
       overflow-y: auto;
       flex: 1;
+      min-height: 0; /* Allow proper flex behavior */
     }
 
     /* Custom scrollbar styling */
@@ -440,6 +450,48 @@
           message: "Olá! Tudo bem? 🤩 Aqui é a Iza da *Consulfarma*! O *Congresso Consulfarma* está chegando a *São José do Rio Preto*, trazendo as principais atualizações e inovações em saúde estética e no mercado magistral.\n\nNo palco, grandes referências da área como *Lucas Portilho*, *Nelson Mauricio*, *Henry Okigami*, *Luiz Moreira*, *Neto Montagnini*, *Davi Hoffmann*, *Eduardo Abreu* e *Claudia Mano*.\n\nSerá uma experiência imperdível para quem busca diferenciação, crescimento profissional e atualização de alto nível. *Posso te enviar a programação completa?*"
         }
       ],
+      seminariosconsulfarma: [
+        {
+          name: "tipo_1_rio_preto_congresso_mkt_prospec_2026_csf_v2",
+          message: "Oii, tudo bem? 😊 É Iza, da Consulfarma, estamos  levando o *Congresso Consulfarma* para *São José do Rio Preto* com atualizações e inovações na saúde estética e no mercado magistral.\n\nNo palco, nomes como *Lucas Portilho*, *Nelson Maurício*, *Henry Okigami*, *Luiz Moreira*, *Neto Montagnini*, *Davi Hoffmann*, *Eduardo Abreu* e *Claudia Mano*! 🤩\n\nVai ser imperdível para quem quer se destacar e crescer na área. \n\nPosso te enviar a programação?"
+        },
+        {
+          name: "tipo_2_rio_preto_congresso_mkt_prospec_2026_csf_v12",
+          message: "Olá, tudo bem? 😃 É Iza, da Consulfarma! Estamos  levando o *Congresso Consulfarma para São José do Rio Preto com atualizações e inovações na saúde estética e no mercado magistral.\n\nNo palco, nomes como Lucas Portilho, Nelson Maurício, Henry Okigami, Luiz Moreira, Neto Montagnini, Davi Hoffmann e Eduardo Abreu e Claudia Mano! 🤩\n\nVai ser imperdível para quem quer se destacar e crescer na área. Você gostaria de receber a programação?"
+        },
+        {
+          name: "tipo_3_rio_preto_congresso_mkt_prospec_2026_csf_v1",
+          message: "Olá! Tudo bem? 🤩 Aqui é a Iza da Consulfarma! O Congresso Consulfarma está chegando a São José do Rio Preto, trazendo as principais atualizações e inovações em saúde estética e no mercado magistral.\n\nNo palco, grandes referências da área como Lucas Portilho, Nelson Mauricio, Henry Okigami, Luiz Moreira, Neto Montagnini, Davi Hoffmann, Eduardo Abreu e Claudia Mano.\n\nSerá uma experiência imperdível para quem busca diferenciação, crescimento profissional e atualização de alto nível. Posso te enviar a programação completa?"
+        },
+        {
+          name: "grade_ano_novo_congresso_2026_csf_v1",
+          message: "Oiie tudo bem? 😊 E a Iza da Consulfarma! Desejo um feliz ano novo.\n\nPassando para avisar que já estamos com a grade completa do Congresso Consulfarma deste ano, estaremos com Congresso Consulfarma:\n✨ Conteúdo científico atualizado\n🎤 Grandes nomes do mercado\n💡 Tendências, inovações e lançamentos exclusivos\n🤝 Networking com profissionais e marcas que movimentam o setor\n\nPosso te enviar a programação?"
+        },
+        {
+          name: "novidade_sobre_evento_csf_v1",
+          message: "Oi! Tudo bem? Aqui é a Iza da Consulfarma 💊. Vi que você atua na área de saúde estética/magistral.\n\nPosso te mandar uma novidade incrível sobre um evento que vai acontecer na sua região? 🎉"
+        },
+        {
+          name: "ja_analisou_rio_preto_congresso_mkt_2026_csf_v1",
+          message: "Oiie tudo bem?😊 Você conseguiu analisar a programação do seminário que iremos realizar em São José do Rio Preto?"
+        },
+        {
+          name: "continuar_dia_seminiario_csf_v1",
+          message: "Olá, tudo bem? Podemos continuar o atendimento?"
+        },
+        {
+          name: "recup_1_rio_preto_congresso_mkt_2026_csf_v1",
+          message: "Oii tudo bem? 😊 Ficou com alguma dúvida referente ao seminário? Teria interesse em participar?"
+        },
+        {
+          name: "recup_2_rio_preto_congresso_mkt_2026_csf_v1",
+          message: "Oii tudo bem? Conseguiu analisar a programação do congresso ? Gostaria de garantir a sua inscrição?"
+        },
+        {
+          name: "recup_3_rio_preto_congresso_mkt_2026_csf_v1",
+          message: "Oii tudo bem? Teremos a virada do lote referente ao seminário, vamos garantir a sua inscrição nas melhores condições?"
+        }
+      ],
       icosmetologia: [
         {
           name: "start_ic_ia_v1",
@@ -508,15 +560,15 @@
           message: "Oi {{1}}! Sou a Mind, sua assistente virtual da *Hi Nutrition* 😃 Posso te *enviar as informações* por aqui?"
         },
         {
-          name: "retomada_hi_v1",
+          name: "retomada_v1",
           message: "Posso te ajudar com alguma informação sobre o curso?"
         },
         {
-          name: "retomada_hi_v2",
+          name: "retomada_v2",
           message: "Nossa {{1}}, acabei esquecendo de te avisar sobre um *desconto especial* para profissionais com conselho ativo😍! O seu conselho está ativo?"
         },
         {
-          name: "retomada_hi_v3",
+          name: "retomada_v3",
           message: "Oi {{1}}! Tudo bem? Notei que nossa última conversa ficou pendente. Ficou alguma dúvida ou tem algo que eu possa esclarecer pra você? 💬"
         },
         {
@@ -570,7 +622,8 @@
     const COMPANIES = [
       { id: 'consulfarma', label: 'Consulfarma' },
       { id: 'icosmetologia', label: 'ICosmetologia' },
-      { id: 'hinutrition', label: 'Hi Nutrition' }
+      { id: 'hinutrition', label: 'Hi Nutrition' },
+      { id: 'seminariosconsulfarma', label: 'Seminários Consulfarma' }
     ];
 
     // Carteiras data for each company
@@ -602,6 +655,15 @@
         { name: 'Marilia Conceição', number: 7 },
         { name: 'Jucimara Coelho', number: 8 },
         { name: 'Isabela Coelho', number: 10 }
+      ],
+      seminariosconsulfarma: [
+        { name: 'Wanderleia Rabelo', number: 1 },
+        { name: 'Ana Carolina', number: 2 },
+        { name: 'Cleo Alcantara', number: 3 },
+        { name: 'Lucas Bueno', number: 4 },
+        { name: 'Kimberlly Marini', number: 5 },
+        { name: 'Carolina Gomes', number: 6 },
+        { name: 'Izadora Costa', number: 7 }
       ]
     };
 

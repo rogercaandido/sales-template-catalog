@@ -2,7 +2,7 @@
 
 **Feature**: 001-template-catalog-react
 **Audience**: Developers & Sales Team Administrators
-**Last Updated**: 2025-12-22
+**Last Updated**: 2026-01-12 (v1.1.0 - Added Seminários Consulfarma)
 
 ## Overview
 
@@ -51,19 +51,35 @@ Edit the `TEMPLATES` object at the top of the component file:
 ```javascript
 const TEMPLATES = {
   consulfarma: [
-    "Welcome Email Template",
-    "Product Catalog 2024",
-    "Monthly Newsletter",
+    {
+      name: "welcome_email_template_v1",
+      message: "Oi {{1}}! Sou a Mind, sua assistente virtual da *Consulfarma*..."
+    },
+    {
+      name: "product_catalog_2024_v1",
+      message: "Olá {{1}}! Preparei algumas informações..."
+    }
     // Add more templates here
   ],
   icosmetologia: [
-    "Service Introduction",
-    "Appointment Reminder",
+    {
+      name: "service_introduction_v1",
+      message: "Oi {{1}}! Sou a Mind, sua assistente virtual do *ICosmetologia*..."
+    }
     // Add more templates here
   ],
   hinutrition: [
-    "Nutrition Plan Template",
-    "Supplement Guide",
+    {
+      name: "nutrition_plan_template_v1",
+      message: "Oi {{1}}! Sou a Mind, sua assistente virtual da *Hi Nutrition*..."
+    }
+    // Add more templates here
+  ],
+  seminariosconsulfarma: [
+    {
+      name: "tipo_1_rio_preto_congresso_mkt_prospec_2026_csf_v2",
+      message: "Oii, tudo bem? 😊 É Iza, da Consulfarma..."
+    }
     // Add more templates here
   ]
 };
@@ -89,25 +105,33 @@ const TEMPLATES = {
 
 #### Viewing Templates
 
-1. Open the published Framer page
-2. See three company tabs at the top:
-   - **Consulfarma**
-   - **ICosmetologia**
-   - **Hi Nutrition**
+1. Open the published Framer page or standalone HTML
+2. See four company tabs at the top:
+   - **Consulfarma** (red theme)
+   - **ICosmetologia** (purple theme)
+   - **Hi Nutrition** (amber theme)
+   - **Seminários Consulfarma** (cyan theme) ← NEW
 3. Default view shows Consulfarma templates
 
 #### Switching Companies
 
 1. Click any company tab
 2. Template grid updates to show that company's templates
-3. Active tab shows blue underline indicator
+3. Active tab shows → arrow indicator and company theme color
+4. Page theme color changes to match company (red/purple/amber/cyan)
+5. Stats bar updates to show company name and template count
+6. Carteiras footer updates to show sales team for that company
 
 #### Copying Template Names
 
-1. Click any template card
-2. Toast notification appears: "Copied to clipboard!"
-3. Paste the template name anywhere (Ctrl/Cmd + V)
-4. Use in emails, documents, CRM systems, etc.
+1. View template card showing:
+   - **Title**: Template name (in company theme color)
+   - **Body**: Template message content
+2. Click any template card
+3. Template NAME (not message) is copied to clipboard
+4. Toast notification appears: "Copied to clipboard!" with ✓ icon
+5. Paste the template name anywhere (Ctrl/Cmd + V)
+6. Use in Sellflux, emails, documents, CRM systems, etc.
 
 **Pro Tips**:
 - Click multiple templates rapidly to quickly gather names
@@ -340,15 +364,21 @@ Height: Auto (or fixed height with scroll)
 
 Before going live:
 
-- [ ] All company template arrays populated
+- [ ] All 4 company template arrays populated (v1.1.0)
+- [ ] All templates have both `name` and `message` properties
 - [ ] Template names are accurate and up-to-date
 - [ ] No typos in template names
+- [ ] All 4 CARTEIRAS entries populated (v1.1.0)
+- [ ] CSS includes all 4 theme classes including cyan (v1.1.0)
 - [ ] Tested on desktop browser
 - [ ] Tested on tablet
 - [ ] Tested on mobile device
-- [ ] Clipboard copy works correctly
-- [ ] All three company tabs work
-- [ ] Toast notifications display properly
+- [ ] Clipboard copy works correctly (copies NAME not message)
+- [ ] All four company tabs work with correct theme colors
+- [ ] Theme color changes when switching tabs
+- [ ] Stats bar updates correctly
+- [ ] Carteiras footer displays for all companies
+- [ ] Toast notifications display properly with ✓/✕ icons
 - [ ] Hover states work on desktop
 - [ ] No console errors in browser DevTools
 
@@ -356,8 +386,8 @@ Before going live:
 
 ## FAQ
 
-**Q: Can I add more than 3 companies?**
-A: Yes, but requires code modification. Add new company key to TEMPLATES and update COMPANIES array.
+**Q: Can I add more than 4 companies?**
+A: Yes, but requires code modification. Add new company key to TEMPLATES, update COMPANIES array, add CARTEIRAS entry, and add CSS theme class.
 
 **Q: Can users edit templates themselves?**
 A: No, templates are hardcoded. Only developers with Framer access can edit.

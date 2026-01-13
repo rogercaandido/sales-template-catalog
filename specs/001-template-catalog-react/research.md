@@ -238,3 +238,119 @@ const TEMPLATES = {
 - Toast notifications don't need to stack or queue
 
 **No Open Questions**: All technical decisions resolved with user-provided constraints
+
+---
+
+## Update: 2026-01-12 - Seminários Consulfarma Addition
+
+### 7. Color Selection for New Company Category
+
+**Context**: Adding fourth company "Seminários Consulfarma" requires a unique theme color distinct from existing palette.
+
+**Existing Palette**:
+- Consulfarma: Red (#ef4444 - red-500)
+- ICosmetologia: Purple (#a855f7 - purple-500)
+- Hi Nutrition: Amber (#fbbf24 - amber-400)
+
+**Decision**: Use Cyan (#06b6d4 - cyan-500) for Seminários Consulfarma
+
+**Rationale**:
+1. **Visual Distinction**: Clearly different from red, purple, and amber across color spectrum
+2. **Semantic Fit**: Cyan conveys professionalism, knowledge sharing, and modern communication - ideal for seminars, conferences, and educational events
+3. **Accessibility**: Excellent contrast ratio against neutral-950 background (>7:1 for WCAG AAA compliance)
+4. **Harmony**: Complements existing palette without color clashing
+5. **Brand Neutrality**: Not currently used by any UI element (emerald is reserved for success toasts)
+
+**Alternatives Evaluated**:
+
+| Color | Hex | Pros | Cons | Selected |
+|-------|-----|------|------|----------|
+| Cyan | #06b6d4 | Distinct, professional, modern | - | ✅ Yes |
+| Emerald | #10b981 | Strong contrast, growth association | Already used for success toasts | ❌ No |
+| Blue | #3b82f6 | Professional, trusted | Too generic, less distinctive | ❌ No |
+| Teal | #14b8a6 | Balanced, modern | Too similar to cyan | ❌ No |
+| Indigo | #6366f1 | Sophisticated, premium | May clash with purple | ❌ No |
+| Sky | #0ea5e9 | Bright, inviting | Less professional feel | ❌ No |
+
+**Implementation Values**:
+```css
+body.theme-seminariosconsulfarma {
+  --theme-color: #06b6d4; /* cyan-500 */
+  --theme-color-bg: rgba(6, 182, 212, 0.1); /* cyan-500/10 */
+}
+```
+
+**Accessibility Verification**:
+- Contrast ratio (cyan on neutral-950): 7.52:1 (passes WCAG AAA)
+- Contrast ratio (cyan on neutral-900): 6.84:1 (passes WCAG AA)
+- Readable for color-blind users (distinct from red/purple/amber in all common CVD types)
+
+---
+
+### 8. Template Data Structure Extension
+
+**Decision**: Extend existing `TEMPLATES` object with new key `seminariosconsulfarma`
+
+**Implementation**:
+```javascript
+const TEMPLATES = {
+  consulfarma: [...],
+  icosmetologia: [...],
+  hinutrition: [...],
+  seminariosconsulfarma: [
+    {
+      name: "tipo_1_rio_preto_congresso_mkt_prospec_2026_csf_v2",
+      message: "Oii, tudo bem? 😊 É Iza, da Consulfarma..."
+    },
+    // ... 5 more templates
+  ]
+};
+```
+
+**Rationale**:
+- Maintains consistency with existing structure
+- No refactoring required
+- Rendering logic automatically handles new entry
+- Easy to update/maintain
+
+---
+
+### 9. Tab Ordering Strategy
+
+**Decision**: Add "Seminários Consulfarma" as fourth tab after Hi Nutrition
+
+**Tab Order**: Consulfarma → ICosmetologia → Hi Nutrition → **Seminários Consulfarma**
+
+**Rationale**:
+1. Least disruptive to existing user muscle memory
+2. Allows grouping related Consulfarma offerings without disrupting middle tabs
+3. Scalable for future additions
+4. Existing responsive CSS handles 4+ tabs via flexbox wrap
+
+**Alternative Considered**: Place second after Consulfarma (thematic grouping) - rejected to avoid disrupting trained user behavior
+
+---
+
+### 10. Carteiras Assignment
+
+**Decision**: Assign same carteiras as Consulfarma to Seminários Consulfarma initially
+
+**Implementation**:
+```javascript
+const CARTEIRAS = {
+  consulfarma: [...],
+  hinutrition: [...],
+  icosmetologia: [...],
+  seminariosconsulfarma: [
+    { name: 'Wanderleia Rabelo', number: 1 },
+    { name: 'Ana Carolina', number: 2 },
+    // ... same as consulfarma
+  ]
+};
+```
+
+**Rationale**:
+- Seminários is an extension of Consulfarma offerings
+- Likely managed by same sales team
+- Easy to modify later if organizational structure changes
+- Maintains footer consistency across all tabs

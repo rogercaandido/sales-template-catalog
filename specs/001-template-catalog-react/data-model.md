@@ -17,9 +17,15 @@ This document defines the data structures used in the template catalog component
 **Structure**:
 ```javascript
 const TEMPLATES = {
-  consulfarma: string[],
-  icosmetologia: string[],
-  hinutrition: string[]
+  consulfarma: Template[],
+  icosmetologia: Template[],
+  hinutrition: Template[],
+  seminariosconsulfarma: Template[]  // Added 2026-01-12
+}
+
+type Template = {
+  name: string,
+  message: string
 }
 ```
 
@@ -27,37 +33,60 @@ const TEMPLATES = {
 ```javascript
 const TEMPLATES = {
   consulfarma: [
-    "Welcome Email Template",
-    "Product Catalog 2024",
-    "Monthly Newsletter"
+    {
+      name: "start_x_csf_ia_v1",
+      message: "Oi {{1}}! Sou a Mind, sua assistente virtual..."
+    },
+    {
+      name: "retomada_x_geral_csf_v2",
+      message: "Oi {{1}}! Notei que nossa última conversa..."
+    }
   ],
   icosmetologia: [
-    "Service Introduction",
-    "Appointment Reminder",
-    "Post-Treatment Follow-up"
+    {
+      name: "start_ic_ia_v1",
+      message: "Oi {{1}}! Sou a Mind, sua assistente virtual..."
+    }
   ],
   hinutrition: [
-    "Nutrition Plan Template",
-    "Supplement Guide",
-    "Consultation Form"
+    {
+      name: "start_hi_ia_v1",
+      message: "Oi {{1}}! Sou a Mind, sua assistente virtual..."
+    }
+  ],
+  seminariosconsulfarma: [
+    {
+      name: "tipo_1_rio_preto_congresso_mkt_prospec_2026_csf_v2",
+      message: "Oii, tudo bem? 😊 É Iza, da Consulfarma, estamos levando o *Congresso Consulfarma*..."
+    },
+    {
+      name: "grade_ano_novo_congresso_2026_csf_v1",
+      message: "Oiie tudo bem? 😊 E a Iza da Consulfarma! Desejo um feliz ano novo..."
+    }
   ]
 };
 ```
 
 **Validation Rules**:
-- Each company key must exist (consulfarma, icosmetologia, hinutrition)
-- Each company value must be an array of strings
-- Template names should be non-empty strings
-- Template names can contain any characters (including special chars, emojis)
+- Each company key must exist (consulfarma, icosmetologia, hinutrition, seminariosconsulfarma)
+- Each company value must be an array of Template objects
+- Template.name should be non-empty strings (used for clipboard copy)
+- Template.message should be non-empty strings (displayed in card)
+- Both name and message can contain any characters (including special chars, emojis, Portuguese characters)
 - No uniqueness constraint across companies (same template name can exist in multiple companies)
+- Template names follow naming convention: `{type}_{context}_{company}_v{version}`
 
 **Update Pattern**:
 ```javascript
 // To add a new template:
-TEMPLATES.consulfarma.push("New Template Name");
+TEMPLATES.consulfarma.push({
+  name: "new_template_name_v1",
+  message: "Template message content here..."
+});
 
 // To edit a template:
-TEMPLATES.consulfarma[0] = "Updated Name";
+TEMPLATES.consulfarma[0].name = "updated_name_v2";
+TEMPLATES.consulfarma[0].message = "Updated message...";
 
 // To remove a template:
 TEMPLATES.consulfarma.splice(index, 1);
@@ -73,7 +102,7 @@ TEMPLATES.consulfarma.splice(index, 1);
 ```javascript
 const [activeTab, setActiveTab] = useState('consulfarma');
 // Type: string
-// Valid values: 'consulfarma' | 'icosmetologia' | 'hinutrition'
+// Valid values: 'consulfarma' | 'icosmetologia' | 'hinutrition' | 'seminariosconsulfarma'
 // Default: 'consulfarma'
 ```
 
@@ -104,7 +133,8 @@ const [toast, setToast] = useState({ visible: false, message: '' });
 const COMPANIES = [
   { id: 'consulfarma', label: 'Consulfarma' },
   { id: 'icosmetologia', label: 'ICosmetologia' },
-  { id: 'hinutrition', label: 'Hi Nutrition' }
+  { id: 'hinutrition', label: 'Hi Nutrition' },
+  { id: 'seminariosconsulfarma', label: 'Seminários Consulfarma' }  // Added 2026-01-12
 ];
 ```
 
@@ -126,11 +156,18 @@ COMPANIES (config)
 TEMPLATES (data)
   ├── consulfarma → Template[]
   ├── icosmetologia → Template[]
-  └── hinutrition → Template[]
+  ├── hinutrition → Template[]
+  └── seminariosconsulfarma → Template[]
         ↑
         | filtered by activeTab
         |
 Component State (activeTab)
+        ↓
+CARTEIRAS (data)
+  ├── consulfarma → Carteira[]
+  ├── icosmetologia → Carteira[]
+  ├── hinutrition → Carteira[]
+  └── seminariosconsulfarma → Carteira[]
 ```
 
 ## Data Flow
@@ -204,7 +241,7 @@ try {
 | No localStorage | Design decision | Framer Code constraint |
 | Max ~100 templates/company | Soft limit | UI performance, no virtualization |
 | Template names are strings | JavaScript type | Simplest data model |
-| Company IDs hardcoded | Design decision | Fixed set of 3 companies |
+| Company IDs hardcoded | Design decision | Fixed set of 4 companies |
 
 ## Sample Data for Testing
 
@@ -250,3 +287,87 @@ This sample data provides:
 - Realistic template names for sales contexts
 - Different naming patterns per company
 - Sufficient data to test responsive grid (1-3 columns depending on viewport)
+
+---
+
+## Update: 2026-01-12 - New Entities
+
+### 4. Carteiras (Sales Representatives)
+
+**Purpose**: Display sales team members associated with each company
+
+**Structure**:
+```javascript
+const CARTEIRAS = {
+  consulfarma: Carteira[],
+  icosmetologia: Carteira[],
+  hinutrition: Carteira[],
+  seminariosconsulfarma: Carteira[]
+}
+
+type Carteira = {
+  name: string,      // Sales representative name
+  number: number     // Carteira identifier (1-10)
+}
+```
+
+**Example**:
+```javascript
+const CARTEIRAS = {
+  consulfarma: [
+    { name: 'Wanderleia Rabelo', number: 1 },
+    { name: 'Ana Carolina', number: 2 },
+    { name: 'Cleo Alcantara', number: 3 }
+  ],
+  seminariosconsulfarma: [
+    { name: 'Wanderleia Rabelo', number: 1 },
+    { name: 'Ana Carolina', number: 2 }
+  ]
+};
+```
+
+**Validation Rules**:
+- Each company key must match TEMPLATES/COMPANIES keys
+- Name must be non-empty string
+- Number must be positive integer
+- Numbers may not be sequential (e.g., 1, 2, 3, 5, 9)
+
+**Display**: Shown in footer section below template grid, updates when activeTab changes
+
+---
+
+### 5. Theme Configuration
+
+**Purpose**: Define color themes for each company
+
+**Structure**:
+```css
+/* CSS Custom Properties per company */
+body.theme-consulfarma {
+  --theme-color: #ef4444;           /* red-500 */
+  --theme-color-bg: rgba(239, 68, 68, 0.1);
+}
+
+body.theme-icosmetologia {
+  --theme-color: #a855f7;           /* purple-500 */
+  --theme-color-bg: rgba(168, 85, 247, 0.1);
+}
+
+body.theme-hinutrition {
+  --theme-color: #fbbf24;           /* amber-400 */
+  --theme-color-bg: rgba(251, 191, 36, 0.1);
+}
+
+body.theme-seminariosconsulfarma {
+  --theme-color: #06b6d4;           /* cyan-500 */
+  --theme-color-bg: rgba(6, 182, 212, 0.1);
+}
+```
+
+**Usage**: Body class changes on tab switch to update theme colors dynamically
+
+**Applied To**:
+- Tab active state border/background
+- Card title text color
+- Stats value color
+- Visual accent elements
