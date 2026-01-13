@@ -211,9 +211,9 @@ Updated via `update-agent-context.ps1` during planning phase.
 
 ### Feature: 001-template-catalog-react
 
-**Status**: ✅ Implementation Complete (33/33 tasks) | 🔄 Planning Phase: Add Seminários Consulfarma (2026-01-12)
+**Status**: ✅ Implementation Complete (33/33 tasks) | 🔄 Planning Phase: Report Admin Dashboard (2026-01-13)
 **Branch**: `001-template-catalog-react`
-**Type**: Standalone HTML application + React component for Framer Code
+**Type**: Multi-view web application (Template Catalog + Report Dashboard)
 
 **Technology Stack**:
 - Language: JavaScript (ES6+) / Pure HTML/CSS
@@ -231,6 +231,8 @@ Updated via `update-agent-context.ps1` during planning phase.
 - Philosophy: Quiet UI, high density, minimal distractions
 
 **Key Features**:
+
+**Template Catalog (Main Page)**:
 - ✅ 4 company tabs with → indicator on active (Updated 2026-01-12)
 - ✅ One-click clipboard copy functionality (copies template name)
 - ✅ Stats bar showing company + template count
@@ -240,19 +242,40 @@ Updated via `update-agent-context.ps1` during planning phase.
 - ✅ Fully responsive (320px mobile → 1920px+ desktop)
 - ✅ Zero dependencies, works offline
 
+**Report Admin Dashboard (/reportadminx)** (NEW - 2026-01-13):
+- 📊 View marketing analytics reports (HTML files)
+- 📅 Filter reports by time period (last 7/30/90 days, all time, custom)
+- 🏷️ Tag-based organization (leads, conversions, campaigns)
+- 📱 Responsive two-column layout (list + viewer)
+- 🔒 iframe isolation for report rendering (security)
+- 📂 Git-based workflow for adding reports
+- 🎨 Extends developer dark mode theme
+
 **Implementation Deliverables**:
 ```
-index.html              # ✅ Primary implementation (~13KB standalone)
+index.html              # ✅ Primary implementation with routing (~13KB + ~5KB for dashboard)
 src/TemplateCatalog.tsx # ✅ React version for Framer Code (257 lines)
+reports/                # 🔄 Report storage directory (NEW - 2026-01-13)
+├── index.json          # Report metadata index
+└── *.html              # Individual report HTML files
 README.md               # ✅ User documentation
 .gitignore              # ✅ Git configuration
 ```
 
 **Development Commands**:
 ```bash
-# Open locally (no build required)
-start index.html  # Windows
-open index.html   # Mac
+# Open template catalog (no build required)
+start index.html               # Windows
+open index.html                # Mac
+
+# Open report dashboard
+start "index.html#/reportadminx"   # Windows
+open "index.html#/reportadminx"    # Mac
+
+# Add a new report (Git workflow)
+# 1. Add HTML file to reports/ directory
+# 2. Update reports/index.json with metadata
+# 3. Commit and push
 
 # Deploy online
 netlify deploy --prod
@@ -267,18 +290,27 @@ vercel deploy
 **Project Structure**:
 ```
 .
-├── index.html              # Main application (standalone HTML)
+├── index.html              # Main application (template catalog + routing)
 ├── src/
 │   └── TemplateCatalog.tsx # React version for Framer
+├── reports/                # Report dashboard storage (NEW 2026-01-13)
+│   ├── index.json          # Report metadata
+│   └── *.html              # Report HTML files
 ├── specs/
 │   └── 001-template-catalog-react/
-│       ├── spec.md          # Feature specification
-│       ├── plan.md          # Implementation plan
-│       ├── tasks.md         # ✅ 33/33 tasks completed
-│       ├── data-model.md
-│       ├── research.md
+│       ├── spec.md                   # Feature specification
+│       ├── plan.md                   # Implementation plan (UPDATED 2026-01-13)
+│       ├── tasks.md                  # ✅ 33/33 tasks completed
+│       ├── data-model.md             # Template catalog data model
+│       ├── research.md               # Template catalog technical decisions
+│       ├── research-reportadmin.md   # Report dashboard research (NEW)
+│       ├── data-model-reportadmin.md # Report dashboard data model (NEW)
+│       ├── quickstart-reportadmin.md # Report dashboard usage guide (NEW)
+│       ├── contracts/
+│       │   ├── component-api.md      # Template catalog API
+│       │   └── reportadmin-api.md    # Report dashboard API (NEW)
 │       └── checklists/
-│           └── requirements.md  # ✅ All checks passed
+│           └── requirements.md       # ✅ All checks passed
 ├── README.md               # User documentation
 └── .gitignore
 ```
@@ -306,13 +338,35 @@ vercel deploy
 #ef4444  /* red-500 - error */
 ```
 
-**Planning Update (2026-01-12)**: Added Seminários Consulfarma company with cyan theme color
+**Planning Updates**:
 
-**Pending Changes**:
-- Add `seminariosconsulfarma` key to TEMPLATES with 6 new templates
-- Add `seminariosconsulfarma` to COMPANIES array with label "Seminários Consulfarma"
-- Add `seminariosconsulfarma` to CARTEIRAS with sales team data
-- Add CSS theme class `.theme-seminariosconsulfarma` with cyan color variables
-- Update tab ordering: Consulfarma → ICosmetologia → Hi Nutrition → Seminários Consulfarma
+- **2026-01-13**: Report Admin Dashboard feature planned
+  - Hash-based routing for multi-view navigation
+  - Report storage via Git (JSON index + HTML files)
+  - Period filtering (7/30/90 days, custom range)
+  - iframe-based report viewer with style isolation
+  - See [plan.md](specs/001-template-catalog-react/plan.md) for implementation phases
+  - See [quickstart-reportadmin.md](specs/001-template-catalog-react/quickstart-reportadmin.md) for usage guide
 
-**Last Updated**: 2026-01-12
+- **2026-01-12**: Seminários Consulfarma company with cyan theme color
+
+**Pending Implementation**:
+
+*Report Dashboard*:
+- [ ] Implement hash-based routing system
+- [ ] Create `/reports/` directory with index.json
+- [ ] Build report list component (left sidebar)
+- [ ] Build report viewer component (iframe, right pane)
+- [ ] Implement period filtering dropdown
+- [ ] Add keyboard navigation and accessibility
+- [ ] Test responsive layout (mobile/desktop)
+- [ ] Update documentation
+
+*Seminários Consulfarma*:
+- [ ] Add `seminariosconsulfarma` key to TEMPLATES with 6 new templates
+- [ ] Add `seminariosconsulfarma` to COMPANIES array with label "Seminários Consulfarma"
+- [ ] Add `seminariosconsulfarma` to CARTEIRAS with sales team data
+- [ ] Add CSS theme class `.theme-seminariosconsulfarma` with cyan color variables
+- [ ] Update tab ordering: Consulfarma → ICosmetologia → Hi Nutrition → Seminários Consulfarma
+
+**Last Updated**: 2026-01-13

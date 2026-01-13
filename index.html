@@ -325,46 +325,221 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* Report Dashboard Styles */
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #262626;
+    }
+
+    .dashboard-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #e5e5e5;
+    }
+
+    .dashboard-nav-link {
+      padding: 6px 12px;
+      background-color: #171717;
+      border: 1px solid #262626;
+      border-radius: 4px;
+      color: #6ee7b7;
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .dashboard-nav-link:hover {
+      background-color: #262626;
+      border-color: #6ee7b7;
+    }
+
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 16px;
+      min-height: calc(100vh - 200px);
+    }
+
+    .report-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .report-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+      max-height: calc(100vh - 300px);
+    }
+
+    .report-item {
+      background-color: #171717;
+      border: 1px solid #262626;
+      border-left: 3px solid transparent;
+      border-radius: 4px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .report-item:hover {
+      background-color: #1c1c1c;
+      border-left-color: #6ee7b7;
+    }
+
+    .report-item.selected {
+      background-color: #1c1c1c;
+      border-left-color: #6ee7b7;
+      border-color: #404040;
+    }
+
+    .report-item-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #f5f5f5;
+      margin-bottom: 4px;
+    }
+
+    .report-item-period {
+      font-size: 0.75rem;
+      color: #737373;
+      margin-bottom: 6px;
+    }
+
+    .report-item-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .report-tag {
+      padding: 2px 6px;
+      background-color: #262626;
+      border-radius: 3px;
+      font-size: 0.625rem;
+      color: #a3a3a3;
+    }
+
+    .report-viewer {
+      background-color: #171717;
+      border: 1px solid #262626;
+      border-radius: 4px;
+      padding: 16px;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .report-viewer iframe {
+      width: 100%;
+      flex: 1;
+      border: none;
+      border-radius: 4px;
+      background-color: #0a0a0a;
+      min-height: 500px;
+    }
+
+    .report-empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      text-align: center;
+      color: #525252;
+    }
+
+    .report-empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .report-count {
+      font-size: 0.75rem;
+      color: #737373;
+      margin-bottom: 8px;
+    }
+
+    /* Responsive - Dashboard */
+    @media (max-width: 768px) {
+      .dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .report-list {
+        max-height: 300px;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Header Section -->
-  <div class="header">
-    <div class="header-title">Sales Templates</div>
-    <div class="header-subtitle">Template Catalog</div>
-  </div>
+  <!-- App Container - Will be dynamically populated based on route -->
+  <div id="app"></div>
 
-  <!-- Stats Bar -->
-  <div class="stats" id="stats">
-    <div class="stats-item">
-      <span>Company:</span>
-      <span class="stats-value" id="currentCompany">Consulfarma</span>
-    </div>
-    <div class="stats-item">
-      <span>Templates:</span>
-      <span class="stats-value" id="templateCount">0</span>
-    </div>
-    <div class="stats-item">
-      <span style="color: #a3a3a3;">→ Clique no template e cole o nome na Sellflux</span>
-    </div>
-  </div>
-
-  <!-- Tabs Container -->
-  <div class="tab-container" id="tabContainer"></div>
-
-  <!-- Templates Grid -->
-  <div class="grid" id="templateGrid"></div>
-
-  <!-- Footer - Carteiras -->
-  <div class="footer" id="footer">
-    <div class="footer-title">Carteiras</div>
-    <div class="carteiras-grid" id="carteirasGrid"></div>
-  </div>
-
-  <!-- Toast Notification -->
+  <!-- Toast Notification - Global -->
   <div class="toast" id="toast"></div>
 
   <script>
+    // ========== SECTION 1: ROUTING ==========
+
+    // T038: Define ROUTES constant object
+    const ROUTES = {
+      HOME: '/',
+      REPORTS: '/reportadminx'
+    };
+
+    // T039: Get current route from window.location.hash
+    function getCurrentRoute() {
+      const hash = window.location.hash;
+      if (!hash || hash === '#' || hash === '#/') {
+        return ROUTES.HOME;
+      }
+      return hash.substring(1); // Remove leading #
+    }
+
+    // T040: Navigate to route by updating hash
+    function navigateTo(route) {
+      window.location.hash = '#' + route;
+    }
+
+    // T041: Render route by switching views
+    function renderRoute(route) {
+      const appContainer = document.getElementById('app');
+
+      if (route === ROUTES.HOME) {
+        renderTemplateCatalog();
+      } else if (route === ROUTES.REPORTS) {
+        renderReportDashboard();
+      } else {
+        // Unknown route - default to home
+        navigateTo(ROUTES.HOME);
+      }
+    }
+
+    // T042: Initialize router with hashchange listener
+    function initRouter() {
+      // Listen for hash changes
+      window.addEventListener('hashchange', () => {
+        const route = getCurrentRoute();
+        renderRoute(route);
+      });
+
+      // Initial route render
+      const initialRoute = getCurrentRoute();
+      renderRoute(initialRoute);
+    }
+
+    // ========== SECTION 2: TEMPLATE CATALOG DATA ==========
+
     // T003: Define TEMPLATES data object with all three companies
     // T032: Inline code comments explaining update pattern:
     // To update templates:
@@ -667,32 +842,198 @@
       ]
     };
 
-    // State management
-    let activeTab = 'consulfarma';
-    let toastTimeout = null;
+    // ========== SECTION 3: TEMPLATE CATALOG RENDERING ==========
 
-    // DOM elements
-    const tabContainer = document.getElementById('tabContainer');
-    const templateGrid = document.getElementById('templateGrid');
-    const carteirasGrid = document.getElementById('carteirasGrid');
-    const toast = document.getElementById('toast');
-    const currentCompanyEl = document.getElementById('currentCompany');
-    const templateCountEl = document.getElementById('templateCount');
+    // T037: Extract existing template catalog HTML/JS into renderTemplateCatalog() function
+    function renderTemplateCatalog() {
+      const appContainer = document.getElementById('app');
 
-    // T010: Implement copyToClipboard function
-    async function copyToClipboard(templateName) {
-      try {
-        await navigator.clipboard.writeText(templateName);
-        // T011: Show toast notification with auto-dismiss
-        showToast('Copied to clipboard!', 'success');
-      } catch (error) {
-        // T028: Handle clipboard permission denied error
-        showToast('Copy failed. Please try again.', 'error');
+      // Render template catalog HTML
+      appContainer.innerHTML = `
+        <!-- Header Section -->
+        <div class="header">
+          <div class="header-title">Sales Templates</div>
+          <div class="header-subtitle">Template Catalog</div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats" id="stats">
+          <div class="stats-item">
+            <span>Company:</span>
+            <span class="stats-value" id="currentCompany">Consulfarma</span>
+          </div>
+          <div class="stats-item">
+            <span>Templates:</span>
+            <span class="stats-value" id="templateCount">0</span>
+          </div>
+          <div class="stats-item">
+            <span style="color: #a3a3a3;">→ Clique no template e cole o nome na Sellflux</span>
+          </div>
+        </div>
+
+        <!-- Tabs Container -->
+        <div class="tab-container" id="tabContainer"></div>
+
+        <!-- Templates Grid -->
+        <div class="grid" id="templateGrid"></div>
+
+        <!-- Footer - Carteiras -->
+        <div class="footer" id="footer">
+          <div class="footer-title">Carteiras</div>
+          <div class="carteiras-grid" id="carteirasGrid"></div>
+        </div>
+      `;
+
+      // State management
+      let activeTab = 'consulfarma';
+
+      // DOM elements (re-query after innerHTML update)
+      const tabContainer = document.getElementById('tabContainer');
+      const templateGrid = document.getElementById('templateGrid');
+      const carteirasGrid = document.getElementById('carteirasGrid');
+      const currentCompanyEl = document.getElementById('currentCompany');
+      const templateCountEl = document.getElementById('templateCount');
+
+      // T010: Implement copyToClipboard function
+      async function copyToClipboard(templateName) {
+        try {
+          await navigator.clipboard.writeText(templateName);
+          // T011: Show toast notification with auto-dismiss
+          showToast('Copied to clipboard!', 'success');
+        } catch (error) {
+          // T028: Handle clipboard permission denied error
+          showToast('Copy failed. Please try again.', 'error');
+        }
       }
+
+      // T018: Handle tab click
+      function handleTabClick(companyId) {
+        // T020: Implement idempotent tab behavior
+        if (companyId !== activeTab) {
+          activeTab = companyId;
+          updateTheme();
+          updateStats();
+          renderTabs();
+          renderTemplates();
+          renderCarteiras();
+        }
+      }
+
+      // Update theme color based on active company
+      function updateTheme() {
+        // Remove all theme classes
+        document.body.classList.remove('theme-consulfarma', 'theme-icosmetologia', 'theme-hinutrition', 'theme-seminariosconsulfarma');
+        // Add current theme class
+        document.body.classList.add(`theme-${activeTab}`);
+      }
+
+      // Update stats bar
+      function updateStats() {
+        const company = COMPANIES.find(c => c.id === activeTab);
+        const templates = TEMPLATES[activeTab] || [];
+
+        currentCompanyEl.textContent = company ? company.label : activeTab;
+        templateCountEl.textContent = templates.length;
+      }
+
+      // T015-T017: Render company tabs
+      function renderTabs() {
+        tabContainer.innerHTML = '';
+
+        COMPANIES.forEach(company => {
+          const button = document.createElement('button');
+          button.className = 'tab';
+          button.textContent = company.label;
+
+          if (activeTab === company.id) {
+            button.classList.add('active');
+            const indicator = document.createElement('div');
+            indicator.className = 'tab-indicator';
+            button.appendChild(indicator);
+          }
+
+          button.addEventListener('click', () => handleTabClick(company.id));
+          tabContainer.appendChild(button);
+        });
+      }
+
+      // T008-T009: Render template cards
+      function renderTemplates() {
+        const currentTemplates = TEMPLATES[activeTab] || [];
+        templateGrid.innerHTML = '';
+
+        // T027: Handle empty template arrays
+        if (currentTemplates.length === 0) {
+          const emptyState = document.createElement('div');
+          emptyState.className = 'empty-state';
+          emptyState.textContent = 'No templates available';
+          templateGrid.appendChild(emptyState);
+          return;
+        }
+
+        currentTemplates.forEach(template => {
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          const title = document.createElement('div');
+          title.className = 'card-title';
+          title.textContent = template.name;
+          title.title = template.name; // Add tooltip showing full name on hover
+
+          const message = document.createElement('div');
+          message.className = 'card-message';
+          message.textContent = template.message;
+
+          card.appendChild(title);
+          card.appendChild(message);
+
+          // T012: Connect onClick handlers - copy template name to clipboard
+          card.addEventListener('click', () => copyToClipboard(template.name));
+
+          templateGrid.appendChild(card);
+        });
+      }
+
+      // Render carteiras footer
+      function renderCarteiras() {
+        const currentCarteiras = CARTEIRAS[activeTab] || [];
+        carteirasGrid.innerHTML = '';
+
+        currentCarteiras.forEach(carteira => {
+          const item = document.createElement('div');
+          item.className = 'carteira-item';
+
+          const name = document.createElement('span');
+          name.className = 'carteira-name';
+          name.textContent = carteira.name;
+
+          const number = document.createElement('span');
+          number.className = 'carteira-number';
+          number.textContent = `Carteira ${carteira.number}`;
+
+          item.appendChild(name);
+          item.appendChild(number);
+          carteirasGrid.appendChild(item);
+        });
+      }
+
+      // Initialize template catalog
+      updateTheme();
+      updateStats();
+      renderTabs();
+      renderTemplates();
+      renderCarteiras();
     }
 
-    // T011: Toast notification system with auto-dismiss
+    // ========== SECTION 4: GLOBAL UTILITIES ==========
+
+    // Toast state (global)
+    let toastTimeout = null;
+
+    // Toast notification system with auto-dismiss (global utility)
     function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+
       // T029: Handle rapid successive clicks - clear previous timeout
       if (toastTimeout) {
         clearTimeout(toastTimeout);
@@ -707,124 +1048,326 @@
       }, 2000);
     }
 
-    // T018: Handle tab click
-    function handleTabClick(companyId) {
-      // T020: Implement idempotent tab behavior
-      if (companyId !== activeTab) {
-        activeTab = companyId;
-        updateTheme();
-        updateStats();
-        renderTabs();
-        renderTemplates();
-        renderCarteiras();
-      }
-    }
+    // ========== SECTION 5: REPORT DASHBOARD - CONFIGURATION ==========
 
-    // Update theme color based on active company
-    function updateTheme() {
-      // Remove all theme classes
-      document.body.classList.remove('theme-consulfarma', 'theme-icosmetologia', 'theme-hinutrition');
-      // Add current theme class
-      document.body.classList.add(`theme-${activeTab}`);
-    }
+    // Dashboard UI Text (easy to edit/translate)
+    const DASHBOARD_TEXT = {
+      title: '📊 Report Admin Dashboard',
+      backButton: '← Back to Template Catalog',
+      reportCount: (count) => `${count} report(s) available`,
+      loading: 'Loading reports...',
+      noReportsTitle: 'No reports found',
+      noReportsSubtitle: 'Try adjusting your filters',
+      selectReportTitle: 'Select a report to view',
+      selectReportSubtitle: 'Click on a report from the list to display it here',
+      errorTitle: 'Erro ao carregar relatórios',
+      errorButton: 'Tentar novamente'
+    };
 
-    // Update stats bar
-    function updateStats() {
-      const company = COMPANIES.find(c => c.id === activeTab);
-      const templates = TEMPLATES[activeTab] || [];
+    // Dashboard State (centralized state management)
+    const dashboardState = {
+      allReports: [],
+      filteredReports: [],
+      selectedReport: null,
+      currentFilter: 'all-time',
+      loading: { index: false, report: false },
+      error: null
+    };
 
-      currentCompanyEl.textContent = company ? company.label : activeTab;
-      templateCountEl.textContent = templates.length;
-    }
+    // ========== SECTION 6: REPORT DASHBOARD - DATA UTILITIES ==========
 
-    // T015-T017: Render company tabs
-    function renderTabs() {
-      tabContainer.innerHTML = '';
-
-      COMPANIES.forEach(company => {
-        const button = document.createElement('button');
-        button.className = 'tab';
-        button.textContent = company.label;
-
-        if (activeTab === company.id) {
-          button.classList.add('active');
-          const indicator = document.createElement('div');
-          indicator.className = 'tab-indicator';
-          button.appendChild(indicator);
+    // Validate report object structure
+    function validateReport(report) {
+      const required = ['id', 'title', 'period', 'dateCreated', 'fileName'];
+      const hasRequired = required.every(field => {
+        if (field === 'period') {
+          return report.period && report.period.start && report.period.end;
         }
+        return report[field] != null && report[field] !== '';
+      });
 
-        button.addEventListener('click', () => handleTabClick(company.id));
-        tabContainer.appendChild(button);
+      if (!hasRequired) {
+        console.warn('Invalid report entry (missing required fields):', report);
+        return false;
+      }
+
+      return true;
+    }
+
+    // Format date for display (DD/MM/YYYY)
+    function formatReportDate(dateString) {
+      return new Date(dateString).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
       });
     }
 
-    // T008-T009: Render template cards
-    function renderTemplates() {
-      const currentTemplates = TEMPLATES[activeTab] || [];
-      templateGrid.innerHTML = '';
+    // Fetch reports from JSON index
+    async function fetchReports() {
+      dashboardState.loading.index = true;
+      dashboardState.error = null;
 
-      // T027: Handle empty template arrays
-      if (currentTemplates.length === 0) {
-        const emptyState = document.createElement('div');
-        emptyState.className = 'empty-state';
-        emptyState.textContent = 'No templates available';
-        templateGrid.appendChild(emptyState);
+      try {
+        const response = await fetch('reports/index.json');
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: Failed to load reports index`);
+        }
+
+        const data = await response.json();
+        const validReports = data.reports.filter(report => validateReport(report));
+
+        dashboardState.allReports = validReports;
+        dashboardState.filteredReports = validReports;
+        dashboardState.loading.index = false;
+
+        return validReports;
+      } catch (error) {
+        console.error('Error fetching reports:', error);
+        dashboardState.error = error.message;
+        dashboardState.loading.index = false;
+        throw error;
+      }
+    }
+
+    // ========== SECTION 7: REPORT DASHBOARD - UI COMPONENTS ==========
+
+    // Component: Dashboard Header
+    function DashboardHeader() {
+      const count = dashboardState.filteredReports.length;
+
+      return `
+        <div class="dashboard-header">
+          <div>
+            <h1 style="font-size: 24px; font-weight: 600; color: #e5e5e5; margin-bottom: 4px;">
+              ${DASHBOARD_TEXT.title}
+            </h1>
+            <p style="font-size: 14px; color: #888;">
+              ${DASHBOARD_TEXT.reportCount(count)}
+            </p>
+          </div>
+          <button
+            onclick="navigateTo('/')"
+            style="
+              padding: 8px 16px;
+              background-color: #1c1c1c;
+              border: 1px solid #333;
+              border-radius: 4px;
+              color: #d4d4d4;
+              cursor: pointer;
+              font-family: inherit;
+              font-size: 14px;
+              transition: all 0.15s ease;
+            "
+            onmouseover="this.style.backgroundColor='#262626'; this.style.borderColor='#6ee7b7'; this.style.color='#6ee7b7'"
+            onmouseout="this.style.backgroundColor='#1c1c1c'; this.style.borderColor='#333'; this.style.color='#d4d4d4'"
+          >
+            ${DASHBOARD_TEXT.backButton}
+          </button>
+        </div>
+      `;
+    }
+
+    // Component: Report Card (individual report in list)
+    function ReportCard(report, isSelected) {
+      const selectedClass = isSelected ? 'selected' : '';
+      const startDate = formatReportDate(report.period.start);
+      const endDate = formatReportDate(report.period.end);
+      const tagsHTML = report.tags
+        .map(tag => `<span class="report-tag">${tag}</span>`)
+        .join('');
+
+      return `
+        <div class="report-item ${selectedClass}" onclick="selectReport('${report.id}')">
+          <div class="report-item-title">${report.title}</div>
+          <div class="report-item-period">${startDate} - ${endDate}</div>
+          <div class="report-item-tags">${tagsHTML}</div>
+          <div class="report-item-description">${report.description}</div>
+        </div>
+      `;
+    }
+
+    // Component: Report List Sidebar
+    function ReportListSidebar() {
+      // Empty state
+      if (dashboardState.filteredReports.length === 0) {
+        return `
+          <div class="report-sidebar">
+            <div class="report-empty-state">
+              <div style="font-size: 48px; margin-bottom: 16px;">📊</div>
+              <div style="font-size: 16px; color: #d4d4d4; margin-bottom: 8px;">
+                ${DASHBOARD_TEXT.noReportsTitle}
+              </div>
+              <div style="font-size: 14px; color: #737373;">
+                ${DASHBOARD_TEXT.noReportsSubtitle}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Report list
+      const reportsHTML = dashboardState.filteredReports
+        .map(report => ReportCard(report, report.id === dashboardState.selectedReport?.id))
+        .join('');
+
+      return `
+        <div class="report-sidebar">
+          <div class="report-list">${reportsHTML}</div>
+        </div>
+      `;
+    }
+
+    // Component: Report Viewer (iframe container)
+    function ReportViewer() {
+      // Empty state - no report selected
+      if (!dashboardState.selectedReport) {
+        return `
+          <div class="report-viewer">
+            <div class="report-empty-state">
+              <div style="font-size: 48px; margin-bottom: 16px;">📄</div>
+              <div style="font-size: 16px; color: #d4d4d4; margin-bottom: 8px;">
+                ${DASHBOARD_TEXT.selectReportTitle}
+              </div>
+              <div style="font-size: 14px; color: #737373;">
+                ${DASHBOARD_TEXT.selectReportSubtitle}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Iframe viewer with selected report
+      const reportPath = `reports/${dashboardState.selectedReport.fileName}`;
+
+      return `
+        <div class="report-viewer">
+          <iframe
+            src="${reportPath}"
+            title="${dashboardState.selectedReport.title}"
+            sandbox="allow-same-origin"
+            onload="handleReportLoad()"
+            onerror="handleReportError()"
+          ></iframe>
+        </div>
+      `;
+    }
+
+    // Component: Error State
+    function ErrorState(errorMessage) {
+      return `
+        <div style="
+          padding: 48px 24px;
+          text-align: center;
+          color: #fca5a5;
+          background-color: #171717;
+          border: 1px solid #262626;
+          border-radius: 4px;
+          margin: 24px;
+        ">
+          <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+          <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px; color: #f87171;">
+            ${DASHBOARD_TEXT.errorTitle}
+          </div>
+          <div style="font-size: 14px; color: #888; margin-bottom: 24px;">
+            ${errorMessage || 'Erro desconhecido'}
+          </div>
+          <button
+            onclick="location.reload()"
+            style="
+              padding: 8px 16px;
+              background-color: #1c1c1c;
+              border: 1px solid #333;
+              border-radius: 4px;
+              color: #d4d4d4;
+              cursor: pointer;
+              font-family: inherit;
+              font-size: 14px;
+              transition: all 0.15s ease;
+            "
+            onmouseover="this.style.backgroundColor='#262626'"
+            onmouseout="this.style.backgroundColor='#1c1c1c'"
+          >
+            ${DASHBOARD_TEXT.errorButton}
+          </button>
+        </div>
+      `;
+    }
+
+    // Component: Loading State
+    function LoadingState() {
+      return `
+        <div style="padding: 24px; text-align: center;">
+          <p style="color: #888;">${DASHBOARD_TEXT.loading}</p>
+        </div>
+      `;
+    }
+
+    // ========== SECTION 8: REPORT DASHBOARD - EVENT HANDLERS ==========
+
+    // Handle report selection from list
+    function selectReport(reportId) {
+      const report = dashboardState.allReports.find(r => r.id === reportId);
+
+      if (report) {
+        dashboardState.selectedReport = report;
+        renderReportDashboard(); // Re-render to update UI
+      }
+    }
+
+    // Handle successful iframe load
+    function handleReportLoad() {
+      console.log('Report loaded successfully:', dashboardState.selectedReport?.title);
+    }
+
+    // Handle iframe load error
+    function handleReportError() {
+      console.error('Error loading report:', dashboardState.selectedReport?.fileName);
+      showToast('Failed to load report', 'error');
+    }
+
+    // ========== SECTION 9: REPORT DASHBOARD - MAIN RENDERER ==========
+
+    // Main render function for dashboard
+    async function renderReportDashboard() {
+      const appContainer = document.getElementById('app');
+
+      // Loading state - fetch reports if not loaded
+      if (dashboardState.allReports.length === 0 && !dashboardState.error) {
+        appContainer.innerHTML = LoadingState();
+
+        try {
+          await fetchReports();
+        } catch (error) {
+          appContainer.innerHTML = ErrorState(error.message);
+          return;
+        }
+      }
+
+      // Error state
+      if (dashboardState.error) {
+        appContainer.innerHTML = ErrorState(dashboardState.error);
         return;
       }
 
-      currentTemplates.forEach(template => {
-        const card = document.createElement('div');
-        card.className = 'card';
-
-        const title = document.createElement('div');
-        title.className = 'card-title';
-        title.textContent = template.name;
-        title.title = template.name; // Add tooltip showing full name on hover
-
-        const message = document.createElement('div');
-        message.className = 'card-message';
-        message.textContent = template.message;
-
-        card.appendChild(title);
-        card.appendChild(message);
-
-        // T012: Connect onClick handlers - copy template name to clipboard
-        card.addEventListener('click', () => copyToClipboard(template.name));
-
-        templateGrid.appendChild(card);
-      });
+      // Main dashboard UI - two-column layout
+      appContainer.innerHTML = `
+        <div style="padding: 24px;">
+          ${DashboardHeader()}
+          <div class="dashboard-layout">
+            ${ReportListSidebar()}
+            ${ReportViewer()}
+          </div>
+        </div>
+      `;
     }
 
-    // Render carteiras footer
-    function renderCarteiras() {
-      const currentCarteiras = CARTEIRAS[activeTab] || [];
-      carteirasGrid.innerHTML = '';
+    // ========== SECTION 7: INITIALIZATION ==========
 
-      currentCarteiras.forEach(carteira => {
-        const item = document.createElement('div');
-        item.className = 'carteira-item';
-
-        const name = document.createElement('span');
-        name.className = 'carteira-name';
-        name.textContent = carteira.name;
-
-        const number = document.createElement('span');
-        number.className = 'carteira-number';
-        number.textContent = `Carteira ${carteira.number}`;
-
-        item.appendChild(name);
-        item.appendChild(number);
-        carteirasGrid.appendChild(item);
-      });
-    }
-
-    // Initialize on page load
+    // T043: Update DOMContentLoaded handler to call initRouter()
     document.addEventListener('DOMContentLoaded', () => {
-      updateTheme();
-      updateStats();
-      renderTabs();
-      renderTemplates();
-      renderCarteiras();
+      initRouter();
     });
   </script>
 </body>

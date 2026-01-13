@@ -35,3 +35,9 @@ build/
 
 # Local Netlify folder
 .netlify
+
+# Reports directory - track HTML files and index.json, but ignore temp files
+# Keep reports/*.html (actual report files)
+# Keep reports/index.json (metadata index)
+reports/*.tmp
+reports/*.log

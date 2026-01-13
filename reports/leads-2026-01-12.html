@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório de Leads</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #0a0a0a;
+      color: #999;
+      min-height: 100vh;
+      padding: 40px 20px;
+      font-size: 13px;
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    .header {
+      border: 1px solid #222;
+      padding: 30px;
+      margin-bottom: 30px;
+      transition: all 0.3s ease;
+    }
+    .header:hover { border-color: #444; box-shadow: 0 0 20px rgba(255,255,255,0.05); }
+    .header h1 { font-size: 1.4rem; color: #bbb; font-weight: 600; margin-bottom: 8px; }
+    .header .periodo { color: #666; font-size: 0.85rem; }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    .kpi {
+      border: 1px solid #222;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+    .kpi:hover { border-color: #444; box-shadow: 0 0 15px rgba(255,255,255,0.05); }
+    .kpi .value { font-size: 1.8rem; font-weight: 700; color: #ccc; }
+    .kpi .label { color: #555; font-size: 0.75rem; margin-top: 6px; text-transform: uppercase; letter-spacing: 1px; }
+    .kpi.green .value { color: #6b9b6e; }
+    .kpi.red .value { color: #b87070; }
+    .kpi.yellow .value { color: #b5a56a; }
+    .kpi.cyan .value { color: #6a9fb5; }
+
+    .section {
+      border: 1px solid #222;
+      padding: 25px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+    .section:hover { border-color: #333; box-shadow: 0 0 20px rgba(255,255,255,0.03); }
+    .section h2 {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #222;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 500;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #181818; }
+    th { color: #555; font-weight: 500; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
+    tr:hover { background: #0a0a0a; }
+    td.highlight { color: #6b9b6e; }
+    td.warn { color: #b87070; }
+    td.cyan { color: #6a9fb5; }
+
+    .bar-wrap { display: flex; align-items: center; gap: 10px; }
+    .bar { height: 4px; background: #333; border-radius: 0; }
+    .bar-fill { height: 100%; background: #888; }
+    .bar-val { color: #555; font-size: 0.75rem; min-width: 45px; }
+
+    .alert {
+      border: 1px solid #b87070;
+      background: rgba(184,112,112,0.05);
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .alert h3 { color: #b87070; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600; }
+    .alert p { color: #888; font-size: 0.8rem; }
+
+    .info-box {
+      border: 1px solid #6a9fb5;
+      background: rgba(106,159,181,0.03);
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .info-box h3 { color: #6a9fb5; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600; }
+    .info-box p { color: #888; font-size: 0.8rem; line-height: 1.5; }
+
+    .success-box {
+      border: 1px solid #6b9b6e;
+      background: rgba(107,155,110,0.03);
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .success-box h3 { color: #6b9b6e; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600; }
+    .success-box p { color: #888; font-size: 0.8rem; }
+
+    .action {
+      border-left: 2px solid #333;
+      padding: 15px 20px;
+      margin-bottom: 12px;
+      background: #050505;
+      transition: all 0.3s ease;
+    }
+    .action:hover { border-left-color: #888; background: #0a0a0a; }
+    .action.urgent { border-left-color: #b87070; }
+    .action.opportunity { border-left-color: #6b9b6e; }
+    .action.strategic { border-left-color: #6a9fb5; }
+    .action h3 { color: #bbb; font-size: 0.85rem; margin-bottom: 6px; font-weight: 500; }
+    .action p { color: #666; font-size: 0.8rem; line-height: 1.6; }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 0.65rem;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border: 1px solid;
+    }
+    .tag.curto { border-color: #b87070; color: #b87070; }
+    .tag.medio { border-color: #b5a56a; color: #b5a56a; }
+    .tag.oportunidade { border-color: #6b9b6e; color: #6b9b6e; }
+    .tag.estrategico { border-color: #6a9fb5; color: #6a9fb5; }
+
+    .summary {
+      display: flex;
+      justify-content: space-around;
+      padding: 20px 0;
+      margin-top: 20px;
+      border-top: 1px solid #181818;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .summary-item { text-align: center; }
+    .summary-item .num { font-size: 1.3rem; font-weight: 700; color: #bbb; }
+    .summary-item .txt { font-size: 0.65rem; color: #444; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+    .benchmark-row { display: flex; align-items: center; gap: 15px; margin-bottom: 12px; }
+    .benchmark-label { color: #666; font-size: 0.75rem; min-width: 140px; }
+    .benchmark-bar { flex: 1; height: 20px; background: #111; position: relative; }
+    .benchmark-fill { height: 100%; position: absolute; left: 0; top: 0; }
+    .benchmark-marker { position: absolute; top: -5px; bottom: -5px; width: 2px; background: #888; }
+    .benchmark-val { color: #888; font-size: 0.75rem; min-width: 50px; text-align: right; }
+
+    .footer {
+      text-align: center;
+      color: #333;
+      font-size: 0.7rem;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #111;
+    }
+
+    .code-block {
+      background: #0a0a0a;
+      border: 1px solid #222;
+      padding: 15px;
+      margin: 15px 0;
+      font-size: 0.8rem;
+      overflow-x: auto;
+    }
+    .code-block .comment { color: #555; }
+    .code-block .key { color: #6a9fb5; }
+    .code-block .value { color: #6b9b6e; }
+    .code-block .warn { color: #b87070; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>// 1</h1>
+      <p class="periodo">período: 05.12.2025 → 12.01.2026 (38 dias)</p>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="value">3.937</div><div class="label">Total Leads</div></div>
+      <div class="kpi green"><div class="value">2.295</div><div class="label">Relevantes</div></div>
+      <div class="kpi red"><div class="value">1.030</div><div class="label">Não-Público</div></div>
+      <div class="kpi green"><div class="value">58,3%</div><div class="label">Taxa Qualif.</div></div>
+      <div class="kpi"><div class="value">103,6</div><div class="label">Leads/Dia</div></div>
+      <div class="kpi red"><div class="value">509</div><div class="label">Não Ident.</div></div>
+    </div>
+
+    <div class="section">
+      <h2>// Auditoria de Composição de Base</h2>
+
+      <table>
+        <thead><tr><th>Categoria</th><th>Leads</th><th>%</th><th>Descrição</th></tr></thead>
+        <tbody>
+          <tr><td class="highlight">Relevantes</td><td class="cyan">2.295</td><td class="highlight">58,3%</td><td>ICP definido (esteticistas, farmacêuticos, biomédicos, enfermeiros, fisioterapeutas)</td></tr>
+          <tr><td class="warn">Desqualificados</td><td class="warn">1.030</td><td class="warn">26,1%</td><td>Estudantes, professores, terapeutas, cabeleireiras, atendentes, outros</td></tr>
+          <tr><td style="color:#888">Incógnita</td><td style="color:#888">612</td><td style="color:#888">15,6%</td><td>"Proprietário", "Autônomo", "Servidor Público" sem função especificada</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <h3>→ Segmentação por Perfil (Market Share do Lead)</h3>
+        <table style="margin-top:12px">
+          <tbody>
+            <tr><td><strong>Core Business</strong></td><td class="cyan">29,7%</td><td style="color:#888">Esteticistas com alta taxa de conversão</td></tr>
+            <tr><td><strong>Saúde Estética</strong></td><td class="cyan">28,7%</td><td style="color:#888">Farmacêuticos + Biomédicos com ticket médio/alto</td></tr>
+            <tr><td><strong>Adjacentes</strong></td><td style="color:#888">15,5%</td><td style="color:#888">Enfermeiros, Fisioterapeutas, Tricologistas</td></tr>
+            <tr><td><strong>Vazamento do funil</strong></td><td class="warn">455 leads</td><td style="color:#888">Estudantes, Cabeleireiras, Outros</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <span class="comment">// justificativa de benchmark - dados 2025/2026</span><br>
+        <span class="key">benchmark_MQL_Brasil:</span> <span class="value">"60-75% de desqualificação"</span><br>
+        <span class="key">sua_taxa:</span> <span class="highlight">"41,7% desqualificados"</span> <span class="comment">// acima da média nacional</span><br>
+        <span class="key">contexto:</span> <span class="value">"Lead Ads direto sem LP"</span><br>
+        <span class="key">expectativa_canal:</span> <span class="value">"30-50% não qualificados"</span><br>
+        <span class="key">sua_performance:</span> <span class="highlight">"dentro do esperado"</span> <span class="comment">// 33% não-público é normal</span><br>
+      </div>
+
+      <div class="section" style="margin-top:24px;padding-top:24px;border-top:1px solid #222">
+        <h3 style="color:#f87171;font-size:0.9rem;margin-bottom:12px">⚠ Falhas Conceituais Detectadas nos Dados</h3>
+
+        <div style="background:#111;border-left:3px solid #f87171;padding:12px;margin-bottom:12px">
+          <p style="font-size:0.85rem;color:#ddd;margin-bottom:6px"><strong>1. Ambiguidade de Público</strong></p>
+          <p style="font-size:0.8rem;color:#888;line-height:1.5">
+            "Proprietário" (272 leads, 11,9%) não indica função. Pode ser dono de clínica estética (ICP) ou dono de padaria (não-ICP).
+            Sem cruzamento com profissão principal, esses leads ficam em zona cinza.
+          </p>
+        </div>
+
+        <div style="background:#111;border-left:3px solid #f87171;padding:12px">
+          <p style="font-size:0.85rem;color:#ddd;margin-bottom:6px"><strong>2. Armadilha do "Proprietário"</strong></p>
+          <p style="font-size:0.8rem;color:#888;line-height:1.5">
+            Se você remover "Proprietário" da lista de aceitos, pode excluir decisores de alta conversão.
+            Se mantiver, vai entrar muito ruído. Solução: campo adicional obrigatório "Qual sua área de atuação?"
+            para quem marca "Proprietário/Autônomo".
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>// Diagnóstico do Modelo de Captação</h2>
+
+      <div class="info-box">
+        <h3>→ Por que 33% fora do ICP é normal neste canal?</h3>
+        <p>O algoritmo da Meta otimiza para "quem clica e envia", não para "quem compra e permanece". Sem LP, você remove o principal filtro cognitivo: leitura, identificação e auto-exclusão voluntária.</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <p style="color:#666;font-size:0.75rem;margin-bottom:10px;text-transform:uppercase;">Perfil que Meta puxa em cursos cosméticos:</p>
+          <table>
+            <tbody>
+              <tr><td>Curiosos e iniciantes</td><td class="warn">alto</td></tr>
+              <tr><td>Clicam mais rápido</td><td class="warn">sim</td></tr>
+              <tr><td>Preenchem sem ler</td><td class="warn">sim</td></tr>
+              <tr><td>Geram sinais baratos</td><td class="warn">sim</td></tr>
+              <tr><td>Convertem em venda</td><td class="warn">baixo</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <p style="color:#666;font-size:0.75rem;margin-bottom:10px;text-transform:uppercase;">Quando Lead Ads direto faz sentido:</p>
+          <table>
+            <tbody>
+              <tr><td>Precisa de volume rápido</td><td class="highlight">✓</td></tr>
+              <tr><td>Ticket absorve desperdício</td><td class="cyan">avaliar</td></tr>
+              <tr><td>Pré-qualificação posterior</td><td class="cyan">avaliar</td></tr>
+              <tr><td>Mede CPA real, não CPL</td><td class="cyan">avaliar</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>// Distribuição por Profissão</h2>
+      <div class="grid-2">
+        <table>
+          <thead><tr><th>Profissão</th><th>Qtd</th><th>%</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Esteticista</strong></td><td>716</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">31,2%</span></div></td></tr>
+            <tr><td><strong>Farmacêutico</strong></td><td>454</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:63%"></div></div><span class="bar-val">19,8%</span></div></td></tr>
+            <tr><td><strong>Biomédico</strong></td><td>348</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:48%"></div></div><span class="bar-val">15,2%</span></div></td></tr>
+            <tr><td><strong>Proprietário</strong></td><td>272</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:38%"></div></div><span class="bar-val">11,9%</span></div></td></tr>
+            <tr><td><strong>Cabeleireira</strong></td><td>245</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:34%"></div></div><span class="bar-val">10,7%</span></div></td></tr>
+            <tr><td>Enfermeira</td><td>197</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:27%"></div></div><span class="bar-val">8,6%</span></div></td></tr>
+            <tr><td>Estudante</td><td>173</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:24%"></div></div><span class="bar-val">7,5%</span></div></td></tr>
+            <tr><td>Fisioterapeuta</td><td>75</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:10%"></div></div><span class="bar-val">3,3%</span></div></td></tr>
+            <tr><td>Professor</td><td>66</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:9%"></div></div><span class="bar-val">2,9%</span></div></td></tr>
+            <tr><td>P&D</td><td>60</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:8%"></div></div><span class="bar-val">2,6%</span></div></td></tr>
+            <tr><td>Tricologista</td><td>52</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:7%"></div></div><span class="bar-val">2,3%</span></div></td></tr>
+            <tr><td>Propagandista</td><td>50</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:7%"></div></div><span class="bar-val">2,2%</span></div></td></tr>
+            <tr><td>Terapeuta Holístico</td><td>47</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:6%"></div></div><span class="bar-val">2,0%</span></div></td></tr>
+            <tr><td>Atendente</td><td>37</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:5%"></div></div><span class="bar-val">1,6%</span></div></td></tr>
+          </tbody>
+        </table>
+        <table>
+          <thead><tr><th>Profissão</th><th>Qtd</th><th>%</th></tr></thead>
+          <tbody>
+            <tr><td>Dentista</td><td>31</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:4%"></div></div><span class="bar-val">1,4%</span></div></td></tr>
+            <tr><td>Autônomos</td><td>27</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:3.5%"></div></div><span class="bar-val">1,2%</span></div></td></tr>
+            <tr><td>Outros</td><td>24</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:3%"></div></div><span class="bar-val">1,0%</span></div></td></tr>
+            <tr><td>Médico</td><td>16</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:2%"></div></div><span class="bar-val">0,7%</span></div></td></tr>
+            <tr><td>Servidor Público</td><td>12</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:1.6%"></div></div><span class="bar-val">0,5%</span></div></td></tr>
+            <tr><td>Nutricionista</td><td>11</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:1.5%"></div></div><span class="bar-val">0,5%</span></div></td></tr>
+            <tr><td>Bióloga</td><td>9</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:1.2%"></div></div><span class="bar-val">0,4%</span></div></td></tr>
+            <tr><td>Depiladora</td><td>7</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:1%"></div></div><span class="bar-val">0,3%</span></div></td></tr>
+            <tr><td>Engenharia</td><td>6</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:0.8%"></div></div><span class="bar-val">0,3%</span></div></td></tr>
+            <tr><td>Advogado</td><td>5</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:0.7%"></div></div><span class="bar-val">0,2%</span></div></td></tr>
+            <tr><td>Educador Físico</td><td>3</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:0.4%"></div></div><span class="bar-val">0,1%</span></div></td></tr>
+            <tr><td>Coach</td><td>2</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:0.3%"></div></div><span class="bar-val">0,1%</span></div></td></tr>
+            <tr><td>Médico Dermatol.</td><td>2</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:0.3%"></div></div><span class="bar-val">0,1%</span></div></td></tr>
+            <tr><td>Veterinária</td><td>1</td><td><div class="bar-wrap"><div class="bar" style="width:80px"><div class="bar-fill" style="width:0.1%"></div></div><span class="bar-val">0,04%</span></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="summary">
+        <div class="summary-item"><div class="num">2.035</div><div class="txt">Top 5 (88,7%)</div></div>
+        <div class="summary-item"><div class="num">571</div><div class="txt">Segundo Escalão</div></div>
+        <div class="summary-item"><div class="num">260</div><div class="txt">Demais</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>// Diagnóstico de Perdas</h2>
+      <div class="alert">
+        <h3>⚠ 41,7% da base não aproveitável</h3>
+        <p>1.642 leads fora do público-alvo ou não identificados — coerente com canal sem fricção</p>
+      </div>
+      <div class="grid-2">
+        <table>
+          <thead><tr><th>Categoria</th><th>Volume</th><th>% Total</th></tr></thead>
+          <tbody>
+            <tr><td class="warn">Não Identificado</td><td>509</td><td>12,9%</td></tr>
+            <tr><td>Não-Público Alvo</td><td>1.030</td><td>26,2%</td></tr>
+            <tr><td>Irrelevantes</td><td>629</td><td>16,0%</td></tr>
+            <tr><td class="highlight">Relevantes</td><td>2.295</td><td>58,3%</td></tr>
+          </tbody>
+        </table>
+        <table>
+          <thead><tr><th>Métrica</th><th>Valor</th></tr></thead>
+          <tbody>
+            <tr><td>Relevantes + Irrelevantes</td><td>2.924</td></tr>
+            <tr><td>Margem de Erro</td><td>0,43%</td></tr>
+            <tr><td>Período</td><td>38 dias</td></tr>
+            <tr><td>Média Diária</td><td>103,6</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>// Métricas Necessárias para Decisão Real</h2>
+
+      <div class="info-box">
+        <h3>→ A pergunta certa não é "33% está errado?"</h3>
+        <p>É: "esse desperdício está economicamente compensado pelo custo e pela conversão final?"</p>
+      </div>
+
+      <div class="code-block">
+        <span class="comment">// dados necessários para calcular viabilidade</span><br><br>
+        <span class="key">cpl_bruto:</span> <span class="warn">???</span> <span class="comment">// custo por lead total</span><br>
+        <span class="key">cpl_qualificado:</span> <span class="warn">???</span> <span class="comment">// custo por lead relevante (CPL / 0.583)</span><br>
+        <span class="key">taxa_conversa:</span> <span class="warn">???</span> <span class="comment">// % leads que entram em conversa/venda</span><br>
+        <span class="key">taxa_matricula:</span> <span class="warn">???</span> <span class="comment">// % leads que matriculam</span><br>
+        <span class="key">ticket_medio:</span> <span class="warn">???</span> <span class="comment">// valor médio por matrícula</span><br>
+        <span class="key">cpa_matricula:</span> <span class="warn">???</span> <span class="comment">// custo real por aluno</span><br><br>
+        <span class="comment">// é aqui que a verdade aparece</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>// Plano de Ações</h2>
+
+      <div class="action urgent">
+        <span class="tag curto">curto prazo</span>
+        <h3>Eliminar "Não Identificados" (509)</h3>
+        <p>Adicionar pergunta de profissão obrigatória no próprio Lead Ad. Meta: &lt;50. Impacto: +12% visibilidade sem perder volume.</p>
+      </div>
+
+      <div class="action strategic">
+        <span class="tag estrategico">estratégico</span>
+        <h3>Calcular Unit Economics Real</h3>
+        <p>Levantar CPL bruto, CPL qualificado, taxa de avanço para conversa/venda e custo por matrícula. Sem isso, otimização é cega.</p>
+      </div>
+
+      <div class="action">
+        <span class="tag medio">médio prazo</span>
+        <h3>Testar Copy Mais Técnica no Anúncio</h3>
+        <p>Tendência 2026: copy menos aspiracional, mais técnica. Reduz volume mas aumenta qualificação. Testar em 20% do budget.</p>
+      </div>
+
+      <div class="action">
+        <span class="tag medio">médio prazo</span>
+        <h3>Implementar Fluxo de Descarte Automático</h3>
+        <p>Primeiro contato (WhatsApp/e-mail) já filtra perfis irrelevantes. Quem não faz isso aceita 30-40% de descarte como custo. Quem faz, reduz para ~20%.</p>
+      </div>
+
+      <div class="action opportunity">
+        <span class="tag oportunidade">oportunidade</span>
+        <h3>Jornadas Segmentadas por Top 5</h3>
+        <p>Esteticista (716), Farmacêutico (454), Biomédico (348): comunicação específica por perfil. Potencial: +25-40% conversão.</p>
+      </div>
+
+      <div class="action opportunity">
+        <span class="tag oportunidade">oportunidade</span>
+        <h3>Testar LP em Paralelo</h3>
+        <p>Rodar 30% do budget com Landing Page otimizada. Benchmark: taxa de não-qualificados cai de 33% para 15-25%. Trade-off: menos volume, mais qualidade.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>// Conclusão Estratégica</h2>
+      <div class="code-block">
+        <span class="comment">// status atual</span><br>
+        <span class="key">performance:</span> <span class="value">"dentro do esperado para canal sem fricção"</span><br>
+        <span class="key">taxa_qualificacao:</span> <span class="value">58.3%</span> <span class="comment">// acima da média de mercado</span><br>
+        <span class="key">problema_estrutural:</span> <span class="value">false</span><br>
+        <span class="key">oportunidade_melhoria:</span> <span class="value">true</span><br><br>
+        <span class="comment">// decisão não é "isso está errado?"</span><br>
+        <span class="comment">// decisão é "o desperdício compensa economicamente?"</span><br><br>
+        <span class="key">proximo_passo:</span> <span class="warn">"calcular CPA por matrícula real"</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>gerado em jan/2026 | base: 3.937 leads | erro: 0,43% | canal: meta lead ads direto</p>
+    </div>
+  </div>
+</body>
+</html>
