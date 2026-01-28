@@ -12,10 +12,12 @@ Terminal/IDE-inspired interface with:
 
 ## ✨ Features
 
-- ✅ **3 Company Tabs**: Consulfarma, ICosmetologia, Hi Nutrition
-- ✅ **Company Theming**: Dynamic color schemes per company (Red, Purple, Amber)
+- ✅ **4 Company Tabs**: Consulfarma, ICosmetologia, Hi Nutrition, Seminários Consulfarma
+- ✅ **Company Theming**: Dynamic color schemes per company (Red, Purple, Amber, Cyan)
+- ✅ **Template Sorting**: Automatic chronological sorting (newest → oldest) ⭐ NEW (2026-01-28)
+- ✅ **"Novo" Badge**: Visual indicator on the latest template per company ⭐ NEW (2026-01-28)
 - ✅ **Message Preview**: See full template content before copying
-- ✅ **One-Click Copy**: Click any template card to copy message to clipboard
+- ✅ **One-Click Copy**: Click any template card to copy name to clipboard
 - ✅ **Visual Feedback**: Toast notifications with `✓` and `✕` icons
 - ✅ **Stats Bar**: Shows current company, template count, and usage instructions
 - ✅ **Fully Responsive**: Works from mobile (320px) to ultra-wide (1920px+)
@@ -84,6 +86,7 @@ vercel deploy
 #ef4444  /* red-500 - Consulfarma */
 #a855f7  /* purple-500 - ICosmetologia */
 #fbbf24  /* amber-400 - Hi Nutrition */
+#06b6d4  /* cyan-500 - Seminários Consulfarma */
 
 /* Feedback */
 #10b981  /* emerald-500 - success */
@@ -94,23 +97,33 @@ vercel deploy
 
 ### Add Templates
 
-Edit the `TEMPLATES` object in `index.html` (around line 280):
+Edit the `TEMPLATES` object in `index.html` (around line 549):
 
 ```javascript
 const TEMPLATES = {
   consulfarma: [
     {
-      name: "Welcome Package 2024",
-      message: "Welcome Package 2024"
+      name: "template_name_v1",
+      message: "Your template message content...",
+      createdAt: "2026-01-28"  // ⭐ NEW: ISO date (YYYY-MM-DD) for sorting
     },
     {
       name: "Your New Template",  // ← Add here
-      message: "Full message content here"
+      message: "Full message content here",
+      createdAt: "2026-01-28"  // ← Always include today's date!
     }
     // ...
   ]
 }
 ```
+
+**Template Structure** (Updated 2026-01-28):
+- `name` (required): Template identifier (copied to clipboard on click)
+- `message` (required): Template message content (supports {{1}}, {{2}} placeholders)
+- `createdAt` (optional but recommended): ISO date string (YYYY-MM-DD) for sorting
+  - Templates automatically sort newest → oldest
+  - Newest template per company gets a "novo" badge
+  - Missing dates sort to end (oldest position)
 
 ### Add New Company
 
@@ -130,6 +143,40 @@ const TEMPLATES = {
   ]
 };
 ```
+
+### Template Sorting & "Novo" Badge (2026-01-28) ⭐
+
+**How It Works**:
+- Templates automatically sort by `createdAt` date (newest → oldest)
+- The newest template per company displays a "novo" badge below its name
+- Badge computed automatically at render time (zero manual management)
+
+**Adding New Templates**:
+1. Add template object with `name`, `message`, and `createdAt` (today's date)
+2. Save and refresh - badge automatically moves to your new template!
+
+```javascript
+// Example: Adding a template today
+{
+  name: "new_template_v1",
+  message: "Your new message...",
+  createdAt: "2026-01-28"  // ← Today's date (newest)
+}
+```
+
+**Badge Behavior**:
+- Per-company scope: Each company shows badge on its newest template
+- Inherits company theme color (Red/Purple/Amber/Cyan)
+- Accessible: Includes ARIA labels for screen readers
+- Responsive: Visible on mobile (320px+) and desktop (1920px+)
+
+**Templates Without Dates**:
+- Templates missing `createdAt` automatically sort to the end (oldest position)
+- This is by design - older templates don't need badges
+
+**For More Details**: See [quickstart-sorting.md](specs/001-template-catalog-react/quickstart-sorting.md)
+
+---
 
 ### Change Colors
 
@@ -180,6 +227,16 @@ Works on all modern browsers:
 - [ ] Verify 1 column layout
 - [ ] Resize to 768px (tablet) → verify 2-3 columns
 - [ ] Resize to 1920px (desktop) → verify 6-7 columns
+
+### Feature: Template Sorting & Badge (NEW 2026-01-28)
+- [ ] Open any company tab
+- [ ] Verify templates sorted newest → oldest (check dates if visible)
+- [ ] Verify "novo" badge appears on first/newest template only
+- [ ] Verify badge color matches company theme (Red/Purple/Amber/Cyan)
+- [ ] Switch to different company tab → verify badge updates
+- [ ] Click template with badge → verify clipboard copy still works
+
+**For Comprehensive Testing**: See [TESTING-CHECKLIST.md](TESTING-CHECKLIST.md)
 - [ ] Test on actual mobile device
 
 ### Edge Cases

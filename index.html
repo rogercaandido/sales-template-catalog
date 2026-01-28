@@ -561,6 +561,39 @@
     // 1. Add/remove/edit template objects with name and message in the arrays below
     // 2. No component logic changes needed - just edit this data object
     // 3. Save file and refresh browser
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // TEMPLATE SORTING & BADGE SYSTEM (Added 2026-01-28)
+    // ═══════════════════════════════════════════════════════════════════════════
+    //
+    // Templates now support automatic chronological sorting and "novo" badge:
+    //
+    // STRUCTURE:
+    // {
+    //   name: "template_identifier",      // Required: Template name (copied on click)
+    //   message: "Template content...",    // Required: Message text (supports {{1}}, {{2}} placeholders)
+    //   createdAt: "2026-01-28"           // Optional: ISO 8601 date (YYYY-MM-DD) for sorting
+    // }
+    //
+    // SORTING:
+    // - Automatic DESC order (newest → oldest) via getSortedTemplates()
+    // - Templates without createdAt sort to end (treated as oldest)
+    // - Stable sort preserves original order for templates with same date
+    //
+    // BADGE SYSTEM:
+    // - "novo" badge automatically appears on newest template PER COMPANY
+    // - Badge computed at render time (no manual flag to update)
+    // - Badge color matches company theme (red/purple/amber/cyan)
+    // - Each company tab shows its own newest template independently
+    //
+    // DEPLOYMENT WORKFLOW:
+    // 1. Add new template with today's date: createdAt: "2026-01-28"
+    // 2. Save file and refresh browser → badge appears automatically!
+    // 3. No manual steps needed - sorting and badge logic handle everything
+    //
+    // See specs/001-template-catalog-react/quickstart-sorting.md for detailed guide
+    // ═══════════════════════════════════════════════════════════════════════════
+
     const TEMPLATES = {
       consulfarma: [
         {
