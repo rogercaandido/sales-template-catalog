@@ -198,6 +198,21 @@
       transform: translateY(0);
     }
 
+    /* T012: Badge "novo" for newest template */
+    .badge-new {
+      display: inline-block;
+      padding: 2px 6px;
+      background-color: var(--theme-color-bg);  /* Company theme /10 */
+      border: 1px solid var(--theme-color);     /* Company theme color */
+      border-radius: 2px;
+      color: var(--theme-color);
+      font-size: 0.65rem;        /* Smaller than card title */
+      font-weight: 600;
+      text-transform: lowercase; /* "novo" not "NOVO" */
+      letter-spacing: 0.025em;
+      margin-top: 4px;          /* Space between title and badge */
+    }
+
     /* Empty State */
     .empty-state {
       grid-column: 1 / -1;
@@ -1098,6 +1113,41 @@
         }
       }
 
+      // ========== TEMPLATE SORTING & BADGE FUNCTIONS (2026-01-28) ==========
+
+      // T008: Validate date format (YYYY-MM-DD)
+      function validateDateFormat(dateString) {
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        return dateRegex.test(dateString);
+      }
+
+      // T009: Get templates sorted by createdAt (DESC - newest first)
+      function getSortedTemplates(companyKey) {
+        const templates = TEMPLATES[companyKey];
+        if (!templates || templates.length === 0) return [];
+
+        // Clone and sort DESC by createdAt
+        return [...templates].sort((a, b) => {
+          const dateA = a.createdAt || "";
+          const dateB = b.createdAt || "";
+          return dateB.localeCompare(dateA); // DESC: newest first
+        });
+      }
+
+      // T010: Get newest template for a company
+      function getNewestTemplate(companyKey) {
+        const sorted = getSortedTemplates(companyKey);
+        return sorted.length > 0 ? sorted[0] : null;
+      }
+
+      // T011: Check if template should show "novo" badge
+      function isNewTemplate(template, companyKey) {
+        const newest = getNewestTemplate(companyKey);
+        return newest !== null && template === newest;
+      }
+
+      // ========== END SORTING FUNCTIONS ==========
+
       // Update theme color based on active company
       function updateTheme() {
         // Remove all theme classes
@@ -1137,12 +1187,14 @@
       }
 
       // T008-T009: Render template cards
+      // T016: Updated to use sorted templates and badge system
       function renderTemplates() {
-        const currentTemplates = TEMPLATES[activeTab] || [];
+        // T016: Use getSortedTemplates instead of raw TEMPLATES
+        const sortedTemplates = getSortedTemplates(activeTab);
         templateGrid.innerHTML = '';
 
         // T027: Handle empty template arrays
-        if (currentTemplates.length === 0) {
+        if (sortedTemplates.length === 0) {
           const emptyState = document.createElement('div');
           emptyState.className = 'empty-state';
           emptyState.textContent = 'No templates available';
@@ -1150,7 +1202,10 @@
           return;
         }
 
-        currentTemplates.forEach(template => {
+        // T016: Get newest template for badge determination
+        const newest = getNewestTemplate(activeTab);
+
+        sortedTemplates.forEach(template => {
           const card = document.createElement('div');
           card.className = 'card';
 
@@ -1159,11 +1214,24 @@
           title.textContent = template.name;
           title.title = template.name; // Add tooltip showing full name on hover
 
+          card.appendChild(title);
+
+          // T014: Add badge HTML if this is the newest template
+          // T015: ARIA labels for accessibility
+          const isNew = (template === newest);
+          if (isNew) {
+            const badge = document.createElement('span');
+            badge.className = 'badge-new';
+            badge.textContent = 'novo';
+            badge.setAttribute('role', 'status');
+            badge.setAttribute('aria-label', 'Novo template');
+            card.appendChild(badge);
+          }
+
           const message = document.createElement('div');
           message.className = 'card-message';
           message.textContent = template.message;
 
-          card.appendChild(title);
           card.appendChild(message);
 
           // T012: Connect onClick handlers - copy template name to clipboard
