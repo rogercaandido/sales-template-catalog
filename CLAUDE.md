@@ -211,7 +211,7 @@ Updated via `update-agent-context.ps1` during planning phase.
 
 ### Feature: 001-template-catalog-react
 
-**Status**: ✅ Implementation Complete (33/33 tasks) | 🔄 Planning Phase: Report Admin Dashboard (2026-01-13)
+**Status**: ✅ Implementation Complete (33/33 tasks) | 📋 Planning Phase: Template Sorting & Badge System (2026-01-28)
 **Branch**: `001-template-catalog-react`
 **Type**: Multi-view web application (Template Catalog + Report Dashboard)
 
@@ -239,6 +239,9 @@ Updated via `update-agent-context.ps1` during planning phase.
 - ✅ Toast notifications with ✓ (success) / ✕ (error) icons
 - ✅ Carteiras (sales team) footer for each company
 - ✅ Template cards display name + message content
+- ✅ Chronological sorting: templates display newest → oldest (DESC by `createdAt`) (NEW 2026-01-28)
+- ✅ "Novo" badge: automatically appears on newest template per company (NEW 2026-01-28)
+- ✅ Badge inherits company theme color (red/purple/amber/cyan)
 - ✅ Fully responsive (320px mobile → 1920px+ desktop)
 - ✅ Zero dependencies, works offline
 
@@ -299,16 +302,20 @@ vercel deploy
 ├── specs/
 │   └── 001-template-catalog-react/
 │       ├── spec.md                   # Feature specification
-│       ├── plan.md                   # Implementation plan (UPDATED 2026-01-13)
-│       ├── tasks.md                  # ✅ 33/33 tasks completed
-│       ├── data-model.md             # Template catalog data model
-│       ├── research.md               # Template catalog technical decisions
-│       ├── research-reportadmin.md   # Report dashboard research (NEW)
-│       ├── data-model-reportadmin.md # Report dashboard data model (NEW)
-│       ├── quickstart-reportadmin.md # Report dashboard usage guide (NEW)
+│       ├── plan.md                      # Implementation plan (UPDATED 2026-01-28)
+│       ├── tasks.md                     # ✅ 33/33 tasks completed
+│       ├── data-model.md                # Template catalog data model
+│       ├── research.md                  # Template catalog technical decisions
+│       ├── research-reportadmin.md      # Report dashboard research
+│       ├── data-model-reportadmin.md    # Report dashboard data model
+│       ├── quickstart-reportadmin.md    # Report dashboard usage guide
+│       ├── research-template-sorting.md # Template sorting research (NEW 2026-01-28)
+│       ├── data-model-sorting.md        # Template sorting data model (NEW 2026-01-28)
+│       ├── quickstart-sorting.md        # Template sorting deployment guide (NEW 2026-01-28)
 │       ├── contracts/
-│       │   ├── component-api.md      # Template catalog API
-│       │   └── reportadmin-api.md    # Report dashboard API (NEW)
+│       │   ├── component-api.md         # Template catalog API
+│       │   ├── reportadmin-api.md       # Report dashboard API
+│       │   └── template-sorting-api.md  # Template sorting API (NEW 2026-01-28)
 │       └── checklists/
 │           └── requirements.md       # ✅ All checks passed
 ├── README.md               # User documentation
@@ -340,6 +347,16 @@ vercel deploy
 
 **Planning Updates**:
 
+- **2026-01-28**: Template Sorting & "New" Badge System planned
+  - Add `createdAt` field to templates (YYYY-MM-DD format)
+  - Automatic DESC sorting (newest → oldest)
+  - Computed "novo" badge on newest template per company
+  - Zero-step deployment (automatic badge management)
+  - See [research-template-sorting.md](specs/001-template-catalog-react/research-template-sorting.md) for technical decisions
+  - See [quickstart-sorting.md](specs/001-template-catalog-react/quickstart-sorting.md) for deployment workflow
+  - See [data-model-sorting.md](specs/001-template-catalog-react/data-model-sorting.md) for schema
+  - See [template-sorting-api.md](specs/001-template-catalog-react/contracts/template-sorting-api.md) for API
+
 - **2026-01-13**: Report Admin Dashboard feature planned
   - Hash-based routing for multi-view navigation
   - Report storage via Git (JSON index + HTML files)
@@ -349,6 +366,46 @@ vercel deploy
   - See [quickstart-reportadmin.md](specs/001-template-catalog-react/quickstart-reportadmin.md) for usage guide
 
 - **2026-01-12**: Seminários Consulfarma company with cyan theme color
+
+**Template Data Structure** (UPDATED 2026-01-28):
+
+Each template now includes a `createdAt` field for automatic sorting and badge display:
+
+```javascript
+{
+  name: "template_identifier",       // Template name (copied to clipboard)
+  message: "Template content...",     // Message text (supports {{1}}, {{2}} placeholders)
+  createdAt: "2026-01-28"            // ISO 8601 date (YYYY-MM-DD) for sorting
+}
+```
+
+**Sorting Behavior**:
+- Templates automatically sort DESC by `createdAt` (newest first)
+- Templates without `createdAt` sort to end (treated as oldest)
+- Stable sort preserves original order for templates with same date
+
+**Badge System**:
+- "novo" badge automatically appears on newest template per company
+- Badge computed at render time (zero manual deployment steps)
+- Badge color matches company theme (red/purple/amber/cyan)
+- Each company tab shows its own newest template independently
+
+**Adding New Templates**:
+1. Add template object with `name`, `message`, `createdAt` (today's date in YYYY-MM-DD format)
+2. Save file and refresh browser
+3. Badge automatically appears on new template (system handles it)
+
+**Implementation Status** (2026-01-28):
+- [X] All templates have `createdAt` field (data migration complete)
+- [X] Implemented `getSortedTemplates(companyKey)` function
+- [X] Implemented `getNewestTemplate(companyKey)` function
+- [X] Implemented `isNewTemplate(template, companyKey)` function
+- [X] Implemented `validateDateFormat()` utility function
+- [X] Added `.badge-new` CSS class (below title, company theme color)
+- [X] Updated `renderTemplates()` to use sorted templates and badges
+- [X] Added ARIA labels for accessibility (`role="status"`, `aria-label`)
+- [ ] Manual testing in progress (see [TESTING-CHECKLIST.md](TESTING-CHECKLIST.md))
+- [ ] Documentation updates in progress
 
 **Pending Implementation**:
 
@@ -369,4 +426,4 @@ vercel deploy
 - [ ] Add CSS theme class `.theme-seminariosconsulfarma` with cyan color variables
 - [ ] Update tab ordering: Consulfarma → ICosmetologia → Hi Nutrition → Seminários Consulfarma
 
-**Last Updated**: 2026-01-13
+**Last Updated**: 2026-01-28

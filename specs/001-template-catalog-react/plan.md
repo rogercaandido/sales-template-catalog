@@ -15,6 +15,8 @@ Build a multi-feature web application with two main views:
 
 **Update (2026-01-13)**: Adding Report Admin Dashboard feature for marketing team to view and manage analytics reports.
 
+**Update (2026-01-28)**: Adding template sorting (newest first) and automatic "new" badge system for latest templates.
+
 ## Technical Context
 
 ### Template Catalog (Existing)
@@ -59,13 +61,18 @@ specs/001-template-catalog-react/
 ├── data-model.md                # Template catalog data structures
 ├── quickstart.md                # Template catalog usage guide
 │
-├── research-reportadmin.md      # Report dashboard technical decisions (NEW)
-├── data-model-reportadmin.md    # Report dashboard data structures (NEW)
-├── quickstart-reportadmin.md    # Report dashboard usage guide (NEW)
+├── research-reportadmin.md      # Report dashboard technical decisions
+├── data-model-reportadmin.md    # Report dashboard data structures
+├── quickstart-reportadmin.md    # Report dashboard usage guide
+│
+├── research-template-sorting.md # Template sorting technical decisions (NEW 2026-01-28)
+├── data-model-sorting.md        # Template sorting data structures (NEW 2026-01-28)
+├── quickstart-sorting.md        # Template sorting deployment guide (NEW 2026-01-28)
 │
 └── contracts/
     ├── component-api.md         # Template catalog component interface
-    └── reportadmin-api.md       # Report dashboard API contract (NEW)
+    ├── reportadmin-api.md       # Report dashboard API contract
+    └── template-sorting-api.md  # Template sorting API contract (NEW 2026-01-28)
 ```
 
 ### Source Code (repository root)
@@ -106,6 +113,50 @@ This structure optimizes for:
 > **No constitution violations** - Constitution not yet defined. If defined later, this simple single-file component should pass all reasonable complexity gates.
 
 ## Modification Log
+
+### 2026-01-28: Add Template Sorting & "New" Badge System
+
+**Context**: Users need templates sorted by date (newest first) and want visual indication of the most recent template via an automatic "new" badge.
+
+**Changes Required**:
+
+1. **Data Model Update**:
+   - Add optional `createdAt` field to Template interface (YYYY-MM-DD format)
+   - Backfill existing templates with estimated dates
+   - Document field in data-model-sorting.md
+
+2. **Sorting Logic**:
+   - Implement `getSortedTemplates(companyKey)` function (DESC sort by date)
+   - Clone template arrays before sorting (non-destructive)
+   - Handle missing/invalid dates (treat as oldest)
+   - Stable sort for ties (preserve original array order)
+
+3. **Badge System**:
+   - Implement `getNewestTemplate(companyKey)` function
+   - Compute badge status at render time (no stored state)
+   - Per-company scope (each company has independent newest)
+   - Add `.badge-new` CSS class (minimalist design, company theme color)
+
+4. **Rendering Updates**:
+   - Modify `renderTemplatesForCompany()` to use sorted templates
+   - Add badge HTML to newest template card
+   - Position badge below template name, above message
+   - Ensure responsive layout (320px+ mobile support)
+
+5. **Documentation**:
+   - Create quickstart-sorting.md (deployment workflow)
+   - Update CLAUDE.md with new template schema
+   - Add troubleshooting guide for common issues
+
+**Impact**:
+- Adds ~150-200 lines to `index.html` (sorting + badge logic)
+- Modifies template data structure (additive, backward compatible)
+- Zero impact on existing functionality (templates without dates still work)
+- Automatic badge management (no manual deployment steps)
+
+**Technical Approach**: See [research-template-sorting.md](./research-template-sorting.md) for architecture decisions, [data-model-sorting.md](./data-model-sorting.md) for data structures, and [contracts/template-sorting-api.md](./contracts/template-sorting-api.md) for API contracts.
+
+---
 
 ### 2026-01-13: Add Report Admin Dashboard
 
@@ -434,6 +485,68 @@ Re-render report list
 
 ---
 
+### Phase 6: Template Sorting & "New" Badge (2026-01-28) 🆕
+
+**Goal**: Enable chronological template sorting and automatic badge on newest template
+
+**Tasks**:
+
+1. **Data Migration**:
+   - Add `createdAt` field to all existing templates (backfill with estimated dates)
+   - Validate date formats (YYYY-MM-DD) for all templates
+   - Document date estimation strategy in commit message
+
+2. **Sorting Functions**:
+   - Implement `getSortedTemplates(companyKey)` function
+   - Implement `getNewestTemplate(companyKey)` function
+   - Implement `isNewTemplate(template, companyKey)` function
+   - Add `validateDateFormat(dateString)` utility function
+
+3. **Badge Rendering**:
+   - Add `.badge-new` CSS class (below template name, company theme color)
+   - Update `createTemplateCard()` to accept `isNew` parameter
+   - Conditionally render badge HTML with ARIA labels
+   - Test badge on all 4 company themes (red, purple, amber, cyan)
+
+4. **Rendering Updates**:
+   - Modify `renderTemplatesForCompany()` to use sorted templates
+   - Pass badge status to card creation
+   - Ensure stable sort for templates with same date
+
+5. **Validation & Error Handling**:
+   - Log warnings for invalid date formats (non-blocking)
+   - Handle missing `createdAt` fields gracefully (sort to end)
+   - Validate all templates on page load (dev mode)
+
+6. **Testing**:
+   - Test sorting with mixed dates (newest first)
+   - Test badge on newest template per company
+   - Test missing/invalid dates (fallback behavior)
+   - Test all same dates (tie-breaking with stable sort)
+   - Test empty company (0 templates)
+   - Test mobile layout (320px+)
+
+7. **Documentation**:
+   - Update CLAUDE.md with template schema change
+   - Document deployment workflow in quickstart-sorting.md
+   - Add troubleshooting guide for common issues
+
+**Deliverables**:
+- All templates sorted DESC by `createdAt` (newest first)
+- "novo" badge on newest template per company
+- Backward compatible (templates without dates still work)
+- Zero-step deployment (automatic badge management)
+
+**Estimated Lines**: ~150-200 lines in `index.html` (functions + CSS)
+
+**Design Artifacts**:
+- Research: [research-template-sorting.md](./research-template-sorting.md)
+- Data model: [data-model-sorting.md](./data-model-sorting.md)
+- API contracts: [contracts/template-sorting-api.md](./contracts/template-sorting-api.md)
+- Deployment guide: [quickstart-sorting.md](./quickstart-sorting.md)
+
+---
+
 ## Total Estimated Code Changes
 
 | Component | Lines of Code | Location |
@@ -443,7 +556,8 @@ Re-render report list
 | Dashboard UI | 150-200 | `index.html` |
 | Period filtering | 100-120 | `index.html` |
 | Polish & a11y | 50-70 | `index.html` |
-| **Total** | **430-560** | `index.html` |
+| Template sorting & badges (NEW) | 150-200 | `index.html` |
+| **Total** | **580-760** | `index.html` |
 
 **Additional Files**:
 - `reports/index.json` (metadata, ~50-100 lines)
@@ -506,6 +620,23 @@ Re-render report list
 - [ ] 1 report: UI works correctly
 - [ ] 100+ reports: List scrolls smoothly
 - [ ] Invalid JSON: Error message displays
+
+---
+
+**Template Sorting & Badges** (NEW 2026-01-28):
+- [ ] Templates sort DESC by `createdAt` (newest first)
+- [ ] Newest template per company shows "novo" badge
+- [ ] Badge appears below template name, above message
+- [ ] Badge uses correct company theme color (red/purple/amber/cyan)
+- [ ] Only 1 badge per company (not multiple)
+- [ ] Templates without `createdAt` sort to end (oldest)
+- [ ] Templates with invalid date format sort to end (with console warning)
+- [ ] Templates with same date maintain original array order (stable sort)
+- [ ] Empty company (0 templates) renders without error
+- [ ] Badge visible on mobile (320px+)
+- [ ] Badge accessible (ARIA label present)
+- [ ] Switching tabs updates badge correctly
+- [ ] Adding new template with newer date moves badge automatically
 - [ ] Missing report file: Error shows in viewer
 - [ ] Large report (>5MB): Loads without crashing
 
