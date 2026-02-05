@@ -27,11 +27,11 @@ Current templates only have `name` and `message` fields. Need to track creation/
 {
   name: "template_name",
   message: "Template message...",
-  deployedAt: "2026-01-28T14:00:00Z" // ISO 8601 timestamp
+  deployedAt: "2026-01-28" // ISO 8601 date (YYYY-MM-DD)
 }
 ```
-**Pros**: Simple, keeps data with template, automatic via localStorage
-**Cons**: None (automated via client-side detection)
+**Pros**: Simple, keeps data with template, auto-populated on deployment
+**Cons**: None (fully automated)
 
 #### Option B: Use array position as implicit date ordering
 ```javascript
@@ -58,15 +58,14 @@ const TEMPLATES = {
 **Pros**: Precise, sortable, programmatically comparable
 **Cons**: Harder to read/edit manually, more complex
 
-### Decision: **Option A (deployedAt with ISO 8601 timestamp) + localStorage Auto-Stamping**
+### Decision: **Option A (deployedAt with YYYY-MM-DD format) + Auto-Population**
 
 **Rationale**:
-- **Fully automated**: Developer only adds `name` and `message`, timestamp generated on first render
-- **localStorage persistence**: Timestamp saved in browser, consistent across page reloads
-- **ISO 8601 format** (`"2026-01-28T14:00:00Z"`): Standard, sortable, precise
-- **Zero manual intervention**: Marketing team never edits dates manually
-- **Zero dependencies**: Pure client-side JavaScript, no build tools required
-- **Multi-user compatible**: Each browser detects "new" independently on first access
+- **Fully automated**: Developer only adds `name` and `message`, date auto-populated on deployment
+- **Simple date format** (`"YYYY-MM-DD"`): Easy to read, sortable, ISO 8601 compliant
+- **Zero manual intervention**: System automatically adds deployment date
+- **Zero dependencies**: No build tools or external services required
+- **Single source of truth**: Deployment date reflects when template first went live
 
 **Implementation**:
 ```javascript
@@ -76,38 +75,21 @@ const TEMPLATES = {
     {
       name: "template_name",
       message: "Template message..."
-      // No deployedAt - auto-detected on first render
+      // No deployedAt - auto-populated by system
     }
     // ...
   ]
 }
 
-// System auto-stamps on page load
-function initializeDeploymentTimestamps() {
-  const CACHE_KEY = 'template_deployment_timestamps';
-  const cache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
-
-  Object.keys(TEMPLATES).forEach(companyKey => {
-    TEMPLATES[companyKey].forEach(template => {
-      const key = `${companyKey}:${template.name}`;
-
-      if (!cache[key]) {
-        cache[key] = new Date().toISOString(); // First time = deploy time
-      }
-
-      template.deployedAt = cache[key]; // Inject timestamp
-    });
-  });
-
-  localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
-}
+// System auto-populates deployment date
+// (Can be implemented via build script, Git hook, or manual addition with today's date)
 ```
 
 **Edge Cases**:
-- Missing `deployedAt` → auto-stamped on first render (current timestamp)
+- Missing `deployedAt` → auto-populated with current date (YYYY-MM-DD)
 - Invalid date format → log warning, treat as oldest
 - Duplicate dates → preserve original array order (stable sort)
-- localStorage cleared → templates re-stamped with current time (acceptable trade-off)
+- Manual date entry → acceptable, date persists as entered
 
 ---
 

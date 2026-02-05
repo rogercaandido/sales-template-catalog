@@ -38,26 +38,26 @@ const TEMPLATES = {
 };
 ```
 
-### Step 2: Add Your Template (WITHOUT deployedAt)
+### Step 2: Add Your Template (WITH deployedAt)
 
-Add new template **at any position** in the array. **DO NOT add `deployedAt` field** - it will be auto-generated:
+Add new template **at any position** in the array with `deployedAt` set to today's date:
 
 ```javascript
 consulfarma: [
   // Existing templates...
   {
     name: "your_new_template_v1",
-    message: "Your template message here with {{1}} placeholders"
-    // NO deployedAt field - system auto-detects and stamps on first render
+    message: "Your template message here with {{1}} placeholders",
+    deployedAt: "2026-01-28"  // Today's date in YYYY-MM-DD format
   }
 ]
 ```
 
 **Important**:
-- ✅ Only add `name` and `message`
-- ❌ Do NOT manually add `deployedAt` field
-- ✅ System automatically timestamps on first user access
-- ✅ Timestamp persisted in localStorage (consistent across reloads)
+- ✅ Add `name`, `message`, and `deployedAt`
+- ✅ Use today's date in YYYY-MM-DD format
+- ✅ Date auto-populates when template first deployed (no manual tracking needed)
+- ✅ System automatically manages badge based on this date
 
 ### Step 3: Save and Deploy
 
@@ -72,25 +72,23 @@ git push origin 001-template-catalog-react
 # Or manually: netlify deploy --prod
 ```
 
-### Step 4: Verify (Automatic Timestamping)
+### Step 4: Verify (Automatic Badge)
 
 1. Open deployed site (or `index.html` locally)
-2. **First user access**: System auto-detects new template and timestamps it
-3. Navigate to company tab (e.g., Consulfarma)
-4. Check:
+2. Navigate to company tab (e.g., Consulfarma)
+3. Check:
    - ✅ New template appears first (newest → oldest sort)
-   - ✅ New template shows "novo" badge below name (amber-400 color)
+   - ✅ New template shows "novo" badge below name
    - ✅ Old templates no longer have badge
-   - ✅ Timestamp saved to localStorage (persists across reloads)
+   - ✅ Badge color matches company theme
 
 **Behind the Scenes**:
 ```javascript
-// On page load, system runs:
-initializeDeploymentTimestamps();
-// → Detects template without cached timestamp
-// → Stamps with new Date().toISOString()
-// → Saves to localStorage
-// → Badge automatically appears on newest
+// On render, system automatically:
+// 1. Sorts templates by deployedAt (DESC)
+// 2. Identifies newest template (first after sort)
+// 3. Adds "novo" badge to newest template only
+// 4. Removes badge from all other templates
 ```
 
 ---
@@ -319,8 +317,8 @@ console.log(getSortedTemplates("consulfarma"));
 
 ### ✅ DO
 
-- **Add `deployedAt` immediately when creating template** (part of template definition)
-- **Use today's date** (`"YYYY-MM-DD"`) when adding new templates
+- **Add `deployedAt` with today's date** (`"YYYY-MM-DD"`) when creating template
+- **Use correct date format** (YYYY-MM-DD, e.g., "2026-01-28")
 - **Keep dates accurate** (reflects actual deployment date)
 - **Test locally first** (open `index.html` in browser before pushing)
 - **Commit with descriptive message** (e.g., "feat: add new onboarding template")
@@ -328,9 +326,9 @@ console.log(getSortedTemplates("consulfarma"));
 ### ❌ DON'T
 
 - **Don't forget `deployedAt`** (template will sort to end, no badge)
-- **Don't use wrong format** (e.g., `"01/28/2026"` won't sort correctly)
-- **Don't manually manage badge** (system handles it automatically)
-- **Don't reorder array manually** (sorting is automatic, no need)
+- **Don't use wrong format** (e.g., `"01/28/2026"` or `"2026/01/28"` won't sort correctly)
+- **Don't manually manage badge** (system handles it automatically based on dates)
+- **Don't reorder array manually** (sorting is automatic based on deployedAt)
 - **Don't backdate new templates** (defeats purpose of "new" badge)
 
 ---

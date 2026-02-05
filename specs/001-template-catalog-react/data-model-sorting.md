@@ -33,16 +33,16 @@ interface Template {
 |-------|------|----------|-------------|-------------|
 | `name` | `string` | ✅ Yes | Non-empty, unique per company | Template identifier used for clipboard copy |
 | `message` | `string` | ✅ Yes | Non-empty | Template message content (supports {{1}}, {{2}} placeholders) |
-| `deployedAt` | `string` | ❌ No | ISO 8601 timestamp | Deployment timestamp for sorting (auto-generated via localStorage) |
+| `deployedAt` | `string` | ❌ No | ISO 8601 date (YYYY-MM-DD) | Deployment date for sorting (auto-populated when template first deployed) |
 
 **Validation Rules**:
 - `name`: Must be unique within company (no duplicates in same array)
 - `message`: No validation (allows emojis, special chars, multiline)
 - `deployedAt`:
-  - Format: ISO 8601 timestamp (e.g., `"2026-01-28T14:00:00Z"`)
-  - Validation: Regex `^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$`
-  - Missing: Auto-generated on first render via localStorage
-  - Auto-stamped: System detects missing field and injects `new Date().toISOString()`
+  - Format: ISO 8601 date only (e.g., `"2026-01-28"`)
+  - Validation: Regex `^\d{4}-\d{2}-\d{2}$`
+  - Missing: Auto-populated on first deployment (no manual entry required)
+  - Auto-stamped: System automatically adds deployment date
   - Invalid: Log warning, treat as oldest
 
 **Example**:
@@ -50,13 +50,13 @@ interface Template {
 {
   name: "start_x_csf_ia_v1",
   message: "Oi {{1}}! Sou a Mind, sua assistente virtual da *Consulfarma* 😃",
-  deployedAt: "2026-01-28T14:00:00Z"  // Auto-generated via localStorage
+  deployedAt: "2026-01-28"  // Auto-populated on first deployment
 }
 ```
 
 **Backward Compatibility**:
-- Existing templates without `deployedAt` → auto-stamped on first render
-- No manual migration needed: System handles timestamp injection automatically
+- Existing templates without `deployedAt` → auto-populated on first deployment
+- No manual migration needed: System handles date injection automatically
 - Legacy templates: Sort alphabetically by name at end of list (after dated templates)
 
 ---
@@ -304,55 +304,43 @@ function validateAllTemplates() {
 
 ## Migration Path
 
-### Phase 1: Auto-Stamp Missing `deployedAt` (Automatic via localStorage)
+### Phase 1: Auto-Populate Missing `deployedAt` (Automatic)
 
-**Goal**: Automatically detect and timestamp templates on first render without manual intervention.
+**Goal**: Automatically add deployment dates to templates without manual intervention.
 
-**Strategy**: Use localStorage to persist timestamps across page reloads. System auto-detects templates without cached timestamps and stamps them on first access.
+**Strategy**: System auto-populates `deployedAt` field with current date when template is first deployed (no manual entry required).
 
 **Implementation**:
 ```javascript
-// System automatically runs on page load
-function initializeDeploymentTimestamps() {
-  const CACHE_KEY = 'template_deployment_timestamps';
-  const cache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+// Developer adds template WITHOUT deployedAt field
+const TEMPLATES = {
+  consulfarma: [
+    {
+      name: "new_template",
+      message: "Template content..."
+      // deployedAt auto-populated by system
+    }
+  ]
+};
 
-  Object.keys(TEMPLATES).forEach(companyKey => {
-    TEMPLATES[companyKey].forEach(template => {
-      const key = `${companyKey}:${template.name}`;
-
-      if (!cache[key]) {
-        // First time seeing this template = deployment time
-        cache[key] = new Date().toISOString();
-      }
-
-      // Inject timestamp into template object
-      template.deployedAt = cache[key];
-    });
-  });
-
-  // Persist cache back to localStorage
-  localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
-}
-
-// Call on DOMContentLoaded
-initializeDeploymentTimestamps();
+// System automatically adds deployment date
+// (Implementation detail: can use build script, Git hook, or client-side detection)
 ```
 
 **Outcome**:
 ```javascript
-// Before auto-stamp (source code)
+// Before auto-population (source code)
 { name: "template_v1", message: "..." }
 
-// After auto-stamp (runtime, in memory)
-{ name: "template_v1", message: "...", deployedAt: "2026-01-28T14:35:22.123Z" }
+// After auto-population (runtime/build)
+{ name: "template_v1", message: "...", deployedAt: "2026-01-28" }
 ```
 
 **Behavior**:
-- **First user visit**: Template gets stamped with current timestamp, saved to localStorage
-- **Subsequent visits**: Template loads cached timestamp (consistent across reloads)
-- **New deploy**: New templates auto-detected, stamped with current time
-- **localStorage cleared**: Templates re-stamped (acceptable edge case)
+- **First deployment**: Template gets current date (YYYY-MM-DD format)
+- **Subsequent deployments**: Date persists (tracks original deployment)
+- **New templates**: Automatically timestamped on first deploy
+- **No manual entry**: Developer only adds name and message
 
 ### Phase 2: Update Rendering Logic
 

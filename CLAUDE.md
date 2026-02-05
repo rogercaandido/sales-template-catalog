@@ -152,6 +152,53 @@ Format: `###-feature-name` where:
 - `feature-name` is 2-4 words extracted from feature description
 - Automatically handles GitHub's 244-byte branch name limit
 
+## Implementation Workflow
+
+When implementing features, always check existing design docs and task files first. If field names or specifications differ from what's discussed, ask for clarification before proceeding.
+
+**Pre-Implementation Checklist**:
+1. Read the feature's `spec.md` to understand requirements
+2. Review `plan.md` for technical approach and architecture
+3. Check `tasks.md` for task dependencies and current status
+4. Verify field names and data models in `data-model.md`
+5. Ask for clarification if any specifications are ambiguous or conflicting
+
+**During Implementation**:
+- Update design docs (`data-model.md`, contracts, etc.) when making data model changes
+- Keep `tasks.md` synchronized - mark tasks complete as you finish them
+- Document any deviations from the original plan in the spec's assumptions section
+
+## Project Structure
+
+For Speckit projects, design documents and tasks follow this structure:
+
+**Design Documents**: `specs/###-feature-name/`
+- `spec.md` - Feature specification (what and why)
+- `plan.md` - Implementation plan (how)
+- `data-model.md` - Data structures and schemas
+- `research.md` - Technical decisions and trade-offs
+- `tasks.md` - Actionable implementation tasks
+- `contracts/` - API specifications and interfaces
+- `checklists/` - Validation checklists
+
+**Task Files**: `specs/###-feature-name/tasks.md`
+
+**Important**: When changing data models or field names, update BOTH the design docs (data-model.md, contracts/) AND the task files (tasks.md) to maintain consistency.
+
+## Data Model Conventions
+
+When adding timestamp fields to data models, default to auto-populating on creation unless explicitly told otherwise.
+
+**Standard Timestamp Fields**:
+- `deployedAt` - ISO 8601 date (YYYY-MM-DD) when item was first deployed/published
+- `createdAt` - Timestamp when record was created in the system
+- `updatedAt` - Timestamp when record was last modified
+
+**Auto-Population Rules**:
+- Timestamps should auto-populate by default (no manual entry required)
+- Use ISO 8601 format for dates: `YYYY-MM-DD`
+- Document in data-model.md if a timestamp field requires manual entry
+
 ## Important Conventions
 
 ### Specification Quality Gates
@@ -239,7 +286,7 @@ Updated via `update-agent-context.ps1` during planning phase.
 - ✅ Toast notifications with ✓ (success) / ✕ (error) icons
 - ✅ Carteiras (sales team) footer for each company
 - ✅ Template cards display name + message content
-- ✅ Chronological sorting: templates display newest → oldest (DESC by `createdAt`) (NEW 2026-01-28)
+- ✅ Chronological sorting: templates display newest → oldest (DESC by `deployedAt`) (NEW 2026-01-28)
 - ✅ "Novo" badge: automatically appears on newest template per company (NEW 2026-01-28)
 - ✅ Badge inherits company theme color (red/purple/amber/cyan)
 - ✅ Fully responsive (320px mobile → 1920px+ desktop)
@@ -348,7 +395,7 @@ vercel deploy
 **Planning Updates**:
 
 - **2026-01-28**: Template Sorting & "New" Badge System planned
-  - Add `createdAt` field to templates (YYYY-MM-DD format)
+  - Add `deployedAt` field to templates (YYYY-MM-DD format)
   - Automatic DESC sorting (newest → oldest)
   - Computed "novo" badge on newest template per company
   - Zero-step deployment (automatic badge management)
@@ -369,20 +416,21 @@ vercel deploy
 
 **Template Data Structure** (UPDATED 2026-01-28):
 
-Each template now includes a `createdAt` field for automatic sorting and badge display:
+Each template now includes a `deployedAt` field for automatic sorting and badge display:
 
 ```javascript
 {
   name: "template_identifier",       // Template name (copied to clipboard)
   message: "Template content...",     // Message text (supports {{1}}, {{2}} placeholders)
-  createdAt: "2026-01-28"            // ISO 8601 date (YYYY-MM-DD) for sorting
+  deployedAt: "2026-01-28"            // ISO 8601 date (YYYY-MM-DD) for sorting - auto-populated when template first deployed
 }
 ```
 
 **Sorting Behavior**:
-- Templates automatically sort DESC by `createdAt` (newest first)
-- Templates without `createdAt` sort to end (treated as oldest)
+- Templates automatically sort DESC by `deployedAt` (newest first)
+- Templates without `deployedAt` sort to end (treated as oldest)
 - Stable sort preserves original order for templates with same date
+- `deployedAt` auto-populates when template is first deployed (no manual entry required)
 
 **Badge System**:
 - "novo" badge automatically appears on newest template per company
@@ -391,12 +439,12 @@ Each template now includes a `createdAt` field for automatic sorting and badge d
 - Each company tab shows its own newest template independently
 
 **Adding New Templates**:
-1. Add template object with `name`, `message`, `createdAt` (today's date in YYYY-MM-DD format)
+1. Add template object with `name`, `message`, and `deployedAt` (auto-populated with today's date in YYYY-MM-DD format)
 2. Save file and refresh browser
 3. Badge automatically appears on new template (system handles it)
 
 **Implementation Status** (2026-01-28):
-- [X] All templates have `createdAt` field (data migration complete)
+- [X] All templates have `deployedAt` field (data migration complete)
 - [X] Implemented `getSortedTemplates(companyKey)` function
 - [X] Implemented `getNewestTemplate(companyKey)` function
 - [X] Implemented `isNewTemplate(template, companyKey)` function
