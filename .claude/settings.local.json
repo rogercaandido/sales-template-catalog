@@ -28,7 +28,29 @@
       "Bash(netlify sites:create:*)",
       "Bash(start https://sales-template-catalog.netlify.app)",
       "Bash(powershell -Command \"Get-Content ''COMO-ATUALIZAR.md'' | Select-Object -First 30\")",
-      "Bash(start \"\" \"C:\\\\Users\\\\roger\\\\OneDrive\\\\Área de Trabalho\\\\Work\\\\New year shit\\\\templates usuarios\\\\index.html\")"
+      "Bash(start \"\" \"C:\\\\Users\\\\roger\\\\OneDrive\\\\Área de Trabalho\\\\Work\\\\New year shit\\\\templates usuarios\\\\index.html\")",
+      "Bash(powershell -File:*)",
+      "Skill(speckit.tasks)",
+      "Skill(speckit.tasks:*)",
+      "Bash(if not exist reports mkdir reports)",
+      "Bash(start index.html)",
+      "Bash(powershell -Command \"Write-Host ''Starting HTTP server on http://localhost:8000''; Write-Host ''Press Ctrl+C to stop''; python -m http.server 8000\")",
+      "Bash(netlify --version:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File:*)",
+      "Bash(ls:*)",
+      "Bash(node:*)",
+      "Bash(.specify/scripts/powershell/setup-plan.ps1 -Json)",
+      "Bash(python fix-commas.py:*)",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File:*)",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -Command \"Get-ChildItem -Path ''specs\\\\001-template-catalog-react'' -Filter ''spec*.md'' | Select-Object -ExpandProperty Name\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -Command \"Get-Content ''specs\\\\001-template-catalog-react\\\\plan.md'' | Select-String -Pattern ''sort|badge|novo|createdAt|deployedAt|newest'' -Context 2,2\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -Command \"Test-Path ''specs\\\\001-template-catalog-react\\\\tasks.md''\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -Command \"Test-Path ''specs\\\\001-template-catalog-react\\\\tasks-sorting.md''\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -Command \"Copy-Item ''tasks-sorting.md'' ''tasks-sorting-backup.md'' -Force\")",
+      "Bash(powershell -Command:*)",
+      "Bash(gh:*)",
+      "Bash(curl:*)",
+      "Bash(start \"C:\\\\Users\\\\roger\\\\.claude\\\\usage-data\\\\report.html\")"
     ]
   }
 }
