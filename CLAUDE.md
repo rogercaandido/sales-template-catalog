@@ -455,6 +455,13 @@ Each template now includes a `deployedAt` field for automatic sorting and badge 
 - [ ] Manual testing in progress (see [TESTING-CHECKLIST.md](TESTING-CHECKLIST.md))
 - [ ] Documentation updates in progress
 
+**Carteiras Layout Fix** (2026-02-05):
+- [X] Changed `.carteiras-grid` from `auto-fill` to `auto-fit` for uniform distribution
+- [X] CSS fix applied in index.html line 301
+- [X] Mobile breakpoint (@media max-width: 768px) verified unchanged
+- [ ] Visual testing across all 4 company tabs (requires browser)
+- [ ] Cross-browser compatibility testing (Chrome, Firefox, Safari)
+
 **Pending Implementation**:
 
 *Report Dashboard*:
@@ -474,4 +481,4 @@ Each template now includes a `deployedAt` field for automatic sorting and badge 
 - [ ] Add CSS theme class `.theme-seminariosconsulfarma` with cyan color variables
 - [ ] Update tab ordering: Consulfarma → ICosmetologia → Hi Nutrition → Seminários Consulfarma
 
-**Last Updated**: 2026-01-28
+**Last Updated**: 2026-02-05

@@ -796,5 +796,215 @@ This delivers core value quickly while deferring nice-to-have features.
 
 ---
 
-**Tasks Generated**: 2026-01-13
+## Phase 13: Carteiras Grid Layout Fix (2026-02-05) 🆕
+
+**Goal**: Fix uneven distribution of carteiras (sales team) items in footer grid
+
+**Context**: Current CSS uses `auto-fill` which creates empty grid tracks that don't collapse, causing uneven distribution when there are fewer items than maximum columns. This is especially visible on Hi Nutrition (5 items) and Seminários Consulfarma (1 item) tabs.
+
+**Solution**: Change `auto-fill` to `auto-fit` in `.carteiras-grid` CSS class. This collapses empty tracks, allowing items to expand uniformly to fill available width.
+
+**Scope**: Single-line CSS modification with comprehensive visual testing.
+
+**Related User Stories**: Enhances US2 (company tab switching) and US3 (responsive design) by improving visual quality of carteiras footer across all device sizes.
+
+### Phase 13.1: CSS Modification
+
+- [X] T076 Locate `.carteiras-grid` CSS class in index.html (approximately line 299-306)
+- [X] T077 Change `grid-template-columns` from `repeat(auto-fill, minmax(min(180px, 100%), 1fr))` to `repeat(auto-fit, minmax(min(180px, 100%), 1fr))` in index.html
+- [X] T078 [P] Verify mobile breakpoint CSS remains unchanged `@media (max-width: 768px) { .carteiras-grid { grid-template-columns: 1fr; } }` in index.html
+- [X] T079 Save index.html and open in browser for initial visual check
+
+**Checkpoint**: CSS change applied, ready for visual validation
+
+### Phase 13.2: Desktop Testing (1920px Viewport)
+
+- [ ] T080 Test **Consulfarma** tab (8 items) - verify uniform distribution across 3-4 columns
+- [ ] T081 Test **ICosmetologia** tab (9 items) - verify multi-row wrapping with uniform last row
+- [ ] T082 Test **Hi Nutrition** tab (5 items) - verify items expand to fill width uniformly with no gaps ✅ **PRIMARY FIX**
+- [ ] T083 Test **Seminários Consulfarma** tab (1 item) - verify single item doesn't stretch excessively beyond reasonable width
+
+**Success Indicator**: Hi Nutrition tab should show 5 items distributed evenly with no empty gaps at end of rows.
+
+### Phase 13.3: Responsive Testing
+
+- [ ] T084 Test all 4 company tabs at 1024px viewport (tablet) - verify 2-3 column grid wrapping
+- [ ] T085 Test all 4 company tabs at 768px viewport (mobile breakpoint) - verify single column layout active
+- [ ] T086 Test all 4 company tabs at 320px viewport (small mobile) - verify single column with no horizontal overflow
+- [ ] T087 [P] Test viewport resize from 1920px → 320px - verify smooth responsive transitions without visual jumps
+
+**Checkpoint**: Responsive behavior validated across all breakpoints
+
+### Phase 13.4: Edge Case Validation
+
+- [ ] T088 Switch rapidly between all 4 company tabs - verify carteiras footer updates correctly without layout breaks
+- [ ] T089 Test Seminários Consulfarma (1 item) - if item stretches beyond 300px width, add optional `max-width: 300px;` to `.carteira-item` CSS in index.html
+- [ ] T090 [P] Test long name rendering (e.g., "Aline da Silva Longo") across all tabs - verify text wraps gracefully without breaking layout
+- [ ] T091 [P] Verify baseline alignment between `.carteira-name` and `.carteira-number` maintained across all tabs
+
+**Decision Point**: T089 - Only add `max-width` if single item visually stretches too wide (subjective judgment).
+
+### Phase 13.5: Cross-Browser Testing
+
+- [ ] T092 [P] Test in Chrome/Edge (Chromium) - verify grid layout works correctly across all 4 company tabs
+- [ ] T093 [P] Test in Firefox - verify grid layout works correctly across all 4 company tabs
+- [ ] T094 [P] Test in Safari (if available) - verify grid layout works correctly across all 4 company tabs
+- [ ] T095 [P] Test in mobile browser (Chrome Mobile or Safari iOS) - verify mobile layout and carteiras footer rendering
+
+**Note**: CSS Grid `auto-fit` has 98%+ browser support (Chrome 57+, Firefox 52+, Safari 10.1+, all from March 2017).
+
+### Phase 13.6: Final Validation & Documentation
+
+- [ ] T096 Verify no console errors or warnings in browser DevTools after CSS change
+- [ ] T097 Verify 6px gap spacing maintained between all carteira items (horizontal and vertical)
+- [ ] T098 [P] Take before/after screenshots for Hi Nutrition tab (demonstrates the fix most clearly)
+- [X] T099 Update CLAUDE.md "Active Features & Technologies" section with: "Carteiras layout: Fixed grid distribution using auto-fit (2026-02-05)"
+- [ ] T100 Commit changes with message: `fix: change carteiras grid from auto-fill to auto-fit for uniform distribution`
+
+**Checkpoint**: Implementation complete, validated, and documented
+
+---
+
+## Testing Checklist - Carteiras Layout Fix
+
+### Visual Quality Validation
+
+- [ ] **Consulfarma** (8 items): 3-4 items per row on desktop, uniform distribution
+- [ ] **ICosmetologia** (9 items): Multi-row wrapping, no gaps on last row
+- [ ] **Hi Nutrition** (5 items): 2-3 items per row, fills space uniformly ✅ **PRIMARY FIX INDICATOR**
+- [ ] **Seminários Consulfarma** (1 item): Doesn't stretch excessively (stays within reasonable width)
+
+### Responsive Validation
+
+- [ ] 1920px (desktop): Multi-column grid, uniform distribution
+- [ ] 1024px (tablet): 2-4 columns depending on company, items wrap naturally
+- [ ] 768px (mobile breakpoint): Single column layout active
+- [ ] 320px (small mobile): Single column, no horizontal overflow
+
+### Functional Validation
+
+- [ ] Tab switching: Carteiras footer updates correctly for each company
+- [ ] Long names: Text wraps gracefully (e.g., "Aline da Silva Longo")
+- [ ] Baseline alignment: Name and number visually aligned
+- [ ] Gap spacing: Consistent 6px between all items
+
+### Cross-Browser Validation
+
+- [ ] Chrome/Edge (Chromium): Works correctly
+- [ ] Firefox: Works correctly
+- [ ] Safari (desktop): Works correctly
+- [ ] Mobile browsers (iOS/Android): Works correctly
+
+---
+
+## Implementation Notes - Carteiras Layout Fix
+
+### The Change (One Line)
+
+**File**: `index.html` (approximately line 301)
+
+**Before**:
+```css
+.carteiras-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+  gap: 6px;
+  /* ... */
+}
+```
+
+**After**:
+```css
+.carteiras-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+  gap: 6px;
+  /* ... */
+}
+```
+
+**Why it works**:
+- `auto-fill`: Creates grid tracks but doesn't collapse empty tracks → leaves gaps
+- `auto-fit`: Creates grid tracks AND collapses empty tracks → items expand uniformly ✅
+
+### Optional Enhancement (T089)
+
+If single item (Seminários Consulfarma) stretches too wide on ultra-wide monitors:
+
+```css
+.carteira-item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  max-width: 300px; /* Optional: prevent excessive expansion */
+}
+```
+
+**When to add**: Only if visual testing reveals excessive stretching. Most likely NOT needed.
+
+### Success Criteria
+
+**Functional**:
+- ✅ Items distribute uniformly regardless of company tab
+- ✅ No empty gaps when container has excess space
+- ✅ Name length variations don't break layout
+- ✅ Mobile breakpoint maintains single-column layout
+
+**Visual**:
+- ✅ Consistent 6px gap between items
+- ✅ Baseline alignment preserved between name and number
+- ✅ No horizontal overflow on any viewport size
+- ✅ Text wraps gracefully for long names
+
+**Technical**:
+- ✅ Single CSS property change (minimal risk)
+- ✅ Zero JavaScript changes
+- ✅ Zero HTML changes
+- ✅ Backward compatible with existing mobile breakpoint
+
+### Rollback Plan
+
+If issues arise during implementation:
+
+1. **Immediate rollback**: Revert T077 change
+   ```css
+   - grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+   + grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+   ```
+
+2. **Verify rollback**: Test that original behavior is restored
+
+3. **Investigate**: Review browser console, compare screenshots, test specific viewports
+
+4. **Alternative**: If `auto-fit` doesn't work, consider Flexbox approach (see research-carteiras-layout.md Option 3)
+
+---
+
+## Task Summary - Carteiras Layout Fix
+
+**Total**: 25 new tasks (T076-T100)
+- Phase 13.1 (CSS Modification): 4 tasks
+- Phase 13.2 (Desktop Testing): 4 tasks
+- Phase 13.3 (Responsive Testing): 4 tasks
+- Phase 13.4 (Edge Cases): 4 tasks
+- Phase 13.5 (Cross-Browser): 4 tasks
+- Phase 13.6 (Validation & Commit): 5 tasks
+
+**Parallel Opportunities**: 9 tasks can run in parallel (marked with [P])
+**File Modified**: index.html (single-line CSS change)
+**New Files**: None (CSS-only change)
+**Estimated Time**: ~60 minutes (mostly testing)
+
+---
+
+## References - Carteiras Layout Fix
+
+- **Research**: [research-carteiras-layout.md](./research-carteiras-layout.md) - Technical analysis and solution evaluation
+- **Quickstart**: [quickstart-carteiras-layout.md](./quickstart-carteiras-layout.md) - Detailed testing workflow
+- **Contract**: [contracts/carteiras-layout-api.md](./contracts/carteiras-layout-api.md) - CSS API specification
+- **Plan**: [plan.md](./plan.md) - See "2026-02-05: Fix Carteiras Grid Layout Distribution" section
+
+---
+
+**Tasks Generated**: 2026-01-13 (original), 2026-02-05 (carteiras layout fix added)
 **Ready for Implementation**: Run `/speckit.implement` to execute tasks sequentially
