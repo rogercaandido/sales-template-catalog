@@ -2390,12 +2390,7 @@
     const ADMIN_CONFIG = {
       USERNAME: 'admin',
       PASSWORD: 'consulfarma2026',
-      GITHUB_OWNER: 'rogercaandido',
-      GITHUB_REPO: 'sales-template-catalog',
-      GITHUB_BRANCH: '001-template-catalog-react',
-      GITHUB_FILE_PATH: 'index.html',
-      SESSION_KEY: 'admindev_auth',
-      TOKEN_KEY: 'admindev_github_token'
+      SESSION_KEY: 'admindev_auth'
     };
 
     // ========== SECTION 11: ADMIN PANEL - AUTH ==========
@@ -2451,9 +2446,6 @@
 
     // ========== SECTION 12b: ADMIN PANEL - LOGIN UI ==========
     function AdminLoginForm() {
-      const savedToken = localStorage.getItem(ADMIN_CONFIG.TOKEN_KEY) || '';
-      const tokenPlaceholder = savedToken ? '(token salvo — deixe em branco para manter)' : 'github_pat_...';
-      const tokenRequired = savedToken ? '' : 'required';
       return `
         <div class="admin-login-container">
           <div class="admin-login-title">admin panel</div>
@@ -2465,10 +2457,6 @@
             <div class="admin-field">
               <label class="admin-label" for="admin-password">Senha</label>
               <input class="admin-input" type="password" id="admin-password" autocomplete="current-password" required />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label" for="admin-github-token">GitHub Token</label>
-              <input class="admin-input" type="password" id="admin-github-token" placeholder="${tokenPlaceholder}" ${tokenRequired} />
             </div>
             <div id="admin-login-error" class="admin-login-error" style="display:none">
               Credenciais inválidas.
@@ -2485,16 +2473,8 @@
       event.preventDefault();
       const username = document.getElementById('admin-username').value.trim();
       const password = document.getElementById('admin-password').value;
-      const token = document.getElementById('admin-github-token').value.trim();
       const errorEl = document.getElementById('admin-login-error');
-      const effectiveToken = token || localStorage.getItem(ADMIN_CONFIG.TOKEN_KEY) || '';
-      if (!effectiveToken) {
-        errorEl.textContent = 'Token GitHub é obrigatório.';
-        errorEl.style.display = 'block';
-        return;
-      }
       if (adminAuth.login(username, password)) {
-        if (token) localStorage.setItem(ADMIN_CONFIG.TOKEN_KEY, token);
         errorEl.style.display = 'none';
         renderAdminPanel();
       } else {
@@ -2768,51 +2748,13 @@
       adminState.saveError = null;
       renderAdminPanel();
       try {
-        const githubToken = localStorage.getItem(ADMIN_CONFIG.TOKEN_KEY);
-        if (!githubToken) throw new Error('Token GitHub não encontrado. Faça login novamente.');
-        const apiUrl = `https://api.github.com/repos/${ADMIN_CONFIG.GITHUB_OWNER}/${ADMIN_CONFIG.GITHUB_REPO}/contents/${ADMIN_CONFIG.GITHUB_FILE_PATH}`;
-        const getResp = await fetch(`${apiUrl}?ref=${ADMIN_CONFIG.GITHUB_BRANCH}`, {
-          headers: {
-            'Authorization': `token ${githubToken}`,
-            'Accept': 'application/vnd.github.v3+json'
-          }
+        const resp = await fetch('/.netlify/functions/github-commit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ newDataBlock: buildDataBlock() })
         });
-        if (!getResp.ok) {
-          const errData = await getResp.json().catch(() => ({}));
-          throw new Error(errData.message || `GitHub GET falhou: ${getResp.status}`);
-        }
-        const data = await getResp.json();
-        const currentContent = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
-
-        if (!currentContent.includes('// ADMIN_DATA_START') || !currentContent.includes('// ADMIN_DATA_END')) {
-          throw new Error('Marcadores ADMIN_DATA_START / ADMIN_DATA_END não encontrados no arquivo.');
-        }
-
-        const newContent = currentContent.replace(
-          /    \/\/ ADMIN_DATA_START\n[\s\S]*?    \/\/ ADMIN_DATA_END\n/,
-          buildDataBlock()
-        );
-
-        const encoded = btoa(unescape(encodeURIComponent(newContent)));
-        const today = new Date().toISOString().slice(0, 10);
-        const putResp = await fetch(apiUrl, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `token ${githubToken}`,
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            message: `chore: update template data via admin panel (${today})`,
-            content: encoded,
-            sha: data.sha,
-            branch: ADMIN_CONFIG.GITHUB_BRANCH
-          })
-        });
-        if (!putResp.ok) {
-          const errData = await putResp.json().catch(() => ({}));
-          throw new Error(errData.message || `GitHub PUT falhou: ${putResp.status}`);
-        }
+        const result = await resp.json().catch(() => ({}));
+        if (!resp.ok) throw new Error(result.error || `Erro ${resp.status}`);
         adminState.saving = false;
         showToast('Salvo! Deploy iniciado automaticamente.', 'success');
         renderAdminPanel();
