@@ -494,6 +494,274 @@
         max-height: 300px;
       }
     }
+
+    /* ========== ADMIN PANEL CSS ========== */
+
+    /* T104: Header and buttons */
+    .admin-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid #262626;
+      background: #0a0a0a;
+    }
+    .admin-header-title {
+      font-size: 1rem;
+      color: #737373;
+      text-transform: lowercase;
+      letter-spacing: 0.05em;
+      flex: 1;
+    }
+    .admin-btn {
+      padding: 6px 12px;
+      background: #171717;
+      border: 1px solid #262626;
+      color: #d4d4d4;
+      font-family: inherit;
+      font-size: 0.875rem;
+      cursor: pointer;
+      border-radius: 4px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .admin-btn:hover {
+      border-color: #404040;
+      color: #f5f5f5;
+    }
+    .admin-btn-primary {
+      border-color: #10b981;
+      color: #10b981;
+    }
+    .admin-btn-primary:hover {
+      background: rgba(16, 185, 129, 0.1);
+    }
+    .admin-btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .admin-btn-danger {
+      color: #ef4444;
+      border-color: #262626;
+    }
+    .admin-btn-danger:hover {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.1);
+    }
+    .admin-btn-icon {
+      padding: 4px 8px;
+      background: transparent;
+      border: 1px solid #262626;
+      font-size: 0.875rem;
+    }
+    .admin-btn-link {
+      background: transparent;
+      border: none;
+      color: #737373;
+      padding: 6px 8px;
+      text-decoration: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.875rem;
+    }
+    .admin-btn-link:hover {
+      color: #d4d4d4;
+    }
+    .admin-saving-indicator {
+      font-size: 0.875rem;
+      color: #10b981;
+      flex: 1;
+      text-align: center;
+    }
+
+    /* T105: Template list layout */
+    .admin-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid #262626;
+    }
+    .admin-section-title {
+      font-size: 0.875rem;
+      color: #525252;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .admin-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 8px 16px;
+      border-bottom: 1px solid #262626;
+    }
+    .admin-tab-btn {
+      padding: 4px 10px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: #737373;
+      font-family: inherit;
+      font-size: 0.875rem;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    .admin-tab-btn:hover {
+      color: #d4d4d4;
+      border-color: #262626;
+    }
+    .admin-tab-btn.active {
+      border-color: #262626;
+      color: #f5f5f5;
+      background: #171717;
+    }
+    .admin-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr 110px auto auto;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 16px;
+      background: #171717;
+      border-bottom: 1px solid #262626;
+      font-size: 1rem;
+    }
+    .admin-row:hover {
+      background: #1c1c1c;
+    }
+    .admin-row-name {
+      color: var(--theme-color, #d4d4d4);
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .admin-row-preview {
+      color: #737373;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .admin-row-date {
+      color: #525252;
+      font-size: 0.875rem;
+    }
+
+    /* T106: Modal */
+    .admin-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .admin-modal {
+      background: #171717;
+      border: 1px solid #262626;
+      border-radius: 6px;
+      padding: 24px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .admin-modal-title {
+      font-size: 1.125rem;
+      color: #f5f5f5;
+      margin-bottom: 16px;
+    }
+    .admin-modal-errors {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      font-size: 0.875rem;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .admin-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    /* T107: Form fields */
+    .admin-field {
+      margin-bottom: 12px;
+    }
+    .admin-label {
+      display: block;
+      font-size: 0.75rem;
+      color: #737373;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .admin-input,
+    .admin-textarea,
+    .admin-select {
+      background: #0a0a0a;
+      border: 1px solid #262626;
+      color: #f5f5f5;
+      font-family: inherit;
+      font-size: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 6px 10px;
+      border-radius: 4px;
+    }
+    .admin-input:focus,
+    .admin-textarea:focus,
+    .admin-select:focus {
+      outline: none;
+      border-color: #404040;
+    }
+    .admin-textarea {
+      resize: vertical;
+    }
+    .admin-select:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* T108: Login screen */
+    .admin-login-container {
+      max-width: 360px;
+      margin: 80px auto 0;
+      background: #171717;
+      border: 1px solid #262626;
+      border-radius: 6px;
+      padding: 32px;
+    }
+    .admin-login-title {
+      font-size: 0.875rem;
+      color: #525252;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+    .admin-login-error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      font-size: 0.875rem;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+
+    /* T109: Responsive breakpoint */
+    @media (max-width: 640px) {
+      .admin-row {
+        grid-template-columns: 1fr auto auto;
+      }
+      .admin-row-preview,
+      .admin-row-date {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -509,7 +777,8 @@
     // T038: Define ROUTES constant object
     const ROUTES = {
       HOME: '/',
-      REPORTS: '/reportadminx'
+      REPORTS: '/reportadminx',
+      ADMIN: '/admindev'
     };
 
     // T039: Get current route from window.location.hash
@@ -534,6 +803,8 @@
         renderTemplateCatalog();
       } else if (route === ROUTES.REPORTS) {
         renderReportDashboard();
+      } else if (route === ROUTES.ADMIN) {
+        renderAdminPanel();
       } else {
         // Unknown route - default to home
         navigateTo(ROUTES.HOME);
@@ -594,6 +865,7 @@
     // See specs/001-template-catalog-react/quickstart-sorting.md for detailed guide
     // ═══════════════════════════════════════════════════════════════════════════
 
+    // ADMIN_DATA_START
     const TEMPLATES = {
       consulfarma: [
         {
@@ -602,14 +874,9 @@
           createdAt: "2025-12-22"
         },
         {
-          name: "interesse_x_congresso_2026_v1",
-          message: "Olá! 👋 Você tem interesse em participar do *Congresso Consulfarma*, que acontece nos dias 2, 3 e 4 de julho, no Pavilhão do Anhembi – São Paulo?\n\nSe quiser, posso te enviar a grade completa de programação. 😊",
-          createdAt: "2026-01-16"
-        },
-        {
-          name: "start_x_geral_csf_v2",
-          message: "Oi, {{1}}! Preparei algumas informações que podem te interessar. Posso compartilhar com você? ✨",
-          createdAt: "2025-12-22"
+          name: "interesse_x_congresso_2026_v2",
+          message: "Acabamos de liberar a grade completa dos cursos do Congresso Consulfarma 2026.\nPosso te enviar aqui no WhatsApp para você conferir?",
+          createdAt: "2026-02-12"
         },
         {
           name: "retomada_x_geral_csf_v2",
@@ -617,23 +884,8 @@
           createdAt: "2025-12-22"
         },
         {
-          name: "apresentacao_x_geral_csf_v2",
-          message: "Olá {{1}}, tudo bem? Estou à disposição para esclarecer suas dúvidas! Podemos conversar? 😄",
-          createdAt: "2025-12-22"
-        },
-        {
           name: "apresentacao_x_cursos_csf_v1",
           message: "Olá {{1}}, tudo bem? 😄Vi que você tem interesse em nossos cursos. Quer saber mais detalhes? 📚",
-          createdAt: "2025-12-22"
-        },
-        {
-          name: "apresentacao_x_seminiario_csf_v1",
-          message: "Olá {{1}}, tudo bem? 😄Vi que você tem interesse no Seminário Consulfarma. Quer saber mais detalhes? 📚",
-          createdAt: "2025-12-22"
-        },
-        {
-          name: "apresentacao_x_pos_csf_v1",
-          message: "Olá {{1}}, tudo bem? 😄Vi que você tem interesse em nossas Pós-Graduações. Quer saber mais detalhes? 📚",
           createdAt: "2025-12-22"
         },
         {
@@ -652,26 +904,6 @@
           createdAt: "2025-12-22"
         },
         {
-          name: "recuperacao_x_ajuda_csf_v1",
-          message: "Oi {{1}}! 👋 Ficou alguma dúvida que eu possa esclarecer? Às vezes as mensagens se perdem na correria do dia a dia. Posso te ajudar? ☺️",
-          createdAt: "2025-12-22"
-        },
-        {
-          name: "recuperacao_x_direta_csf_v1",
-          message: "Oi {{1}}! 👋  Ainda tem interesse ou prefere que eu entre em contato em outro momento? ☺️",
-          createdAt: "2025-12-22"
-        },
-        {
-          name: "continuar_x_dia_csf_v1",
-          message: "Olá {{1}}, bom dia! Tudo bem? Podemos continuar o atendimento?",
-          createdAt: "2025-12-22"
-        },
-        {
-          name: "continuar_x_tarde_csf_v1",
-          message: "Olá {{1}}, boa tarde! Tudo bem? Podemos continuar o atendimento?",
-          createdAt: "2025-12-22"
-        },
-        {
           name: "contato_x_formal_csf_v1",
           message: "Olá, {{1}}! Tudo bem? 😄 Sou do time de consultoria da *Consulfarma*. Posso te encaminhar mais informações?",
           createdAt: "2025-12-22"
@@ -682,70 +914,120 @@
           createdAt: "2026-01-16"
         },
         {
-          name: "tipo_1_rio_preto_congresso_x_prospec_2026_csf_v1",
-          message: "Oii, tudo bem? 😊 É Iza, da Consulfarma, estamos  levando o *Congresso Consulfarma* para *São José do Rio Preto* com atualizações e inovações na saúde estética e no mercado magistral.\n\nNo palco, nomes como *Lucas Portilho*, *Nelson Maurício*, *Henry Okigami*, *Luiz Moreira*, *Neto Montagnini*, *Davi Hoffmann*, *Eduardo Abreu* e *Claudia Mano*! 🤩\n\nVai ser imperdível para quem quer se destacar e crescer na área. \n\nPosso te enviar a programação?",
-          createdAt: "2025-12-22"
-        },
-        {
-          name: "tipo_2_rio_preto_congresso_x_prospec_2026_csf_v1",
-          message: "Olá, tudo bem? 😃 É Iza, da *Consulfarma*! Estamos  levando o *Congresso Consulfarma* para *São José do Rio Preto* com atualizações e inovações na saúde estética e no mercado magistral.\n\nNo palco, nomes como *Lucas Portilho*, *Nelson Maurício*, *Henry Okigami*, *Luiz Moreira*, *Neto Montagnini*, *Davi Hoffmann* e *Eduardo Abreu* e *Claudia Mano*! 🤩\n\nVai ser imperdível para quem quer se destacar e crescer na área. Você gostaria de receber a programação?",
-          createdAt: "2025-12-22"
-        },
-        {
-          name: "tipo_3_rio_preto_congresso_x_prospec_2026_csf_v1",
-          message: "Olá! Tudo bem? 🤩 Aqui é a Iza da *Consulfarma*! O *Congresso Consulfarma* está chegando a *São José do Rio Preto*, trazendo as principais atualizações e inovações em saúde estética e no mercado magistral.\n\nNo palco, grandes referências da área como *Lucas Portilho*, *Nelson Mauricio*, *Henry Okigami*, *Luiz Moreira*, *Neto Montagnini*, *Davi Hoffmann*, *Eduardo Abreu* e *Claudia Mano*.\n\nSerá uma experiência imperdível para quem busca diferenciação, crescimento profissional e atualização de alto nível. *Posso te enviar a programação completa?*",
-          createdAt: "2026-01-05"
-        },
-        {
           name: "conseguiu_analisar_x_congresso_2026_v1",
           message: "Oiie tudo bem? 😊\nVc conseguiu analisar a programação do Congresso ?\nEste ano as vagas são limitadas, vamos montar sua cotação?",
           createdAt: "2026-01-28"
         },
         {
-          name: "desconto_participantes_x_congresso_2026_v1",
-          message: "O! Tudo bem com você? 😊\nEstamos liberando agora o desconto exclusivo para participantes do Consulfarma 2025 💙\nO Congresso Consulfarma 2026 já está com vagas abertas e essa condição é por tempo limitado.\nPosso te enviar as informações?",
-          createdAt: "2026-01-28"
+          name: "contato_abertura_congresso_csf_x_v1",
+          message: "Oi, tudo bem? 😊\n\nO Congresso Consulfarma 2026 já está no ar!\n\n📅 02, 03 e 04 de julho\n📍 Pavilhão do Anhembi – São Paulo\n\nEspecialistas renomados, conteúdos de alto nível, tendências do mercado e networking qualificado — tudo em um único evento. 🚀\n\nPosso te enviar a *grade completa* com temas e palestrantes?",
+          createdAt: "2026-02-10"
+        },
+        {
+          name: "followup_virada_lote_congresso_2026_csf_x_v1",
+          message: "Oii, tudo bem? 😊 Passando para te avisar que essa é a *última semana do Lote 2* do *21º Congresso Consulfarma*! 🚨\n\nA partir da próxima semana o valor muda, e as *vagas são limitadas*!\n\nEssa é a melhor hora para garantir sua inscrição com o *melhor valor* antes da *virada de lote*. 😉\n\nPosso te passar os detalhes para você garantir sua vaga?",
+          createdAt: "2026-02-24"
+        },
+        {
+          name: "carol_prospec_congresso_2026_csf_x_v1",
+          message: "Olá tudo bem? É a *Carol* da *Consulfarma*. Viu já estamos com a grade de programação do Congresso Consulfarma 2026, este ano está imperdível. 🤩\n\n*Posso te enviar a programação?*",
+          createdAt: "2026-02-25"
+        },
+        {
+          name: "lucas_prospec_congresso_2026_csf_x_v1",
+          message: "Oiie, tudo bem? 😁 Me chamo *Lucas*, sou *gestor de negócios* da *Consulfarma*!\n\nEstou entrando em contato para avisar que estamos com a *programação completa* do *Congresso Consulfarma 2026*! 🎉\n\nSerão *3 dias* de *conteúdo científico*, *inovação*, *tendências do setor magistral* e palestras com *renomados profissionais*, tudo para trazer atualização prática e estratégica para o seu dia a dia.\n\nPosso te enviar a *programação*?",
+          createdAt: "2026-02-25"
+        },
+        {
+          name: "cleo_prospec_congresso_2026_csf_x_v2",
+          message: "Oie, tudo bem? 😁 Me chamo *Cléo*, sou *gestora de negócios* da *Consulfarma*!\n\nEstou entrando em contato para avisar que estamos com a *programação completa* do *Congresso Consulfarma 2026*! 🎉\n\nSerão *3 dias* de *conteúdo científico*, *inovação*, *tendências do setor magistral* e palestras com *renomados profissionais*, tudo para trazer atualização prática e estratégica para o seu dia a dia.\n\nPosso te enviar a *programação*?",
+          createdAt: "2026-02-25"
+        },
+        {
+          name: "conseguiu_analisar_x_congresso_2026_v2",
+          message: "Oiie, tudo bem? 😃 Você conseguiu analisar a *grade* do *Congresso Consulfarma* este ano?",
+          createdAt: "2026-02-25"
+        },
+        {
+          name: "minutinho_alinhar_x_congresso_2026_v2",
+          message: "Oii, tudo joia? 😊 Imagino que esteja corrido para você, mas consegue um *minutinho* para alinharmos referente à sua *inscrição* no *Congresso Consulfarma* deste ano?",
+          createdAt: "2026-02-25"
+        },
+        {
+          name: "kim_prospec_congresso_2026_csf_x_v1",
+          message: "Oiie, tudo bem? 😁 Me chamo *Kimberlly*, sou *gestora de negócios* da *Consulfarma*!\n\nEstou entrando em contato para avisar que estamos com a *programação completa* do *Congresso Consulfarma 2026*! 🎉\n\nSerão *3 dias* de *conteúdo científico*, *inovação*, *tendências do setor magistral* e palestras com *renomados profissionais*, tudo para trazer atualização prática e estratégica para o seu dia a dia.\n\nPosso te enviar a *programação*?",
+          createdAt: "2026-02-25"
+        },
+        {
+          name: "continuar_atendimento_csf_x_v1",
+          message: "Oii! Tudo bem? Tem um minutinho para continuarmos seu atendimento?",
+          createdAt: "2026-02-26"
+        },
+        {
+          name: "ruan_prospec_congresso_2026_csf_x_v4",
+          message: "Oiie, tudo bem? 😁 Me chamo *Ruan*, sou *gestor de negócios* da *Consulfarma*!\n\nEstou entrando em contato para avisar que estamos com a *programação completa* do *Congresso Consulfarma 2026*! 🎉\n\nSerão *3 dias* de *conteúdo científico*, *inovação*, *tendências do setor magistral* e palestras com *renomados profissionais*, tudo para trazer atualização prática e estratégica para o seu dia a dia.\n\nPosso te enviar a *programação*?",
+          createdAt: "2026-02-26"
+        },
+        {
+          name: "saudacao_ola_csf_x_v1",
+          message: "Olá, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_oi_csf_x_v1",
+          message: "Oi, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_bomdia_csf_x_v1",
+          message: "Bom dia, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boatarde_csf_x_v1",
+          message: "Boa tarde, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boanoite_csf_x_v1",
+          message: "Boa noite, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_ola_simples_csf_x_v1",
+          message: "Olá 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_oi_simples_csf_x_v1",
+          message: "Oi 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_bomdia_simples_csf_x_v1",
+          message: "Bom dia 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boatarde_simples_csf_x_v1",
+          message: "Boa tarde 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boanoite_simples_csf_x_v1",
+          message: "Boa noite 👋",
+          createdAt: "2026-03-02"
         }
       ],
       seminariosconsulfarma: [
-        {
-          name: "1_iza_congresso_2026_v1",
-          message: "Oi, tudo bem? 😊 Aqui é a Iza da Consulfarma, passando para avisar que a grade oficial do *21º Congresso Consulfarma* já está disponível!\n\nO evento será nos dias 2, 3 e 4 de julho, no Anhembi, em São Paulo. 📍\n\nSerão 3 dias de conteúdo científico, inovação, tendências do setor magistral e palestras com renomados profissionais, tudo para trazer atualização prática e estratégica para o seu dia a dia.\n\nE atenção: as datas de virada de lotes estão próximas!\n\nPosso te enviar a programação completa?",
-          createdAt: "2025-12-22"
-        },
         {
           name: "analisou_iza_congresso_2026_v1",
           message: "Oii tudo bem? Vc conseguiu analisar a grade do Congresso deste ano? Ficou alguma dúvida? ☺️",
           createdAt: "2025-12-22"
         },
         {
-          name: "tipo_1_rio_preto_congresso_mkt_prospec_2026_csf_v2",
-          message: "Oii, tudo bem? 😊 É Iza, da Consulfarma, estamos  levando o *Congresso Consulfarma* para *São José do Rio Preto* com atualizações e inovações na saúde estética e no mercado magistral.\n\nNo palco, nomes como *Lucas Portilho*, *Nelson Maurício*, *Henry Okigami*, *Luiz Moreira*, *Neto Montagnini*, *Davi Hoffmann*, *Eduardo Abreu* e *Claudia Mano*! 🤩\n\nVai ser imperdível para quem quer se destacar e crescer na área. \n\nPosso te enviar a programação?",
-          createdAt: "2025-12-22"
-        },
-        {
-          name: "tipo_2_rio_preto_congresso_mkt_prospec_2026_csf_v12",
-          message: "Olá, tudo bem? 😃 É Iza, da Consulfarma! Estamos  levando o *Congresso Consulfarma para São José do Rio Preto com atualizações e inovações na saúde estética e no mercado magistral.\n\nNo palco, nomes como Lucas Portilho, Nelson Maurício, Henry Okigami, Luiz Moreira, Neto Montagnini, Davi Hoffmann e Eduardo Abreu e Claudia Mano! 🤩\n\nVai ser imperdível para quem quer se destacar e crescer na área. Você gostaria de receber a programação?",
-          createdAt: "2025-12-22"
-        },
-        {
-          name: "tipo_3_rio_preto_congresso_mkt_prospec_2026_csf_v1",
-          message: "Olá! Tudo bem? 🤩 Aqui é a Iza da Consulfarma! O Congresso Consulfarma está chegando a São José do Rio Preto, trazendo as principais atualizações e inovações em saúde estética e no mercado magistral.\n\nNo palco, grandes referências da área como Lucas Portilho, Nelson Mauricio, Henry Okigami, Luiz Moreira, Neto Montagnini, Davi Hoffmann, Eduardo Abreu e Claudia Mano.\n\nSerá uma experiência imperdível para quem busca diferenciação, crescimento profissional e atualização de alto nível. Posso te enviar a programação completa?",
-          createdAt: "2025-12-22"
-        },
-        {
-          name: "grade_ano_novo_congresso_2026_csf_v1",
-          message: "Oiie tudo bem? 😊 E a Iza da Consulfarma! Desejo um feliz ano novo.\n\nPassando para avisar que já estamos com a grade completa do Congresso Consulfarma deste ano, estaremos com Congresso Consulfarma:\n✨ Conteúdo científico atualizado\n🎤 Grandes nomes do mercado\n💡 Tendências, inovações e lançamentos exclusivos\n🤝 Networking com profissionais e marcas que movimentam o setor\n\nPosso te enviar a programação?",
-          createdAt: "2025-12-22"
-        },
-        {
           name: "novidade_sobre_evento_csf_v1",
           message: "Oi! Tudo bem? Aqui é a Iza da Consulfarma 💊. Vi que você atua na área de saúde estética/magistral.\n\nPosso te mandar uma novidade incrível sobre um evento que vai acontecer na sua região? 🎉",
-          createdAt: "2025-12-22"
-        },
-        {
-          name: "ja_analisou_rio_preto_congresso_mkt_2026_csf_v1",
-          message: "Oiie tudo bem?😊 Você conseguiu analisar a programação do seminário que iremos realizar em São José do Rio Preto?",
           createdAt: "2025-12-22"
         },
         {
@@ -769,19 +1051,14 @@
           createdAt: "2025-12-22"
         },
         {
-          name: "contato_ultimo_chamado_congresso_riopreto_hi_v1",
-          message: "Oii tudo bem? Estamos encerrando as inscrições no Congresso de Rio Preto, vc ainda tem interesse em participar?",
-          createdAt: "2026-01-23"
-        },
-        {
           name: "confirmacao_interesse_congresso_csf_v1",
           message: "Bom dia, nosso congresso Consulfarma é na próxima semana, você ainda tem interesse ou devo desconsiderar o contato?",
           createdAt: "2026-02-05"
         },
         {
-          name: "abertura_convite_congresso_csf_v1",
-          message: "Oii, tudo bem? 😊 É Iza, da Consulfarma, estamos levando o Congresso Consulfarma para Porto Alegre com atualizações e inovações na saúde estética e no mercado magistral.\n\nNo palco, Lucas Portilho, Nelson Maurício, Henry Okigami, Luiz Moreira, Neto Montagnini, Davi Hoffmann, Izabela Martins e Thiago Guizeline! 🤩\n\nVai ser imperdível para quem quer se destacar e crescer na área. Posso te enviar a programação?",
-          createdAt: "2026-02-05"
+          name: "abertura_convite_congresso_csf_v2",
+          message: "Oii, tudo bem? 😊É Iza, da Consulfarma, estamos  levando o *Congresso Consulfarma* para *Porto Alegre* com atualizações e inovações na saúde estética e no mercado magistral.\n\nNo palco, *Lucas Portilho, Nelson Maurício, Henry Okigami, Luiz Moreira, Guilherme Sarao, Vitoria  Polizello, Davi Hoffmann e Izabela Martins, Thiago Guizeline!* 🤩\n\nVai ser imperdível para quem quer se destacar e crescer na área.  Posso te enviar a programação?",
+          createdAt: "2026-02-10"
         },
         {
           name: "followup_inscricao_seminario_csf_v1",
@@ -789,9 +1066,119 @@
           createdAt: "2026-02-05"
         },
         {
-          name: "confirmacao_inscricao_seminario_csf_v1",
-          message: "Oiie, tudo bem? ☺️ É a Iza da Consulfarma.\n\nPassando para confirmar sua inscrição no seminário Consulfarma de Rio Preto nessa semana.\n\nAmbos os dias começam às 8:30, recomendo chegar antes para pegar um bom lugar.\n\nLocal do evento 📌\nHotel Nacional de Rio Preto Distributed by Intercity - R. Prof. Carlos Ibanez, 35 - Vila Diniz, São José do Rio Preto - SP, 15070-655.",
-          createdAt: "2026-02-05"
+          name: "abertura_convite_congresso_csf_v3",
+          message: "Oi, tudo bem? 😊 Aqui é a Iza, da Consulfarma!\nEstou entrando em contato porque estamos levando o Congresso Consulfarma para Porto Alegre, com conteúdos atualizados e estratégicos para quem atua na saúde estética e no mercado magistral.\n\nTeremos no palco nomes como *Lucas Portilho, Nelson Maurício, Henry Okigami, Luiz Moreira, Guilherme Sarao, Vitória Polizello, Davi Hoffmann, Izabela Martins e Thiago Guizeline*.🚀\n\nSerá uma ótima oportunidade para se atualizar, gerar networking e aplicar novas estratégias no seu negócio.\n\n*Posso te enviar a programação completa?* 😊",
+          createdAt: "2026-02-12"
+        },
+        {
+          name: "agradecimento_seminario_csf_x_v1",
+          message: "Oiie, tudo joia? ☺️ Passando para agradecer pela sua presença no seminário Consulfarma! E deixar o acesso para você adquirir seu certificado e material. Basta fazer seu cadastro no site 👇🏻\ncertificado.consulfarma.com\n\nLiberaremos em 5 dias úteis 📌\n\nE gostaria de saber: o que você achou das aulas? Qual você mais gostou e teve alguma que não te agregou tanto?",
+          createdAt: "2026-02-19"
+        },
+        {
+          name: "abertura_convite_congresso_csf_v4",
+          message: "Oii, tudo bem? 😊 É Iza, da Consulfarma, estamos  levando o Congresso Consulfarma para Porto Alegre  com atualizações e inovações na saúde estética e no mercado magistral. \n\nNo palco, *Lucas Portilho, Nelson Maurício, Henry Okigami, Luiz Moreira, Guilherme Sarao, Vitoria  Polizello, Davi Hoffmann e Izabela Martins, Thiago Guizeline!* 🤩\n\nVai ser imperdível para quem quer se destacar e crescer na área. Posso te enviar a programação?",
+          createdAt: "2026-02-19"
+        },
+        {
+          name: "contato_lote_grade_congresso_csf_v1",
+          message: "Oii, tudo bem? 😊 Aqui é a *Iza*, da *Consulfarma*, passando para avisar que a *grade oficial* do *21º Congresso Consulfarma* já está disponível!\n\nEste ano está ainda mais incrível, serão *3 dias* de *conteúdo científico*, *inovação*, *tendências do setor magistral* e palestras com *renomados profissionais*, tudo para trazer atualização prática e estratégica para o seu dia a dia.\n\nE atenção: as *datas de virada de lotes* estão próximas!\n\nPosso te enviar a *programação completa*?",
+          createdAt: "2026-02-24"
+        },
+        {
+          name: "agradecimento_seminario_csf_v2",
+          message: "Oiie, tudo joia? ☺️ Passando para *agradecer* pela sua presença no *Seminário Consulfarma*!\n\nE deixar o acesso para você adquirir seu *certificado* e *material*. Basta fazer seu cadastro no site 👇🏻\n*certificados.consulfarma.com* 📌\n\nE gostaria de saber: o que você achou das aulas? Qual você *mais gostou* e teve alguma que não te agregou tanto?",
+          createdAt: "2026-02-24"
+        },
+        {
+          name: "followup_inscricao_seminario_csf_v2",
+          message: "Oiie tudo bem? 😃 Tem um minuto para realizarmos sua inscrição?",
+          createdAt: "2026-02-24"
+        },
+        {
+          name: "contato_lote_grade_congresso_csf_v2",
+          message: "Oi, tudo bem? 😊 Aqui é a *Iza*, da *Consulfarma*, passando para avisar que a *grade oficial* do *21º Congresso Consulfarma* já está disponível!\n\nSerão *3 dias* de *conteúdo científico*, *inovação*, *tendências do setor magistral* e palestras com *renomados profissionais*, tudo para trazer atualização prática e estratégica para o seu dia a dia.\n\nPosso te enviar a *programação completa*?",
+          createdAt: "2026-02-25"
+        },
+        {
+          name: "contato_lote_grade_congresso_csf_v3",
+          message: "Olá, tudo bem? 😊 É a *Iza*, da *Consulfarma*!\n\nViu, já estamos com a *grade de programação* do *Congresso Consulfarma 2026*, este ano está imperdível! 🤩\n\nPosso te enviar a *programação*?",
+          createdAt: "2026-02-25"
+        },
+        {
+          name: "contato_lote_grade_congresso_csf_v5",
+          message: "Olá, tudo bem? 😊 Aqui é a *Iza*, da *Consulfarma*! A *programação* do *Congresso Consulfarma 2026* acabou de sair — e esse ano está muito *estratégica* para farmácias que querem *crescer acima da média*. Teremos conteúdos voltados para *aumento de faturamento*, *novas oportunidades no magistral*, *tendências* e *posicionamento competitivo*. \n\nPosso te enviar a *programação*?",
+          createdAt: "2026-02-26"
+        },
+        {
+          name: "contato_lote_grade_congresso_csf_v6",
+          message: "Olá, tudo bem? 😊 É a *Iza*, da *Consulfarma*! Viu, já estamos com a *grade de programação* do *Congresso Consulfarma 2026*, este ano está imperdível! 🤩 \n\nPosso te enviar a *programação*?",
+          createdAt: "2026-02-26"
+        },
+        {
+          name: "contato_lote_grade_congresso_csf_v7",
+          message: "Oi, tudo bem? 😊 Aqui é a *Iza*, da *Consulfarma*, passando para avisar que a *grade oficial* do *21º Congresso Consulfarma* já está disponível! Serão *3 dias* de *conteúdo científico*, *inovação*, *tendências do setor magistral* e palestras com *renomados profissionais*, tudo para trazer atualização prática e estratégica para o seu dia a dia.\n\nPosso te enviar a *programação completa*?",
+          createdAt: "2026-02-26"
+        },
+        {
+          name: "saudacao_ola_seminario_v1",
+          message: "Olá, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_oi_seminario_v1",
+          message: "Oi, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_bomdia_seminario_v1",
+          message: "Bom dia, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boatarde_seminario_v1",
+          message: "Boa tarde, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boanoite_seminario_v1",
+          message: "Boa noite, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_ola_simples_seminario_v1",
+          message: "Olá 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_oi_simples_seminario_v1",
+          message: "Oi 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_bomdia_simples_seminario_v1",
+          message: "Bom dia 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boatarde_simples_seminario_v1",
+          message: "Boa tarde 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boanoite_simples_seminario_v1",
+          message: "Boa noite 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "abertura_convite_congresso_csf_v5",
+          message: "Oii! 😊 Vc conseguiu analisar a programação da Consulfarma em Porto Alegre? Teria interesse em participar?",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "abertura_convite_congresso_csf_v6",
+          message: "Oii, tudo bem? 😊\nAqui é a Iza, A *Consulfarma chega a Porto Alegre* com uma programação estratégica para profissonais que querem crescer no mercado magistral e na saúde estética em 2026.\nGrandes especialistas estarão no palco trazendo tendências e aplicações práticas para aumentar competitividade e faturamento. como: *Lucas Portilho, Nelson Maurício, Henry Okigami, Luiz Moreira, Guilherme Sarao*, entre outros nomes.\n*Posso te enviar a programação?*",
+          createdAt: "2026-03-02"
         }
       ],
       icosmetologia: [
@@ -979,6 +1366,76 @@
           name: "decisao_curso_followup_ic_v1",
           message: "Oii {{1}}!! Tudo bem?? 😁 Conseguiu analisar certinho sobre o curso? Ele se encaixa no que procura ou prefere conhecer nossas outras opções?",
           createdAt: "2026-02-05"
+        },
+        {
+          name: "evento_detalhes_congresso_ic_v1",
+          message: "✨ 4º CONGRESSO ICOSMETOLOGIA 2026 ✨\n\nSaúde estética e cosmetologia com foco em prática clínica, ciência e resultados de alta performance.\n\n📅 02 de julho | 📍 Distrito Anhembi – São Paulo\n⏰ 8h30 às 18h30 | 100% presencial\n\n🔹 *O que você vai encontrar:*\n✔ Prescrição e procedimentos perfeitamente combinados\n✔️ Resultados de Excelência e alta performance clínica\n✔️ Acesso a conteúdos e materiais únicos para enriquecer seus atendimentos.\n✔️ Conecte-se com outros profissionais e troque experiências valiosas.\n✔️ Técnicas Atualizadas nas últimas tendências do mercado.\n\n🧠 Temas em destaque:\n\n🔹 Peeling e Microagulhamento no Melasma\nMatheus Struecker\n\n🔹 Lipedema e Linfedema\nJoão Tassinary\n\n🔹 Peles Sensíveis e Homecare\nLucas Portilho\n\n🔹 Clínica Segura e Livre de Polêmicas\nGuilherme Cattani\n\n🔹 Peeling para Área dos Olhos\nNelson Maurício\n\n📌 Programação completa das *8h às 18h30* , com palestras exclusivas e intervalos estratégicos para networking.",
+          createdAt: "2026-02-10"
+        },
+        {
+          name: "contato_abertura_congresso_ic_v1",
+          message: "Oieeee tudo bem??\n\nVocê já sabe dos nossos eventos em Julho no Congresso Consulfarma — o maior evento voltado ao mercado magistral do mundo? 🤩\n\n📅 02, 03 e 04 de julho\n📍 São Paulo – SP | Presencial\n\nSão dois congressos acontecendo simultaneamente:\n\n🔬 *Congresso de Saúde e Estética* – Protocolo Padrão Ouro\nFoco em inovação e personalização de protocolos\n\n🧠 *Congresso Hi Nutrition*\nFoco em tratamentos nutricionais\n\nPalestras com os melhores profissionais do mercado e temas imperdíveis!\n\nTem interesse? Te mando os dados completos! 🙌🤗",
+          createdAt: "2026-02-10"
+        },
+        {
+          name: "promocao_conselho_pos_com_nome_ic_v1",
+          message: "Oii {{1}}!! Tudo bem?? 😁 Hoje iniciamos uma *ação especial* para profissionais com *conselho ativo*! As matrículas realizadas até o dia *26/02* garantem:\n\n✅ *20% de desconto* por pontualidade\n✅ Parcelamento em até *24x sem juros*\n✅ *Isenção da taxa de matrícula*\n\nVocê está com o seu *conselho ativo*?",
+          createdAt: "2026-02-24"
+        },
+        {
+          name: "promocao_conselho_pos_sem_nome_ic_v1",
+          message: "Oii!! Tudo bem?? 😁 Hoje iniciamos uma *ação especial* para profissionais com *conselho ativo*! As matrículas realizadas até o dia *26/02* garantem:\n\n✅ *20% de desconto* por pontualidade\n✅ Parcelamento em até *24x sem juros*\n✅ *Isenção da taxa de matrícula*\n\nVocê está com o seu *conselho ativo*?",
+          createdAt: "2026-02-24"
+        },
+        {
+          name: "saudacao_ola_ic_v2",
+          message: "Olá, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_oi_ic_v1",
+          message: "Oi, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_bomdia_ic_v1",
+          message: "Bom dia, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boatarde_ic_v1",
+          message: "Boa tarde, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boanoite_ic_v1",
+          message: "Boa noite, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_ola_simples_ic_v1",
+          message: "Olá 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_oi_simples_ic_v1",
+          message: "Oi 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_bomdia_simples_ic_v1",
+          message: "Bom dia 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boatarde_simples_ic_v1",
+          message: "Boa tarde 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boanoite_simples_ic_v1",
+          message: "Boa noite 👋",
+          createdAt: "2026-03-02"
         }
       ],
       hinutrition: [
@@ -1151,6 +1608,81 @@
           name: "decisao_curso_followup_hi_v1",
           message: "Oii {{1}}!! Tudo bem?? 😁 Conseguiu analisar certinho sobre o curso? Ele se encaixa no que procura ou prefere conhecer nossas outras opções?",
           createdAt: "2026-02-05"
+        },
+        {
+          name: "evento_detalhes_congresso_hi_v1",
+          message: "✨ *4º CONGRESSO HI NUTRITION 2026* ✨\n\nAtualização científica, networking e prática clínica em saúde integrativa e feminina — em um único dia.\n\n📅 03 de julho | 📍 Distrito Anhembi – São Paulo\n⏰ 8h30 às 18h30 | 100% presencial\n\n🔹 O que você vai encontrar:*\n✔ Conteúdo baseado em evidências\n✔ Palestrantes referência nacional\n✔ Abordagem multidisciplinar e integrativa\n✔ Certificado \n✔ Apostila em PDF\n\n🧠 Temas em destaque:\n\n🔹 Microbiota, hormônios e bem-estar da mulher 40+\nIlanna Marques & Paula Rios\n\n🔹 Lipedema: abordagem multidisciplinar\nOmar Faria & Luisa Wolpe\n\n🔹 Terapias peptídicas e o futuro da medicina da mulher\nLuiz Moreira & Lucas Chinellato\n\n🔹 Intestino e cérebro\nFabrício Assini\n\n🔹 Metabolismo feminino, performance e longevidade\nAlessandra Pinheiro & Rodolfo Peres\n\n🔹 Nutrição integrativa, envelhecimento saudável e mitocôndrias\nAdriana Azank, Alessandra Feltre & Henry Okigami",
+          createdAt: "2026-02-10"
+        },
+        {
+          name: "contato_abertura_congresso_hi_v1",
+          message: "Oieeee tudo bem??\n\nVocê já sabe dos nossos eventos em Julho no Congresso Consulfarma — o maior evento voltado ao mercado magistral do mundo? 🤩\n\n📅 02, 03 e 04 de julho\n📍 São Paulo – SP | Presencial\n\nSão dois congressos acontecendo simultaneamente:\n\n🔬 *Congresso de Saúde e Estética* – Protocolo Padrão Ouro\nFoco em inovação e personalização de protocolos\n\n🧠 *Congresso Hi Nutrition*\nFoco em tratamentos nutricionais\n\nPalestras com os melhores profissionais do mercado e temas imperdíveis!\n\nTem interesse? Te mando os dados completos! 🙌🤗",
+          createdAt: "2026-02-10"
+        },
+        {
+          name: "abertura_congresso_gutbrain_hi_v1",
+          message: "Olá! Tudo bem? 😊 Aqui é a equipe de inscrições do *Congresso Gut Brain*.\n\nVi que você demonstrou interesse no evento e quero garantir que não perca essa oportunidade!\n\nSão *palestras exclusivas* com os maiores nomes da área, conteúdo 100% atualizado e networking com profissionais de todo o país.\n\n🧠 Programação científica de alto nível\n📋 Cronograma pensado para máximo aproveitamento\n🎓 Certificação reconhecida\n\nPosso te enviar a *programação completa* para você avaliar?",
+          createdAt: "2026-02-12"
+        },
+        {
+          name: "promocao_conselho_pos_com_nome_hi_v1",
+          message: "Oii {{1}}!! Tudo bem?? 😁 Hoje iniciamos uma *ação especial* para profissionais com *conselho ativo*! As matrículas realizadas até o dia *26/02* garantem:\n\n✅ *20% de desconto* por pontualidade\n✅ Parcelamento em até *24x sem juros*\n✅ *Isenção da taxa de matrícula*\n\nVocê está com o seu *conselho ativo*?",
+          createdAt: "2026-02-24"
+        },
+        {
+          name: "promocao_conselho_pos_sem_nome_hi_v1",
+          message: "Oii!! Tudo bem?? 😁 Hoje iniciamos uma *ação especial* para profissionais com *conselho ativo*! As matrículas realizadas até o dia *26/02* garantem:\n\n✅ *20% de desconto* por pontualidade\n✅ Parcelamento em até *24x sem juros*\n✅ *Isenção da taxa de matrícula*\n\nVocê está com o seu *conselho ativo*?",
+          createdAt: "2026-02-24"
+        },
+        {
+          name: "saudacao_ola_hi_v2",
+          message: "Olá, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_oi_hi_v1",
+          message: "Oi, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_bomdia_hi_v1",
+          message: "Bom dia, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boatarde_hi_v1",
+          message: "Boa tarde, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boanoite_hi_v1",
+          message: "Boa noite, {{1}}! Seja bem-vindo! 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_ola_simples_hi_v1",
+          message: "Olá 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_oi_simples_hi_v1",
+          message: "Oi 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_bomdia_simples_hi_v1",
+          message: "Bom dia 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boatarde_simples_hi_v1",
+          message: "Boa tarde 👋",
+          createdAt: "2026-03-02"
+        },
+        {
+          name: "saudacao_boanoite_simples_hi_v1",
+          message: "Boa noite 👋",
+          createdAt: "2026-03-02"
         }
       ]
     };
@@ -1197,6 +1729,41 @@
         { name: 'Izadora Costa', number: 7 }
       ]
     };
+    // ADMIN_DATA_END
+
+    // ========== SECTION 2b: TEMPLATE SORTING & BADGE FUNCTIONS (top-level) ==========
+
+    // Validate date format (YYYY-MM-DD)
+    function validateDateFormat(dateString) {
+      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+      return dateRegex.test(dateString);
+    }
+
+    // Get templates sorted by deployedAt/createdAt (DESC - newest first)
+    function getSortedTemplates(companyKey) {
+      const templates = TEMPLATES[companyKey];
+      if (!templates || templates.length === 0) return [];
+      return [...templates].sort((a, b) => {
+        const dateA = a.deployedAt || a.createdAt || "";
+        const dateB = b.deployedAt || b.createdAt || "";
+        return dateB.localeCompare(dateA); // DESC: newest first
+      });
+    }
+
+    // Get newest template date for a company
+    function getNewestTemplateDate(companyKey) {
+      const sorted = getSortedTemplates(companyKey);
+      const first = sorted.length > 0 ? sorted[0] : null;
+      if (!first) return null;
+      return first.deployedAt || first.createdAt || null;
+    }
+
+    // Check if template should show "novo" badge
+    function isNewTemplate(template, companyKey) {
+      const newestDate = getNewestTemplateDate(companyKey);
+      const templateDate = template.deployedAt || template.createdAt || null;
+      return newestDate !== null && templateDate === newestDate;
+    }
 
     // ========== SECTION 3: TEMPLATE CATALOG RENDERING ==========
 
@@ -1274,42 +1841,6 @@
           renderCarteiras();
         }
       }
-
-      // ========== TEMPLATE SORTING & BADGE FUNCTIONS (2026-01-28) ==========
-
-      // T008: Validate date format (YYYY-MM-DD)
-      function validateDateFormat(dateString) {
-        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-        return dateRegex.test(dateString);
-      }
-
-      // T009: Get templates sorted by createdAt (DESC - newest first)
-      function getSortedTemplates(companyKey) {
-        const templates = TEMPLATES[companyKey];
-        if (!templates || templates.length === 0) return [];
-
-        // Clone and sort DESC by createdAt
-        return [...templates].sort((a, b) => {
-          const dateA = a.createdAt || "";
-          const dateB = b.createdAt || "";
-          return dateB.localeCompare(dateA); // DESC: newest first
-        });
-      }
-
-      // T010: Get newest template date for a company
-      function getNewestTemplateDate(companyKey) {
-        const sorted = getSortedTemplates(companyKey);
-        return sorted.length > 0 && sorted[0].createdAt ? sorted[0].createdAt : null;
-      }
-
-      // T011: Check if template should show "novo" badge
-      // Shows badge on ALL templates with the most recent date
-      function isNewTemplate(template, companyKey) {
-        const newestDate = getNewestTemplateDate(companyKey);
-        return newestDate !== null && template.createdAt === newestDate;
-      }
-
-      // ========== END SORTING FUNCTIONS ==========
 
       // Update theme color based on active company
       function updateTheme() {
@@ -1767,6 +2298,426 @@
           </div>
         </div>
       `;
+    }
+
+    // ========== SECTION 10: ADMIN PANEL - CONFIGURATION ==========
+    const ADMIN_CONFIG = {
+      USERNAME: 'admin',
+      PASSWORD: 'consulfarma2026',
+      GITHUB_TOKEN: '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',
+      GITHUB_OWNER: 'rogercaandido',
+      GITHUB_REPO: 'sales-template-catalog',
+      GITHUB_BRANCH: '001-template-catalog-react',
+      GITHUB_FILE_PATH: 'index.html',
+      SESSION_KEY: 'admindev_auth'
+    };
+
+    // ========== SECTION 11: ADMIN PANEL - AUTH ==========
+    const adminAuth = {
+      login(username, password) {
+        if (username === ADMIN_CONFIG.USERNAME && password === ADMIN_CONFIG.PASSWORD) {
+          sessionStorage.setItem(ADMIN_CONFIG.SESSION_KEY, '1');
+          return true;
+        }
+        return false;
+      },
+      logout() {
+        sessionStorage.removeItem(ADMIN_CONFIG.SESSION_KEY);
+        navigateTo(ROUTES.HOME);
+      },
+      isLoggedIn() {
+        return sessionStorage.getItem(ADMIN_CONFIG.SESSION_KEY) === '1';
+      }
+    };
+
+    // ========== SECTION 12: ADMIN PANEL - STATE & CRUD ==========
+    const adminState = {
+      templates: null,
+      companies: null,
+      carteiras: null,
+      activeTab: 'consulfarma',
+      modal: null,  // null | { mode: 'add'|'edit', company, templateName }
+      saving: false,
+      saveError: null
+    };
+
+    function adminInitWorkingCopy() {
+      adminState.templates = JSON.parse(JSON.stringify(TEMPLATES));
+      adminState.companies = JSON.parse(JSON.stringify(COMPANIES));
+      adminState.carteiras = JSON.parse(JSON.stringify(CARTEIRAS));
+    }
+
+    function adminAddTemplate(company, template) {
+      adminState.templates[company].unshift(template);
+    }
+
+    function adminUpdateTemplate(company, index, template) {
+      adminState.templates[company][index] = template;
+    }
+
+    function adminDeleteTemplate(company, index) {
+      adminState.templates[company].splice(index, 1);
+    }
+
+    function adminFindTemplateIndex(company, name) {
+      return adminState.templates[company].findIndex(t => t.name === name);
+    }
+
+    // ========== SECTION 12b: ADMIN PANEL - LOGIN UI ==========
+    function AdminLoginForm() {
+      return `
+        <div class="admin-login-container">
+          <div class="admin-login-title">admin panel</div>
+          <form id="admin-login-form">
+            <div class="admin-field">
+              <label class="admin-label" for="admin-username">Usuário</label>
+              <input class="admin-input" type="text" id="admin-username" autocomplete="username" required />
+            </div>
+            <div class="admin-field">
+              <label class="admin-label" for="admin-password">Senha</label>
+              <input class="admin-input" type="password" id="admin-password" autocomplete="current-password" required />
+            </div>
+            <div id="admin-login-error" class="admin-login-error" style="display:none">
+              Credenciais inválidas.
+            </div>
+            <button type="submit" class="admin-btn admin-btn-primary" style="width:100%;justify-content:center;margin-top:8px;">
+              Entrar
+            </button>
+          </form>
+        </div>
+      `;
+    }
+
+    function handleAdminLogin(event) {
+      event.preventDefault();
+      const username = document.getElementById('admin-username').value.trim();
+      const password = document.getElementById('admin-password').value;
+      const errorEl = document.getElementById('admin-login-error');
+      if (adminAuth.login(username, password)) {
+        errorEl.style.display = 'none';
+        renderAdminPanel();
+      } else {
+        errorEl.style.display = 'block';
+      }
+    }
+
+    // ========== SECTION 12c: ADMIN PANEL - UI COMPONENTS ==========
+    function AdminTemplateRow(template, company) {
+      const preview = (template.message || '')
+        .replace(/\n/g, ' ')
+        .substring(0, 60);
+      const previewText = preview.length < (template.message || '').replace(/\n/g, ' ').length
+        ? preview + '…'
+        : preview;
+      return `
+        <div class="admin-row">
+          <span class="admin-row-name">${template.name}</span>
+          <span class="admin-row-preview">${previewText}</span>
+          <span class="admin-row-date">${template.deployedAt || ''}</span>
+          <button class="admin-btn admin-btn-icon" onclick="adminOpenEditModal('${company}', '${template.name.replace(/'/g, "\\'")}')" title="Editar">✎</button>
+          <button class="admin-btn admin-btn-icon admin-btn-danger" onclick="adminConfirmDelete('${company}', '${template.name.replace(/'/g, "\\'")}')" title="Excluir">✕</button>
+        </div>
+      `;
+    }
+
+    function AdminModal() {
+      const m = adminState.modal;
+      const isEdit = m && m.mode === 'edit';
+      let tmpl = null;
+      if (isEdit && m) {
+        const idx = adminFindTemplateIndex(m.company, m.templateName);
+        if (idx !== -1) tmpl = adminState.templates[m.company][idx];
+      }
+
+      const today = new Date().toISOString().split('T')[0];
+      const companiesOptions = (adminState.companies || []).map(c =>
+        `<option value="${c.id}" ${(m && m.company === c.id) ? 'selected' : ''}>${c.label}</option>`
+      ).join('');
+
+      return `
+        <div class="admin-modal-backdrop" id="admin-modal-backdrop">
+          <div class="admin-modal">
+            <div class="admin-modal-title">${isEdit ? 'Editar Template' : 'Novo Template'}</div>
+            <form id="modal-form">
+              <div id="modal-errors" class="admin-modal-errors" style="display:none"></div>
+              <div class="admin-field">
+                <label class="admin-label" for="modal-company">Empresa</label>
+                <select class="admin-select" id="modal-company" ${isEdit ? 'disabled' : ''}>
+                  ${companiesOptions}
+                </select>
+              </div>
+              <div class="admin-field">
+                <label class="admin-label" for="modal-name">Nome (identificador)</label>
+                <input class="admin-input" type="text" id="modal-name"
+                  value="${tmpl ? tmpl.name : ''}"
+                  placeholder="ex: boas_vindas_v2"
+                  ${isEdit ? 'readonly style="opacity:0.6"' : ''} />
+              </div>
+              <div class="admin-field">
+                <label class="admin-label" for="modal-message">Mensagem</label>
+                <textarea class="admin-textarea" id="modal-message" rows="6" placeholder="Conteúdo do template...">${tmpl ? tmpl.message : ''}</textarea>
+              </div>
+              <div class="admin-field">
+                <label class="admin-label" for="modal-date">Data de Deploy (YYYY-MM-DD)</label>
+                <input class="admin-input" type="date" id="modal-date" value="${tmpl && (tmpl.deployedAt || tmpl.createdAt) ? (tmpl.deployedAt || tmpl.createdAt) : (isEdit ? '' : today)}" />
+              </div>
+              <div class="admin-modal-actions">
+                <button type="button" id="modal-cancel-btn" class="admin-btn">Cancelar</button>
+                <button type="submit" class="admin-btn admin-btn-primary">Salvar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+
+    function AdminPanelLayout() {
+      const companies = adminState.companies || [];
+      const activeTab = adminState.activeTab;
+      const activeCompany = companies.find(c => c.id === activeTab);
+      const themeClass = activeCompany ? `theme-${activeCompany.id}` : '';
+
+      const tabsHtml = companies.map(c => `
+        <button class="admin-tab-btn ${c.id === activeTab ? 'active' : ''}"
+          data-admin-tab="${c.id}">${c.label}</button>
+      `).join('');
+
+      const rawTemplates = (adminState.templates && adminState.templates[activeTab]) || [];
+      const sortedTemplates = [...rawTemplates].sort((a, b) => {
+        const dateA = a.deployedAt || a.createdAt || '';
+        const dateB = b.deployedAt || b.createdAt || '';
+        return dateB.localeCompare(dateA);
+      });
+      const rowsHtml = sortedTemplates.length > 0
+        ? sortedTemplates.map(t => AdminTemplateRow(t, activeTab)).join('')
+        : '<div style="padding:16px;color:#525252;font-size:0.75rem;">Nenhum template nesta empresa.</div>';
+
+      return `
+        <div class="${themeClass}" style="min-height:100vh;background:#0a0a0a;">
+          <div class="admin-header">
+            <span class="admin-header-title">admin panel</span>
+            ${adminState.saving ? '<span class="admin-saving-indicator">Salvando…</span>' : ''}
+            <button class="admin-btn-link" onclick="navigateTo(ROUTES.HOME)">← Catálogo</button>
+            <button id="admin-logout-btn" class="admin-btn">Sair</button>
+          </div>
+          <div class="admin-tabs">
+            ${tabsHtml}
+          </div>
+          <div class="admin-section-header">
+            <span class="admin-section-title">${activeCompany ? activeCompany.label : activeTab} — ${sortedTemplates.length} template(s)</span>
+            <button id="admin-add-btn" class="admin-btn admin-btn-primary">+ Novo Template</button>
+          </div>
+          <div id="admin-template-list">
+            ${rowsHtml}
+          </div>
+        </div>
+      `;
+    }
+
+    function adminOpenEditModal(company, templateName) {
+      adminState.modal = { mode: 'edit', company, templateName };
+      renderAdminPanel();
+    }
+
+    function adminOpenAddModal(company) {
+      adminState.modal = { mode: 'add', company };
+      renderAdminPanel();
+    }
+
+    function adminCloseModal(autoSave) {
+      adminState.modal = null;
+      renderAdminPanel();
+      if (autoSave) commitToGitHub();
+    }
+
+    function handleModalSubmit(event) {
+      event.preventDefault();
+      const errorsEl = document.getElementById('modal-errors');
+      const errors = [];
+
+      const m = adminState.modal;
+      const isEdit = m && m.mode === 'edit';
+      const company = isEdit ? m.company : document.getElementById('modal-company').value;
+      const name = document.getElementById('modal-name').value.trim();
+      const message = document.getElementById('modal-message').value.trim();
+      const dateVal = document.getElementById('modal-date').value.trim();
+
+      if (!name) {
+        errors.push('Nome é obrigatório.');
+      } else if (!/^[a-z0-9_]+$/.test(name)) {
+        errors.push('Nome deve conter apenas letras minúsculas, números e underscore (_).');
+      }
+      if (!message) {
+        errors.push('Mensagem é obrigatória.');
+      }
+      if (dateVal && !validateDateFormat(dateVal)) {
+        errors.push('Data deve estar no formato YYYY-MM-DD.');
+      }
+      if (!isEdit) {
+        const existing = adminFindTemplateIndex(company, name);
+        if (existing !== -1) {
+          errors.push(`Já existe um template com o nome "${name}" nesta empresa.`);
+        }
+      }
+
+      if (errors.length > 0) {
+        errorsEl.style.display = 'block';
+        errorsEl.innerHTML = errors.map(e => `<div>${e}</div>`).join('');
+        return;
+      }
+
+      errorsEl.style.display = 'none';
+      const template = { name, message, deployedAt: dateVal || null };
+      if (isEdit) {
+        const idx = adminFindTemplateIndex(m.company, m.templateName);
+        if (idx !== -1) adminUpdateTemplate(m.company, idx, template);
+      } else {
+        adminAddTemplate(company, template);
+      }
+      adminCloseModal(true);
+    }
+
+    function adminConfirmDelete(company, templateName) {
+      if (confirm(`Excluir o template "${templateName}"? Esta ação não pode ser desfeita.`)) {
+        const idx = adminFindTemplateIndex(company, templateName);
+        if (idx !== -1) {
+          adminDeleteTemplate(company, idx);
+          renderAdminPanel();
+          commitToGitHub();
+        }
+      }
+    }
+
+    function attachAdminEventListeners() {
+      const logoutBtn = document.getElementById('admin-logout-btn');
+      if (logoutBtn) logoutBtn.addEventListener('click', () => adminAuth.logout());
+
+      const tabBtns = document.querySelectorAll('[data-admin-tab]');
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          adminState.activeTab = btn.dataset.adminTab;
+          renderAdminPanel();
+        });
+      });
+
+      const addBtn = document.getElementById('admin-add-btn');
+      if (addBtn) addBtn.addEventListener('click', () => adminOpenAddModal(adminState.activeTab));
+    }
+
+    function attachModalEventListeners() {
+      const form = document.getElementById('modal-form');
+      if (form) form.addEventListener('submit', handleModalSubmit);
+
+      const cancelBtn = document.getElementById('modal-cancel-btn');
+      if (cancelBtn) cancelBtn.addEventListener('click', adminCloseModal);
+
+      const backdrop = document.getElementById('admin-modal-backdrop');
+      if (backdrop) {
+        backdrop.addEventListener('click', (e) => {
+          if (e.target === backdrop) adminCloseModal();
+        });
+      }
+    }
+
+    function renderAdminPanel() {
+      const existingModal = document.getElementById('admin-modal-backdrop');
+      if (existingModal) existingModal.remove();
+      const appContainer = document.getElementById('app');
+      if (!adminAuth.isLoggedIn()) {
+        appContainer.innerHTML = AdminLoginForm();
+        const loginForm = document.getElementById('admin-login-form');
+        if (loginForm) loginForm.addEventListener('submit', handleAdminLogin);
+        return;
+      }
+      if (!adminState.templates) adminInitWorkingCopy();
+      appContainer.innerHTML = AdminPanelLayout();
+      attachAdminEventListeners();
+      if (adminState.modal) {
+        const modalEl = document.createElement('div');
+        modalEl.innerHTML = AdminModal();
+        document.body.appendChild(modalEl.firstElementChild);
+        attachModalEventListeners();
+      }
+    }
+
+    // ========== SECTION 13: ADMIN PANEL - GITHUB API ==========
+    function indentLines(str, spaces) {
+      const pad = ' '.repeat(spaces);
+      return str.replace(/\n/g, '\n' + pad);
+    }
+
+    function buildDataBlock() {
+      const toJS = (obj) => JSON.stringify(obj, null, 2)
+        .replace(/"([a-zA-Z_][a-zA-Z0-9_]*)":/g, '$1:');
+      return `    // ADMIN_DATA_START
+    const TEMPLATES = ${indentLines(toJS(adminState.templates), 4)};
+
+    // T004: Define COMPANIES configuration array for tab metadata
+    const COMPANIES = ${indentLines(toJS(adminState.companies), 4)};
+
+    // Carteiras data for each company
+    const CARTEIRAS = ${indentLines(toJS(adminState.carteiras), 4)};
+    // ADMIN_DATA_END
+`;
+    }
+
+    async function commitToGitHub() {
+      adminState.saving = true;
+      adminState.saveError = null;
+      renderAdminPanel();
+      try {
+        const apiUrl = `https://api.github.com/repos/${ADMIN_CONFIG.GITHUB_OWNER}/${ADMIN_CONFIG.GITHUB_REPO}/contents/${ADMIN_CONFIG.GITHUB_FILE_PATH}`;
+        const getResp = await fetch(`${apiUrl}?ref=${ADMIN_CONFIG.GITHUB_BRANCH}`, {
+          headers: {
+            'Authorization': `token ${ADMIN_CONFIG.GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        if (!getResp.ok) {
+          const errData = await getResp.json().catch(() => ({}));
+          throw new Error(errData.message || `GitHub GET falhou: ${getResp.status}`);
+        }
+        const data = await getResp.json();
+        const currentContent = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+
+        if (!currentContent.includes('// ADMIN_DATA_START') || !currentContent.includes('// ADMIN_DATA_END')) {
+          throw new Error('Marcadores ADMIN_DATA_START / ADMIN_DATA_END não encontrados no arquivo.');
+        }
+
+        const newContent = currentContent.replace(
+          /    \/\/ ADMIN_DATA_START\n[\s\S]*?    \/\/ ADMIN_DATA_END\n/,
+          buildDataBlock()
+        );
+
+        const encoded = btoa(unescape(encodeURIComponent(newContent)));
+        const today = new Date().toISOString().slice(0, 10);
+        const putResp = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${ADMIN_CONFIG.GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `chore: update template data via admin panel (${today})`,
+            content: encoded,
+            sha: data.sha,
+            branch: ADMIN_CONFIG.GITHUB_BRANCH
+          })
+        });
+        if (!putResp.ok) {
+          const errData = await putResp.json().catch(() => ({}));
+          throw new Error(errData.message || `GitHub PUT falhou: ${putResp.status}`);
+        }
+        adminState.saving = false;
+        showToast('Salvo! Deploy iniciado automaticamente.', 'success');
+        renderAdminPanel();
+      } catch (error) {
+        adminState.saving = false;
+        adminState.saveError = error.message;
+        showToast('Erro ao salvar: ' + error.message, 'error');
+        renderAdminPanel();
+      }
     }
 
     // ========== SECTION 7: INITIALIZATION ==========
