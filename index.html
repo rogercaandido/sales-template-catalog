@@ -2323,7 +2323,6 @@
       },
       logout() {
         sessionStorage.removeItem(ADMIN_CONFIG.SESSION_KEY);
-        sessionStorage.removeItem(ADMIN_CONFIG.TOKEN_KEY);
         navigateTo(ROUTES.HOME);
       },
       isLoggedIn() {
@@ -2366,6 +2365,9 @@
 
     // ========== SECTION 12b: ADMIN PANEL - LOGIN UI ==========
     function AdminLoginForm() {
+      const savedToken = localStorage.getItem(ADMIN_CONFIG.TOKEN_KEY) || '';
+      const tokenPlaceholder = savedToken ? '(token salvo — deixe em branco para manter)' : 'github_pat_...';
+      const tokenRequired = savedToken ? '' : 'required';
       return `
         <div class="admin-login-container">
           <div class="admin-login-title">admin panel</div>
@@ -2380,7 +2382,7 @@
             </div>
             <div class="admin-field">
               <label class="admin-label" for="admin-github-token">GitHub Token</label>
-              <input class="admin-input" type="password" id="admin-github-token" placeholder="github_pat_..." required />
+              <input class="admin-input" type="password" id="admin-github-token" placeholder="${tokenPlaceholder}" ${tokenRequired} />
             </div>
             <div id="admin-login-error" class="admin-login-error" style="display:none">
               Credenciais inválidas.
@@ -2399,13 +2401,14 @@
       const password = document.getElementById('admin-password').value;
       const token = document.getElementById('admin-github-token').value.trim();
       const errorEl = document.getElementById('admin-login-error');
-      if (!token) {
+      const effectiveToken = token || localStorage.getItem(ADMIN_CONFIG.TOKEN_KEY) || '';
+      if (!effectiveToken) {
         errorEl.textContent = 'Token GitHub é obrigatório.';
         errorEl.style.display = 'block';
         return;
       }
       if (adminAuth.login(username, password)) {
-        sessionStorage.setItem(ADMIN_CONFIG.TOKEN_KEY, token);
+        if (token) localStorage.setItem(ADMIN_CONFIG.TOKEN_KEY, token);
         errorEl.style.display = 'none';
         renderAdminPanel();
       } else {
@@ -2679,7 +2682,7 @@
       adminState.saveError = null;
       renderAdminPanel();
       try {
-        const githubToken = sessionStorage.getItem(ADMIN_CONFIG.TOKEN_KEY);
+        const githubToken = localStorage.getItem(ADMIN_CONFIG.TOKEN_KEY);
         if (!githubToken) throw new Error('Token GitHub não encontrado. Faça login novamente.');
         const apiUrl = `https://api.github.com/repos/${ADMIN_CONFIG.GITHUB_OWNER}/${ADMIN_CONFIG.GITHUB_REPO}/contents/${ADMIN_CONFIG.GITHUB_FILE_PATH}`;
         const getResp = await fetch(`${apiUrl}?ref=${ADMIN_CONFIG.GITHUB_BRANCH}`, {

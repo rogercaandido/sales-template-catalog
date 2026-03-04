@@ -859,7 +859,7 @@ This delivers core value quickly while deferring nice-to-have features.
 - [ ] T097 Verify 6px gap spacing maintained between all carteira items (horizontal and vertical)
 - [ ] T098 [P] Take before/after screenshots for Hi Nutrition tab (demonstrates the fix most clearly)
 - [X] T099 Update CLAUDE.md "Active Features & Technologies" section with: "Carteiras layout: Fixed grid distribution using auto-fit (2026-02-05)"
-- [ ] T100 Commit changes with message: `fix: change carteiras grid from auto-fill to auto-fit for uniform distribution`
+- [X] T100 Commit changes with message: `fix: change carteiras grid from auto-fill to auto-fit for uniform distribution`
 
 **Checkpoint**: Implementation complete, validated, and documented
 
@@ -1006,5 +1006,152 @@ If issues arise during implementation:
 
 ---
 
-**Tasks Generated**: 2026-01-13 (original), 2026-02-05 (carteiras layout fix added)
+**Tasks Generated**: 2026-01-13 (original), 2026-02-05 (carteiras layout fix added), 2026-03-04 (admin panel added)
 **Ready for Implementation**: Run `/speckit.implement` to execute tasks sequentially
+
+---
+
+## Phase 14: Admin Panel — Routing (Prerequisite)
+
+**Purpose**: Registrar a nova rota `/admindev` no sistema de roteamento existente
+
+**⚠️ NOTA**: Os marcadores `// ADMIN_DATA_START` e `// ADMIN_DATA_END` já foram adicionados manualmente em `index.html` antes de `const TEMPLATES` e depois de `const CARTEIRAS`. Não adicionar novamente.
+
+- [X] T101 Verificar que os marcadores `// ADMIN_DATA_START` e `// ADMIN_DATA_END` estão presentes em `index.html` (um antes de `const TEMPLATES`, outro após o fechamento `};` de `CARTEIRAS`)
+- [X] T102 Adicionar `ADMIN: '/admindev'` ao objeto `ROUTES` em `index.html` (linha ~510, após `REPORTS: '/reportadminx'`)
+- [X] T103 Adicionar branch `else if (route === ROUTES.ADMIN) { renderAdminPanel(); }` na função `renderRoute()` em `index.html`, antes do bloco `else` de rota desconhecida
+
+**Checkpoint**: Navegar para `/#/admindev` deve resultar em chamada a `renderAdminPanel()` (ainda inexistente — erro no console é esperado)
+
+---
+
+## Phase 15: Admin Panel — CSS
+
+**Purpose**: Adicionar estilos do painel admin sem colidir com estilos existentes
+
+- [X] T104 Adicionar bloco CSS do admin panel antes de `</style>` em `index.html`, incluindo: `.admin-header`, `.admin-header-title`, `.admin-btn`, `.admin-btn-primary`, `.admin-btn-danger`, `.admin-btn-icon`
+- [X] T105 Adicionar CSS para layout de lista de templates: `.admin-section-header`, `.admin-section-title`, `.admin-row` (grid: `1fr 2fr 100px auto auto`), `.admin-row:hover`, `.admin-row-name`, `.admin-row-preview`, `.admin-row-date`
+- [X] T106 Adicionar CSS para modal de edição: `.admin-modal-backdrop`, `.admin-modal`, `.admin-modal-title`, `.admin-modal-errors`, `.admin-modal-actions`
+- [X] T107 Adicionar CSS para campos de formulário: `.admin-field`, `.admin-label`, `.admin-input`, `.admin-textarea`, `.admin-select` com focus states
+- [X] T108 Adicionar CSS para tela de login: `.admin-login-container`, `.admin-login-title`, `.admin-login-error`
+- [X] T109 Adicionar responsive breakpoint `@media (max-width: 640px)` que oculta `.admin-row-preview` e `.admin-row-date` e simplifica o grid para `1fr auto auto`
+
+**Checkpoint**: Classes CSS definidas (sem elementos visíveis ainda)
+
+---
+
+## Phase 16: Admin Panel — Configuração e Auth
+
+**Purpose**: Credenciais hardcoded e wrapper de sessionStorage para controle de sessão
+
+- [X] T110 Adicionar `SECTION 10: ADMIN PANEL - CONFIGURATION` antes de `SECTION 7: INITIALIZATION` em `index.html`, com constante `ADMIN_CONFIG` contendo: `USERNAME`, `PASSWORD`, `GITHUB_TOKEN` (placeholder `'CONFIGURE_ME'`), `GITHUB_OWNER` (placeholder `'CONFIGURE_ME'`), `GITHUB_REPO` (placeholder `'CONFIGURE_ME'`), `GITHUB_BRANCH: 'main'`, `GITHUB_FILE_PATH: 'index.html'`, `SESSION_KEY: 'admindev_auth'`
+- [X] T111 Adicionar `SECTION 11: ADMIN PANEL - AUTH` com objeto `adminAuth` contendo métodos: `login(username, password)` (valida e grava `'1'` no sessionStorage), `logout()` (remove chave e chama `navigateTo(ROUTES.HOME)`), `isLoggedIn()` (retorna true se sessionStorage tem `'1'`)
+- [X] T112 Adicionar função `AdminLoginForm()` retornando HTML string com: container `.admin-login-container`, título "admin panel", form `id="admin-login-form"`, input username `id="admin-username"`, input password `id="admin-password"`, botão submit, div de erro `id="admin-login-error"` (display:none por padrão)
+- [X] T113 Adicionar função `handleAdminLogin(event)` que: previne submit padrão, lê username/password, chama `adminAuth.login()`, se sucesso chama `renderAdminPanel()`, se falha exibe mensagem no `#admin-login-error`
+
+**Checkpoint**: Navegar para `/#/admindev` mostra formulário de login; credenciais incorretas exibem erro; credenciais corretas passam para o painel (ainda a ser construído)
+
+---
+
+## Phase 17: Admin Panel — Estado e CRUD
+
+**Purpose**: Working copy dos dados em memória com operações de CRUD
+
+- [X] T114 Adicionar início de `SECTION 12: ADMIN PANEL - STATE & CRUD` com objeto `adminState` contendo: `templates: null`, `companies: null`, `carteiras: null`, `activeTab: 'consulfarma'`, `modal: null`, `saving: false`, `saveError: null`
+- [X] T115 Adicionar função `adminInitWorkingCopy()` que deep-clona `TEMPLATES`, `COMPANIES`, `CARTEIRAS` para `adminState` usando `JSON.parse(JSON.stringify(...))`
+- [X] T116 Adicionar funções CRUD: `adminAddTemplate(company, template)` (unshift no array), `adminUpdateTemplate(company, index, template)` (substituição por índice), `adminDeleteTemplate(company, index)` (splice), `adminFindTemplateIndex(company, name)` (findIndex por name)
+
+**Checkpoint**: CRUD functions definidas (não visíveis — só testáveis via console do browser)
+
+---
+
+## Phase 18: Admin Panel — Componentes de UI
+
+**Purpose**: Construir o painel de administração visual completo
+
+- [X] T117 Adicionar função `AdminPanelLayout()` retornando HTML string com: header bar (título "admin panel", botão `id="admin-save-btn"` com texto "Salvar", botão link "← Catalog", botão `id="admin-logout-btn"` com texto "Sair"), tabs de empresa (um botão por empresa em `adminState.companies` com `data-admin-tab`), seção de lista de templates para `adminState.activeTab`
+- [X] T118 Adicionar função `AdminTemplateRow(template, company)` retornando HTML string com: `div.admin-row`, nome do template em `.admin-row-name`, preview da mensagem truncada a 60 chars em `.admin-row-preview`, data em `.admin-row-date`, botão edit com `onclick="adminOpenEditModal('${company}', '${template.name}')"`, botão delete com `onclick="adminConfirmDelete('${company}', '${template.name}')"`
+- [X] T119 Adicionar função `AdminModal()` retornando HTML string com: backdrop `id="admin-modal-backdrop"`, modal container, título dinâmico ("Novo Template" ou "Editar Template"), select de empresa `id="modal-company"` (desabilitado no modo edit), input nome `id="modal-name"`, textarea mensagem `id="modal-message"` (6 rows), input data `id="modal-date"` (type="date"), div erros `id="modal-errors"`, botões Cancelar e Salvar
+- [X] T120 Adicionar funções de controle do modal: `adminOpenEditModal(company, templateName)` (seta `adminState.modal = { mode: 'edit', company, templateName }` e chama `renderAdminPanel()`), `adminOpenAddModal(company)` (mode: 'add'), `adminCloseModal()` (seta `null` e re-renderiza)
+- [X] T121 Adicionar `handleModalSubmit(event)` que: previne submit, lê campos do formulário, valida (nome não vazio, padrão `/^[a-z0-9_]+$/`, mensagem não vazia, data válida via `validateDateFormat()` se preenchida, nome único no modo add), se válido chama `adminAddTemplate` ou `adminUpdateTemplate`, fecha modal
+- [X] T122 Adicionar `adminConfirmDelete(company, templateName)` que exibe `window.confirm()` e se confirmado chama `adminDeleteTemplate` + `renderAdminPanel()`
+- [X] T123 Adicionar `attachAdminEventListeners()` que vincula: click no `#admin-save-btn` → `commitToGitHub`, click no `#admin-logout-btn` → `adminAuth.logout()`, click em cada `[data-admin-tab]` → atualiza `adminState.activeTab` e re-renderiza, click no `#admin-add-btn` → `adminOpenAddModal(adminState.activeTab)`
+- [X] T124 Adicionar `attachModalEventListeners()` que vincula: submit do `#modal-form` → `handleModalSubmit`, click no `#modal-cancel-btn` → `adminCloseModal()`, click no `#admin-modal-backdrop` (só no próprio backdrop, não filhos) → `adminCloseModal()`
+- [X] T125 Adicionar função `renderAdminPanel()` (dispatcher principal) que: se `!adminAuth.isLoggedIn()` → renderiza `AdminLoginForm()` e vincula submit; caso contrário, se `adminState.templates === null` chama `adminInitWorkingCopy()`; renderiza `AdminPanelLayout()` e chama `attachAdminEventListeners()`; se `adminState.modal !== null`, appenda `AdminModal()` ao body e chama `attachModalEventListeners()`
+
+**Checkpoint**: CRUD visual completo funcionando em memória — adicionar, editar, deletar templates refletem na lista. O botão "Salvar" existe mas ainda não persiste.
+
+---
+
+## Phase 19: Admin Panel — GitHub API
+
+**Purpose**: Persistir mudanças via commit direto no GitHub (Netlify auto-redeploya)
+
+- [X] T126 Adicionar início de `SECTION 13: ADMIN PANEL - GITHUB API` com função `buildDataBlock()` que: serializa `adminState.templates`, `adminState.companies`, `adminState.carteiras` via `JSON.stringify` com indent 2, aplica regex `/"([a-zA-Z_][a-zA-Z0-9_]*)":/g` para remover aspas das chaves, retorna string completa com marcadores `// ADMIN_DATA_START` e `// ADMIN_DATA_END` e os três `const` declarations
+- [X] T127 Adicionar função auxiliar `indentLines(str, spaces)` que adiciona N espaços no início de cada linha (exceto a primeira) de uma string multiline — usada por `buildDataBlock()` para indentar corretamente o JSON serializado
+- [X] T128 Adicionar função `commitToGitHub()` async com: set `adminState.saving = true` + re-render; fetch GET para `https://api.github.com/repos/${ADMIN_CONFIG.GITHUB_OWNER}/${ADMIN_CONFIG.GITHUB_REPO}/contents/${ADMIN_CONFIG.GITHUB_FILE_PATH}?ref=${ADMIN_CONFIG.GITHUB_BRANCH}` com header `Authorization: token ${ADMIN_CONFIG.GITHUB_TOKEN}`; decode base64 do conteúdo com `decodeURIComponent(escape(atob(response.content.replace(/\n/g,''))))`; verifica presença dos marcadores (lança erro se ausentes); replace via regex `/    \/\/ ADMIN_DATA_START\n[\s\S]*?    \/\/ ADMIN_DATA_END\n/` com `buildDataBlock()`; encode UTF-8-safe com `btoa(unescape(encodeURIComponent(newContent)))`; fetch PUT com body `{ message, content, sha, branch }`; set `adminState.saving = false`; exibe toast de sucesso ou erro
+
+**Checkpoint**: Clicar "Salvar" faz commit no GitHub; verificar no repositório que o commit foi criado com os dados corretos entre os marcadores
+
+---
+
+## Phase 20: Configuração Final
+
+**Purpose**: Substituir placeholders de configuração pelos valores reais
+
+- [ ] T129 Substituir `'CONFIGURE_ME'` em `ADMIN_CONFIG.GITHUB_TOKEN` pelo GitHub Personal Access Token real (permissão: `Contents: write` em fine-grained, ou `repo` em classic token) em `index.html`
+- [ ] T130 Substituir `'CONFIGURE_ME'` em `ADMIN_CONFIG.GITHUB_OWNER` pelo username ou org do GitHub em `index.html`
+- [ ] T131 Substituir `'CONFIGURE_ME'` em `ADMIN_CONFIG.GITHUB_REPO` pelo nome do repositório em `index.html`
+- [ ] T132 [P] Definir `ADMIN_CONFIG.PASSWORD` com a senha desejada (padrão atual: `'consulfarma2026'`) em `index.html`
+- [ ] T133 [P] Definir `ADMIN_CONFIG.GITHUB_BRANCH` com o branch correto do Netlify (padrão: `'main'`) em `index.html`
+
+**Checkpoint**: Admin panel totalmente funcional — login, CRUD de templates, salvar persiste via GitHub, Netlify redeploya automaticamente
+
+---
+
+## Phase 21: Admin Panel — Token Persistence Fix (2026-03-04) 🆕
+
+**Goal**: Corrigir o erro "bad credentials" ao salvar templates pelo admin, e eliminar a necessidade de re-informar o token GitHub a cada sessão do browser.
+
+**Context**: O token GitHub está armazenado em `sessionStorage`, que é limpo ao fechar a aba ou o browser. O usuário precisa redigitar o token a cada nova sessão. A tentativa anterior de hardcodar o token no código foi revogada pelo secret scanning do GitHub.
+
+**Solution**: Mover o armazenamento do token de `sessionStorage` → `localStorage` (persiste entre sessões). A sessão de autenticação (username/password) permanece em `sessionStorage` por segurança.
+
+**Research**: [research-admin-token-persistence.md](./research-admin-token-persistence.md)
+**Contract**: [contracts/admin-token-api.md](./contracts/admin-token-api.md)
+**Quickstart**: [quickstart-admin-token.md](./quickstart-admin-token.md)
+
+**Scope**: 4 alterações cirúrgicas em `index.html` — nenhuma lógica nova, só troca de storage.
+
+### Tasks
+
+- [X] T134 Em `handleAdminLogin(event)` (line ~2408), alterar `sessionStorage.setItem(ADMIN_CONFIG.TOKEN_KEY, token)` para `localStorage.setItem(ADMIN_CONFIG.TOKEN_KEY, token)` em `index.html`
+- [X] T135 Em `AdminLoginForm()` (line ~2368), adicionar `const storedToken = localStorage.getItem(ADMIN_CONFIG.TOKEN_KEY) || '';` e atribuir `value="${storedToken}"` ao input `#admin-github-token`; alterar o atributo `required` para ser condicional: presente apenas quando `storedToken` estiver vazio em `index.html`
+- [X] T136 Em `adminAuth.logout()` (line ~2324), remover `sessionStorage.removeItem(ADMIN_CONFIG.TOKEN_KEY)` — o token deve permanecer em `localStorage` para a próxima sessão em `index.html`
+- [X] T137 Em `commitToGitHub()` (line ~2682), alterar `sessionStorage.getItem(ADMIN_CONFIG.TOKEN_KEY)` para `localStorage.getItem(ADMIN_CONFIG.TOKEN_KEY)` em `index.html`
+
+**Checkpoint**:
+- Primeiro login: usuário informa token → salvo em `localStorage` → commit funciona sem "bad credentials"
+- Login seguinte: campo token já preenchido automaticamente → usuário só informa username/password
+- Logout e re-login: token permanece no campo, não precisa redigitar
+
+### Manual Test Checklist
+
+- [ ] Abrir admin em nova aba (simula sessão nova)
+- [ ] Fazer login informando username, password e GitHub token
+- [ ] Adicionar um template qualquer
+- [ ] Clicar "Salvar" — verificar que o commit foi criado no GitHub sem erro "bad credentials"
+- [ ] Fazer logout
+- [ ] Fazer login novamente — verificar que o campo token já está preenchido
+- [ ] Salvar novamente — verificar que funciona sem redigitar o token
+- [ ] Fechar o browser completamente, reabrir e acessar o admin
+- [ ] Verificar que o campo token ainda está preenchido (localStorage persiste)
+
+---
+
+## Task Summary - Token Persistence Fix
+
+**Total**: 4 tasks (T134-T137)
+**Parallel opportunities**: T134 e T137 podem rodar em paralelo (funções diferentes)
+**File modified**: `index.html` (4 linhas alteradas, zero lógica nova)
+**New files**: None

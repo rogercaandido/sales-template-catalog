@@ -17,6 +17,8 @@ Build a multi-feature web application with two main views:
 
 **Update (2026-01-28)**: Adding template sorting (newest first) and automatic "new" badge system for latest templates.
 
+**Update (2026-03-04)**: Fix admin panel GitHub token persistence — switch from `sessionStorage` to `localStorage` so token survives browser session restarts. Pre-fill token field on login.
+
 ## Technical Context
 
 ### Template Catalog (Existing)
@@ -113,6 +115,55 @@ This structure optimizes for:
 > **No constitution violations** - Constitution not yet defined. If defined later, this simple single-file component should pass all reasonable complexity gates.
 
 ## Modification Log
+
+### 2026-02-05: Fix Carteiras Grid Layout Distribution
+
+**Context**: Carteiras footer grid items don't distribute uniformly when there are fewer items than maximum columns. Items leave empty gaps at the end of rows instead of expanding to fill available space.
+
+**Problem**: Current CSS uses `auto-fill` which creates grid tracks (columns) but doesn't collapse empty tracks. This results in uneven distribution, especially visible with:
+- Hi Nutrition (5 items)
+- Seminários Consulfarma (1 item)
+
+**Solution**: Change `auto-fill` to `auto-fit` in `.carteiras-grid` CSS. This collapses empty tracks, allowing items to expand uniformly.
+
+**Changes Required**:
+
+1. **CSS Update** (single-line change):
+   ```diff
+   .carteiras-grid {
+     display: grid;
+   -  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+   +  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+     gap: 6px;
+     /* ... */
+   }
+   ```
+
+2. **Optional Enhancement** (if single item stretches excessively):
+   ```css
+   .carteira-item {
+     display: flex;
+     align-items: baseline;
+     gap: 6px;
+     max-width: 300px; /* Prevent excessive expansion */
+   }
+   ```
+
+3. **Testing**:
+   - Verify uniform distribution on all 4 company tabs
+   - Test mobile breakpoint (≤768px) still works (single column)
+   - Test edge case: Seminários Consulfarma (1 item)
+   - Test cross-browser (Chrome, Firefox, Safari)
+
+**Impact**:
+- Single-line CSS change (minimal risk)
+- Zero JavaScript or HTML changes
+- Maintains existing mobile breakpoint behavior
+- No breaking changes
+
+**Technical Approach**: See [research-carteiras-layout.md](./research-carteiras-layout.md) for detailed analysis, [quickstart-carteiras-layout.md](./quickstart-carteiras-layout.md) for testing workflow, and [contracts/carteiras-layout-api.md](./contracts/carteiras-layout-api.md) for CSS API contract.
+
+---
 
 ### 2026-01-28: Add Template Sorting & "New" Badge System
 
