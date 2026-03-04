@@ -2304,12 +2304,12 @@
     const ADMIN_CONFIG = {
       USERNAME: 'admin',
       PASSWORD: 'consulfarma2026',
-      GITHUB_TOKEN: 'github_pat_11ARJGDCA0' + 'l4py5LO7ZPbN_vdmdcIOHnZTStEfQKkRwUiu8CNdApGreLyh10OWkvbRSLIMJ57Rt2don4Dx',
       GITHUB_OWNER: 'rogercaandido',
       GITHUB_REPO: 'sales-template-catalog',
       GITHUB_BRANCH: '001-template-catalog-react',
       GITHUB_FILE_PATH: 'index.html',
-      SESSION_KEY: 'admindev_auth'
+      SESSION_KEY: 'admindev_auth',
+      TOKEN_KEY: 'admindev_github_token'
     };
 
     // ========== SECTION 11: ADMIN PANEL - AUTH ==========
@@ -2323,6 +2323,7 @@
       },
       logout() {
         sessionStorage.removeItem(ADMIN_CONFIG.SESSION_KEY);
+        sessionStorage.removeItem(ADMIN_CONFIG.TOKEN_KEY);
         navigateTo(ROUTES.HOME);
       },
       isLoggedIn() {
@@ -2377,6 +2378,10 @@
               <label class="admin-label" for="admin-password">Senha</label>
               <input class="admin-input" type="password" id="admin-password" autocomplete="current-password" required />
             </div>
+            <div class="admin-field">
+              <label class="admin-label" for="admin-github-token">GitHub Token</label>
+              <input class="admin-input" type="password" id="admin-github-token" placeholder="github_pat_..." required />
+            </div>
             <div id="admin-login-error" class="admin-login-error" style="display:none">
               Credenciais inválidas.
             </div>
@@ -2392,11 +2397,19 @@
       event.preventDefault();
       const username = document.getElementById('admin-username').value.trim();
       const password = document.getElementById('admin-password').value;
+      const token = document.getElementById('admin-github-token').value.trim();
       const errorEl = document.getElementById('admin-login-error');
+      if (!token) {
+        errorEl.textContent = 'Token GitHub é obrigatório.';
+        errorEl.style.display = 'block';
+        return;
+      }
       if (adminAuth.login(username, password)) {
+        sessionStorage.setItem(ADMIN_CONFIG.TOKEN_KEY, token);
         errorEl.style.display = 'none';
         renderAdminPanel();
       } else {
+        errorEl.textContent = 'Credenciais inválidas.';
         errorEl.style.display = 'block';
       }
     }
@@ -2666,10 +2679,12 @@
       adminState.saveError = null;
       renderAdminPanel();
       try {
+        const githubToken = sessionStorage.getItem(ADMIN_CONFIG.TOKEN_KEY);
+        if (!githubToken) throw new Error('Token GitHub não encontrado. Faça login novamente.');
         const apiUrl = `https://api.github.com/repos/${ADMIN_CONFIG.GITHUB_OWNER}/${ADMIN_CONFIG.GITHUB_REPO}/contents/${ADMIN_CONFIG.GITHUB_FILE_PATH}`;
         const getResp = await fetch(`${apiUrl}?ref=${ADMIN_CONFIG.GITHUB_BRANCH}`, {
           headers: {
-            'Authorization': `token ${ADMIN_CONFIG.GITHUB_TOKEN}`,
+            'Authorization': `token ${githubToken}`,
             'Accept': 'application/vnd.github.v3+json'
           }
         });
@@ -2694,7 +2709,7 @@
         const putResp = await fetch(apiUrl, {
           method: 'PUT',
           headers: {
-            'Authorization': `token ${ADMIN_CONFIG.GITHUB_TOKEN}`,
+            'Authorization': `token ${githubToken}`,
             'Accept': 'application/vnd.github.v3+json',
             'Content-Type': 'application/json'
           },
